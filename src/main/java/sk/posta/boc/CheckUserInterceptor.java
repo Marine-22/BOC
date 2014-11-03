@@ -1,13 +1,6 @@
 package sk.posta.boc;
 
-import java.io.IOException;
 
-
-
-
-
-
-//import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,12 +18,11 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
-		// invalidovat session ak nie je user nalogovany!
 		String auth = (String)request.getSession().getAttribute(HomeController.AUTHENTICATED);
 		if("1".equals(auth)){
 			return true;
 		}
-		response.sendRedirect("/boc-BOC/login");
+		response.sendRedirect(HomeController.APPLICATION_PREFIX + "/login");
 		return false;
 	}
 }

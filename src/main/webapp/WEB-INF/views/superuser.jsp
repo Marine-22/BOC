@@ -39,7 +39,7 @@
 		<div class="site-nav-main">
 			<ul>
 	          <li class="logout border-left border-right">
-	            <a href="/boc-BOC/login"><span class="ico"></span>Logout</a>
+	            <a href="${pageContext.request.contextPath}/login"><span class="ico"></span>Logout</a>
 	          </li>
 				<li class="add_user"><a href="javascript:{}"><span
 						class="ico"></span>Pridaj používateľa</a>
@@ -50,7 +50,7 @@
 		<div class="site-area-main newuser inithide">
 
 			<div class="area-post">
-				<form id="new_user" action="/boc-BOC/addUser" method="post">
+				<form id="new_user" action="${pageContext.request.contextPath}/addUser" method="post">
 					<div id="nominal_div">
 						<!--  <div style="margin:0;padding:0"><input name="authenticity_token" type="hidden" value="bvd3EDmGDVNADtADy1pQW/EI76g3NZkBilWt3uahuCs=" /></div>  -->
 						<p class="form-text">
@@ -117,7 +117,5 @@
 			</div>
 		</div>
 		<div class="site-area-bottom listdata"></div>
-
-		<p>${output}</p>
 </body>
 </html>

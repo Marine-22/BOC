@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="sk" lang="sk">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<meta name="Author" content="Slovenská pošta, a.s." />
+<meta name="Author" content="SlovenskÃ¡ poÅ¡ta, a.s." />
 <meta name="viewport" content="width=1024" />
 <meta
 	content='<acronym title="Internet Explorer">IE</acronym>=EmulateIE7'
@@ -39,7 +39,7 @@
 		<div class="site-area-top"></div>
 		<div class="site-area-main">
 			<div class="area-post">
-				<form id="login_user" action="/boc-BOC/loginUser" method="post">
+				<form id="login_user" action="${pageContext.request.contextPath}/loginUser" method="post">
 					<div id="nominal_div">
 						<!--  <div style="margin:0;padding:0"><input name="authenticity_token" type="hidden" value="bvd3EDmGDVNADtADy1pQW/EI76g3NZkBilWt3uahuCs=" /></div>  -->
 						<p class="form-text">
