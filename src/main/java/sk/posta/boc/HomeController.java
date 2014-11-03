@@ -37,6 +37,8 @@ import sk.posta.data.repo.UserRepository;
 @Controller
 public class HomeController {
 	
+
+	public static final String APPLICATION_PREFIX = "/boc-BOC";
 	public static final String AUTHENTICATED = "authenticated";
 	public static final String SPRAVCA = "spravca";
 	
@@ -57,6 +59,10 @@ public class HomeController {
 	@Autowired
 	private MongoOperations customOps;
 	
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String def() {
+		return "redirect:/login";
+	}
 	
 	@RequestMapping(value="/addPredpis", method = RequestMethod.POST)
 	public @ResponseBody String addPredpis(HttpSession session, Model model, @RequestParam MultiValueMap<String, String> params){

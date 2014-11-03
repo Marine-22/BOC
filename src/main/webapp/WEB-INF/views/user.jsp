@@ -51,9 +51,9 @@
             </a>
           </span>
           <ul>
-            <li><a href="http://www.posta.sk/informacie/informacie" class="first">Informácie</a></li>
-            <li><a href="http://kariera.posta.sk">Kariéra</a></li>
-            <li><a href="http://www.posta.sk/mapa-stranky">Mapa stránky</a></li>
+            <li><a href="http://www.posta.sk/informacie/informacie" class="first">InformÃ¡cie</a></li>
+            <li><a href="http://kariera.posta.sk">KariÃ©ra</a></li>
+            <li><a href="http://www.posta.sk/mapa-stranky">Mapa strÃ¡nky</a></li>
             <li><a href="http://www.posta.sk/kontakty/kontakty" class="lastitem">Kontakty</a></li>
           </ul>
 -->
@@ -72,13 +72,13 @@
       <div class="site-nav-main">
         <ul>
           <li class="logout border-left border-right">
-            <a href="/boc-BOC/login"><span class="ico"></span>Logout</a>
+            <a href="${pageContext.request.contextPath}/login"><span class="ico"></span>Logout</a>
           </li>
           <li class="add_predpis border-left">
             <a href="javascript:{}" ><span class="ico"></span>Pridaj predpis</a>
           </li>
           <li id="poradove_cislo">
-            <label>P.č.</label>
+            <label>P.č.</label>
             <input type="text" />
           </li>
           <li id="uradpicker">
@@ -103,99 +103,99 @@ Zmena hesla
 <!--
   <div class="services-navi" id="services-navi">
   <ul class="level0">
-        <li><a href="http://www.posta.sk/sluzby/listove-zasielky">Listové zásielky</a></li>
-        <li><a href="http://www.posta.sk/sluzby/baliky">Balíky</a></li>
-        <li><a href="http://www.posta.sk/sluzby/expres-zasielky">Expres zásielky</a></li>
-        <li><a href="http://www.posta.sk/sluzby/penazne-sluzby">Peňažné služby</a></li>
-        <li><a href="http://www.posta.sk/sluzby/reklamne-sluzby">Reklamné služby</a></li>
-        <li><a href="http://www.posta.sk/sluzby/spracovanie-zasielok">Spracovanie zásielok</a></li>
-        <li><a href="http://www.posta.sk/sluzby/sluzby-statu">Služby štátu</a></li>
+        <li><a href="http://www.posta.sk/sluzby/listove-zasielky">ListovÃ© zÃ¡sielky</a></li>
+        <li><a href="http://www.posta.sk/sluzby/baliky">BalÃ­ky</a></li>
+        <li><a href="http://www.posta.sk/sluzby/expres-zasielky">Expres zÃ¡sielky</a></li>
+        <li><a href="http://www.posta.sk/sluzby/penazne-sluzby">PeÅaÅ¾nÃ© sluÅ¾by</a></li>
+        <li><a href="http://www.posta.sk/sluzby/reklamne-sluzby">ReklamnÃ© sluÅ¾by</a></li>
+        <li><a href="http://www.posta.sk/sluzby/spracovanie-zasielok">Spracovanie zÃ¡sielok</a></li>
+        <li><a href="http://www.posta.sk/sluzby/sluzby-statu">SluÅ¾by Å¡tÃ¡tu</a></li>
         <li><a href="http://www.posta.sk/sluzby/postshop">POSTshop</a></li>
-        <li><a href="http://www.posta.sk/sluzby/ostatne-sluzby">Ostatné služby</a></li>
+        <li><a href="http://www.posta.sk/sluzby/ostatne-sluzby">OstatnÃ© sluÅ¾by</a></li>
         <li><a href="http://www.posta.sk/sluzby/filatelia">Filatelia</a></li>
-        <li><a href="http://www.posta.sk/sluzby/faq-casto-kladene-otazky">FAQ - často kladené otázky</a></li>
+        <li><a href="http://www.posta.sk/sluzby/faq-casto-kladene-otazky">FAQ - Äasto kladenÃ© otÃ¡zky</a></li>
       </ul>
   <div></div>
     <ul class="level1 hide">
     
     <li class="icon">
-      <img alt="Listové zásielky" src="/subory/37023/listove_zasielky_2_small.jpg" />
+      <img alt="ListovÃ© zÃ¡sielky" src="/subory/37023/listove_zasielky_2_small.jpg" />
     </li>
     
-        <li><a href="http://www.posta.sk/sluzby/listova-zasielka">Listová zásielka</a></li>
-        <li><a href="http://www.posta.sk/sluzby/listova-zasielka-svet">Listová zásielka svet</a></li>
-        <li><a href="http://www.posta.sk/sluzby/doporucena-zasielka">Doporučená zásielka</a></li>
-        <li><a href="http://www.posta.sk/sluzby/doporucena-zasielka-svet">Doporučená zásielka svet</a></li>
-        <li><a href="http://www.posta.sk/sluzby/poistena-zasielka">Poistená zásielka</a></li>
-        <li><a href="http://www.posta.sk/sluzby/poistena-zasielka-svet">Poistená zásielka svet</a></li>
-        <li><a href="http://www.posta.sk/sluzby/uradna-zasielka">Úradná zásielka</a></li>
-        <li><a href="http://www.posta.sk/sluzby/zmluvny-list">Zmluvný list</a></li>
-        <li><a href="http://www.posta.sk/sluzby/zmluvna-tlac">Zmluvná tlač</a></li>
+        <li><a href="http://www.posta.sk/sluzby/listova-zasielka">ListovÃ¡ zÃ¡sielka</a></li>
+        <li><a href="http://www.posta.sk/sluzby/listova-zasielka-svet">ListovÃ¡ zÃ¡sielka svet</a></li>
+        <li><a href="http://www.posta.sk/sluzby/doporucena-zasielka">DoporuÄenÃ¡ zÃ¡sielka</a></li>
+        <li><a href="http://www.posta.sk/sluzby/doporucena-zasielka-svet">DoporuÄenÃ¡ zÃ¡sielka svet</a></li>
+        <li><a href="http://www.posta.sk/sluzby/poistena-zasielka">PoistenÃ¡ zÃ¡sielka</a></li>
+        <li><a href="http://www.posta.sk/sluzby/poistena-zasielka-svet">PoistenÃ¡ zÃ¡sielka svet</a></li>
+        <li><a href="http://www.posta.sk/sluzby/uradna-zasielka">ÃradnÃ¡ zÃ¡sielka</a></li>
+        <li><a href="http://www.posta.sk/sluzby/zmluvny-list">ZmluvnÃ½ list</a></li>
+        <li><a href="http://www.posta.sk/sluzby/zmluvna-tlac">ZmluvnÃ¡ tlaÄ</a></li>
       </ul>
     <ul class="level1 hide">
     
     <li class="icon">
-      <img alt="Balíky" src="/subory/37035/baliky_2_small.jpg" />
+      <img alt="BalÃ­ky" src="/subory/37035/baliky_2_small.jpg" />
     </li>
     
-        <li><a href="http://www.posta.sk/sluzby/balik">Balík</a></li>
-        <li><a href="http://www.posta.sk/sluzby/balik-svet">Balík svet</a></li>
-        <li><a href="http://www.posta.sk/sluzby/zmluvny-balik">Zmluvný balík</a></li>
+        <li><a href="http://www.posta.sk/sluzby/balik">BalÃ­k</a></li>
+        <li><a href="http://www.posta.sk/sluzby/balik-svet">BalÃ­k svet</a></li>
+        <li><a href="http://www.posta.sk/sluzby/zmluvny-balik">ZmluvnÃ½ balÃ­k</a></li>
       </ul>
     <ul class="level1 hide">
     
     <li class="icon">
-      <img alt="Expres zásielky" src="/subory/37034/expresne_zasielky_2_small.jpg" />
+      <img alt="Expres zÃ¡sielky" src="/subory/37034/expresne_zasielky_2_small.jpg" />
     </li>
     
-        <li><a href="http://www.posta.sk/sluzby/expres-kurier-60">Expres Kuriér 60</a></li>
-        <li><a href="http://www.posta.sk/sluzby/expres-kurier">Expres Kuriér</a></li>
+        <li><a href="http://www.posta.sk/sluzby/expres-kurier-60">Expres KuriÃ©r 60</a></li>
+        <li><a href="http://www.posta.sk/sluzby/expres-kurier">Expres KuriÃ©r</a></li>
         <li><a href="http://www.posta.sk/sluzby/expres-mail-servis-ems">Expres Mail Servis</a></li>
         <li><a href="http://www.posta.sk/sluzby/obchodny-balik-epg">EPG</a></li>
       </ul>
     <ul class="level1 hide">
     
     <li class="icon">
-      <img alt="Peňažné služby" src="/subory/37033/penazne_sluzby_2_small.jpg" />
+      <img alt="PeÅaÅ¾nÃ© sluÅ¾by" src="/subory/37033/penazne_sluzby_2_small.jpg" />
     </li>
     
-        <li><a href="http://www.posta.sk/sluzby/postovy-poukaz-na-ucet">Poštový poukaz na účet</a></li>
-        <li><a href="http://www.posta.sk/sluzby/postovy-poukaz-na-adresu">Poštový poukaz na adresu</a></li>
-        <li><a href="http://www.posta.sk/sluzby/postovy-poukaz-na-vyplatu">Poštový poukaz na výplatu</a></li>
-        <li><a href="http://www.posta.sk/sluzby/postovy-poukaz-ekonomicky">Poštový poukaz ekonomický</a></li>
+        <li><a href="http://www.posta.sk/sluzby/postovy-poukaz-na-ucet">PoÅ¡tovÃ½ poukaz na ÃºÄet</a></li>
+        <li><a href="http://www.posta.sk/sluzby/postovy-poukaz-na-adresu">PoÅ¡tovÃ½ poukaz na adresu</a></li>
+        <li><a href="http://www.posta.sk/sluzby/postovy-poukaz-na-vyplatu">PoÅ¡tovÃ½ poukaz na vÃ½platu</a></li>
+        <li><a href="http://www.posta.sk/sluzby/postovy-poukaz-ekonomicky">PoÅ¡tovÃ½ poukaz ekonomickÃ½</a></li>
         <li><a href="http://www.posta.sk/sluzby/western-union">Western Union</a></li>
         <li><a href="http://www.posta.sk/sluzby/sipo">SIPO</a></li>
-        <li><a href="http://www.posta.sk/sluzby/dochodky-a-davky">Dôchodky a dávky</a></li>
+        <li><a href="http://www.posta.sk/sluzby/dochodky-a-davky">DÃ´chodky a dÃ¡vky</a></li>
         <li><a href="http://www.posta.sk/sluzby/sepa">SEPA</a></li>
-        <li><a href="http://www.posta.sk/sluzby/sluzby-postovej-banky">Poštová banka</a></li>
+        <li><a href="http://www.posta.sk/sluzby/sluzby-postovej-banky">PoÅ¡tovÃ¡ banka</a></li>
       </ul>
     <ul class="level1 hide">
     
     <li class="icon">
-      <img alt="Reklamné služby" src="/subory/37032/reklamne_sluzby_2_small.jpg" />
+      <img alt="ReklamnÃ© sluÅ¾by" src="/subory/37032/reklamne_sluzby_2_small.jpg" />
     </li>
     
-        <li><a href="http://www.posta.sk/sluzby/letaky">Letáky</a></li>
+        <li><a href="http://www.posta.sk/sluzby/letaky">LetÃ¡ky</a></li>
         <li><a href="http://www.posta.sk/sluzby/epops">ePoPS</a></li>
         <li><a href="http://www.posta.sk/sluzby/sipo-reklama">SIPO reklama</a></li>
       </ul>
     <ul class="level1 hide">
     
     <li class="icon">
-      <img alt="Spracovanie zásielok" src="/subory/37031/spracovanie_zasielok_2_small.jpg" />
+      <img alt="Spracovanie zÃ¡sielok" src="/subory/37031/spracovanie_zasielok_2_small.jpg" />
     </li>
     
         <li><a href="http://www.posta.sk/sluzby/postservis-1">POSTservis</a></li>
-        <li><a href="http://www.posta.sk/sluzby/edokument">Digitalizácia obálok a dokumentov</a></li>
+        <li><a href="http://www.posta.sk/sluzby/edokument">DigitalizÃ¡cia obÃ¡lok a dokumentov</a></li>
       </ul>
     <ul class="level1 hide">
     
     <li class="icon">
-      <img alt="Služby štátu" src="/subory/37468/sluzby-statu_small.jpg" />
+      <img alt="SluÅ¾by Å¡tÃ¡tu" src="/subory/37468/sluzby-statu_small.jpg" />
     </li>
     
-        <li><a href="http://www.posta.sk/sluzby/platobny-system-e-kolok">Platobný systém E-KOLOK</a></li>
-        <li><a href="http://www.posta.sk/sluzby/eso-sluzby-statu">e.so - služby štátu na pošte</a></li>
+        <li><a href="http://www.posta.sk/sluzby/platobny-system-e-kolok">PlatobnÃ½ systÃ©m E-KOLOK</a></li>
+        <li><a href="http://www.posta.sk/sluzby/eso-sluzby-statu">e.so - sluÅ¾by Å¡tÃ¡tu na poÅ¡te</a></li>
       </ul>
     <ul class="level1 hide">
     
@@ -203,23 +203,23 @@ Zmena hesla
       <img alt="POSTshop" src="/subory/37030/postshop_2_small.jpg" />
     </li>
     
-        <li><a href="http://www.posta.sk/sluzby/postshop-obchod-na-poste">POSTshop - obchod na pošte</a></li>
+        <li><a href="http://www.posta.sk/sluzby/postshop-obchod-na-poste">POSTshop - obchod na poÅ¡te</a></li>
         <li><a href="http://www.postshop.sk/b2c/b2c/start.do">POSTshop - e-shop</a></li>
       </ul>
     <ul class="level1 hide">
     
     <li class="icon">
-      <img alt="Ostatné služby" src="/subory/37028/ostatne_sluzby_2_small.jpg" />
+      <img alt="OstatnÃ© sluÅ¾by" src="/subory/37028/ostatne_sluzby_2_small.jpg" />
     </li>
     
-        <li><a href="http://www.posta.sk/sluzby/predplatne-novin-a-casopisov">Predplatné novín a časopisov</a></li>
+        <li><a href="http://www.posta.sk/sluzby/predplatne-novin-a-casopisov">PredplatnÃ© novÃ­n a Äasopisov</a></li>
         <li><a href="http://www.posta.sk/sluzby/sluzby-tipos">TIPOS</a></li>
-        <li><a href="http://www.posta.sk/sluzby/postove-priecinky">Poštové priečinky</a></li>
-        <li><a href="http://www.posta.sk/sluzby/zberne-jazdy">Zberné jazdy</a></li>
+        <li><a href="http://www.posta.sk/sluzby/postove-priecinky">PoÅ¡tovÃ© prieÄinky</a></li>
+        <li><a href="http://www.posta.sk/sluzby/zberne-jazdy">ZbernÃ© jazdy</a></li>
         <li><a href="http://www.posta.sk/sluzby/consignment">Consignment</a></li>
-        <li><a href="http://www.posta.sk/sluzby/colne-prerokovanie-zasielok">Colné prerokovanie zásielok</a></li>
-        <li><a href="http://www.posta.sk/sluzby/kopirovacie-sluzby">Kopírovacie služby</a></li>
-        <li><a href="http://www.posta.sk/sluzby/prevod-cennych-papierov-na-fnm-sr">Prevod cenných papierov na FNM SR</a></li>
+        <li><a href="http://www.posta.sk/sluzby/colne-prerokovanie-zasielok">ColnÃ© prerokovanie zÃ¡sielok</a></li>
+        <li><a href="http://www.posta.sk/sluzby/kopirovacie-sluzby">KopÃ­rovacie sluÅ¾by</a></li>
+        <li><a href="http://www.posta.sk/sluzby/prevod-cennych-papierov-na-fnm-sr">Prevod cennÃ½ch papierov na FNM SR</a></li>
         <li><a href="http://www.posta.sk/sluzby/ticketportal">Ticketportal</a></li>
       </ul>
     <ul class="level1 hide">
@@ -228,13 +228,13 @@ Zmena hesla
       <img alt="Filatelia" src="/subory/37029/filatelia_2_small.jpg" />
     </li>
     
-        <li><a href="http://www.posta.sk/sluzby/postova-filatelisticka-sluzba">Poštová filatelistická služba</a></li>
-        <li><a href="http://mojaznamka.sk">Moja známka</a></li>
+        <li><a href="http://www.posta.sk/sluzby/postova-filatelisticka-sluzba">PoÅ¡tovÃ¡ filatelistickÃ¡ sluÅ¾ba</a></li>
+        <li><a href="http://mojaznamka.sk">Moja znÃ¡mka</a></li>
       </ul>
     <ul class="level1 hide">
     
     <li class="icon">
-      <img alt="FAQ - často kladené otázky" src="/subory/37490/faq_small.jpg" />
+      <img alt="FAQ - Äasto kladenÃ© otÃ¡zky" src="/subory/37490/faq_small.jpg" />
     </li>
     
       </ul>
@@ -278,7 +278,7 @@ Zmena hesla
 <div class="site-area-main newpred inithide">
     
   <div class="area-post">
-      <form id="new_predpis" action="/boc-BOC/addPredpis" method="post">
+      <form id="new_predpis" action="${pageContext.request.contextPath}/addPredpis" method="post">
         <div id="nominal_div">
 <!--  <div style="margin:0;padding:0"><input name="authenticity_token" type="hidden" value="bvd3EDmGDVNADtADy1pQW/EI76g3NZkBilWt3uahuCs=" /></div>  -->
             <p class="form-text">
@@ -327,7 +327,7 @@ Zmena hesla
             <p class="submit">
               <a class="red_button" href="javascript:{}" onclick="clearPredpisForm();">Zmazať formulár</a>
               <a class="blue_button" href="javascript:{}" onclick="submitPredpisForm();">Odoslať</a>
-<!--               <button type="submit" class="btn btn-blue"><span>Odoslať</span></button> -->
+<!--               <button type="submit" class="btn btn-blue"><span>OdoslaÅ¥</span></button> -->
             </p>
         </div>
       </form>
@@ -360,7 +360,7 @@ Zmena hesla
   <div class="box-460 tabs">
     <div class="top">
       <ul id="tabview-left">
-        <li><a class="first" href="#news-tab">Aktuálne</a></li>
+        <li><a class="first" href="#news-tab">AktuÃ¡lne</a></li>
       </ul>
     </div>
     <div id="news-tab" class="news">
@@ -382,22 +382,22 @@ initNewsTab("a");
     <div class="top">
       <ul id="tabview-right">
         <li><a class="first" href="#inquiry-tab">Anketa</a></li>
-        <li><a href="#napiste-nam">Napíšte nám</a></li>
+        <li><a href="#napiste-nam">NapÃ­Å¡te nÃ¡m</a></li>
       </ul>
     </div>
     <div id="inquiry-tab" class="inquiry"><div class="main">
     
-  <p>Pri objednaní tovaru z e-shopu by ste uprednostnili vyzdvihnutie balíka na vami zvolenej pošte pred doručením cez kuriéra? </p>
+  <p>Pri objednanÃ­ tovaru z e-shopu by ste uprednostnili vyzdvihnutie balÃ­ka na vami zvolenej poÅ¡te pred doruÄenÃ­m cez kuriÃ©ra? </p>
   
   <ul>
         
     <li>
-      <a href="/do.inquiry_vote/261" rel="#inquiry-tab">áno, bez ohľadu na výšku poštovného</a>      <span class="bar" style="width:35%"></span>
+      <a href="/do.inquiry_vote/261" rel="#inquiry-tab">Ã¡no, bez ohÄ¾adu na vÃ½Å¡ku poÅ¡tovnÃ©ho</a>      <span class="bar" style="width:35%"></span>
       <span class="percent">35%</span>
     </li>
         
     <li>
-      <a href="/do.inquiry_vote/262" rel="#inquiry-tab">áno, ale len v prípade nižšieho poštovného</a>      <span class="bar" style="width:46%"></span>
+      <a href="/do.inquiry_vote/262" rel="#inquiry-tab">Ã¡no, ale len v prÃ­pade niÅ¾Å¡ieho poÅ¡tovnÃ©ho</a>      <span class="bar" style="width:46%"></span>
       <span class="percent">46%</span>
     </li>
         
@@ -414,8 +414,8 @@ initNewsTab("a");
   </div>
 <div class="bottom hr">
   <ul>
-        <li>Počet hlasov : <strong>186</strong></li>
-        <li><a href="/do.inquiry_archive" rel="#inquiry-tab">Archív ankiet</a></li>
+        <li>PoÄet hlasov : <strong>186</strong></li>
+        <li><a href="/do.inquiry_archive" rel="#inquiry-tab">ArchÃ­v ankiet</a></li>
   </ul>
 </div>
 <script type="text/javascript">
@@ -426,17 +426,17 @@ initInquiryTab();
 </div>
     <div id="napiste-nam" class="writeus"><div class="main">
   <p class="head">
-    Prostredníctvom tohto formulára môžete získať viac informácií o našich produktoch a službách. Napíšte nám vašu požiadavku a naši zamestnanci vás budú kontaktovať v čo najkratšom termíne.</br>
-    <i>Pozn.: Tento formulár neslúži na podanie reklamácie.</i>
+    ProstrednÃ­ctvom tohto formulÃ¡ra mÃ´Å¾ete zÃ­skaÅ¥ viac informÃ¡ciÃ­ o naÅ¡ich produktoch a sluÅ¾bÃ¡ch. NapÃ­Å¡te nÃ¡m vaÅ¡u poÅ¾iadavku a naÅ¡i zamestnanci vÃ¡s budÃº kontaktovaÅ¥ v Äo najkratÅ¡om termÃ­ne.</br>
+    <i>Pozn.: Tento formulÃ¡r neslÃºÅ¾i na podanie reklamÃ¡cie.</i>
   </p>
   
     <form action="/do.writeus" method="post" rel="#napiste-nam"><div style="margin:0;padding:0"><input name="authenticity_token" type="hidden" value="bvd3EDmGDVNADtADy1pQW/EI76g3NZkBilWt3uahuCs=" /></div>
   <div class="form">
     <p class="form-select">
-    <label>Typ zákazníka</label>
+    <label>Typ zÃ¡kaznÃ­ka</label>
   
-    <select class="text" id="customer" inline="true" name="customer"><option value="person">Občan</option>
-<option value="businessman">Podnikateľ</option>
+    <select class="text" id="customer" inline="true" name="customer"><option value="person">ObÄan</option>
+<option value="businessman">PodnikateÄ¾</option>
 <option value="organization">Firma</option></select>
   
 </p>
@@ -457,7 +457,7 @@ initInquiryTab();
   
 </p>
     <p class="form-text">
-    <label>Telefón</label>
+    <label>TelefÃ³n</label>
       
   
   <input class="text" id="phone" inline="true" name="phone" type="text" />
@@ -466,22 +466,22 @@ initInquiryTab();
 </p>
 
     <p class="form-select">
-    <label>Téma</label>
+    <label>TÃ©ma</label>
   
-    <select class="select" id="theme" inline="true" name="theme"><option value="otázky k poskytovaným službám">otázky k poskytovaným službám</option>
-<option value="žiadosť o cenovu ponuku">žiadosť o cenovu ponuku</option>
-<option value="stretnutie s obchodníkom">stretnutie s obchodníkom</option>
+    <select class="select" id="theme" inline="true" name="theme"><option value="otÃ¡zky k poskytovanÃ½m sluÅ¾bÃ¡m">otÃ¡zky k poskytovanÃ½m sluÅ¾bÃ¡m</option>
+<option value="Å¾iadosÅ¥ o cenovu ponuku">Å¾iadosÅ¥ o cenovu ponuku</option>
+<option value="stretnutie s obchodnÃ­kom">stretnutie s obchodnÃ­kom</option>
 <option value="ine">ine</option></select>
   
 </p>
     <p class="form-textarea">
-  <label>Vaša požiadavka</label>
+  <label>VaÅ¡a poÅ¾iadavka</label>
   <textarea class="textarea" id="message" name="message"></textarea>
   
 </p>
 
     <p class="form-captcha">
-  <label>Opíšte kód</label>
+  <label>OpÃ­Å¡te kÃ³d</label>
   
   <img src="/do.captcha/6a28333ab60dc40e42f4eeb7a2a96144d2c7141c" alt="" />
   <input class="text short noautocomplete" id="captcha" name="captcha" type="text" value="" />
@@ -489,11 +489,11 @@ initInquiryTab();
 </p>
 
     <p class="submit">
-      <button type="submit" class="btn btn-blue"><span>Odoslať</span></button>
+      <button type="submit" class="btn btn-blue"><span>OdoslaÅ¥</span></button>
     </p>
   </div>
   </form>  <p class="foot">
-    Odoslaním vyplneného formulára udeľujem v súlade so zákonom č.122/2013 Z.z. o ochrane osobných údajov a o zmene a doplnení niektorých zákonov spoločnosti Slovenská pošta, a.s., IČO 36 631 124, Partizánska cesta 9, 975 99 Banská Bystrica súhlas na spracúvanie mojich osobných údajov v rozsahu uvedenom v tomto formulári na účely poskytnutia informácií o produktoch a službách Slovenskej pošty, a.s. Tento súhlas udeľujem na dobu neurčitú. Súhlas som oprávnený písomne kedykoľvek odvolať v zmysle § 28 zákona č.122/2013 Z.z.
+    OdoslanÃ­m vyplnenÃ©ho formulÃ¡ra udeÄ¾ujem v sÃºlade so zÃ¡konom Ä.122/2013 Z.z. o ochrane osobnÃ½ch Ãºdajov a o zmene a doplnenÃ­ niektorÃ½ch zÃ¡konov spoloÄnosti SlovenskÃ¡ poÅ¡ta, a.s., IÄO 36 631 124, PartizÃ¡nska cesta 9, 975 99 BanskÃ¡ Bystrica sÃºhlas na spracÃºvanie mojich osobnÃ½ch Ãºdajov v rozsahu uvedenom v tomto formulÃ¡ri na ÃºÄely poskytnutia informÃ¡ciÃ­ o produktoch a sluÅ¾bÃ¡ch Slovenskej poÅ¡ty, a.s. Tento sÃºhlas udeÄ¾ujem na dobu neurÄitÃº. SÃºhlas som oprÃ¡vnenÃ½ pÃ­somne kedykoÄ¾vek odvolaÅ¥ v zmysle Â§ 28 zÃ¡kona Ä.122/2013 Z.z.
   </p>
 </div>
 <div class="bottom empty"></div>
