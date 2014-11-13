@@ -49,6 +49,11 @@ import sk.gov.ekolky.estamp.fo10.infra.ListServiceRequest;
     "offline"
 })
 @XmlSeeAlso({
+    GetRequest.class,
+    CreateRequest.class,
+    LockRequest.class,
+    ExchangeRequest.class,
+    UnlockRequest.class,
     ListFeDevicesRequest.class,
     ListServiceRequest.class,
     ListOfficeRequest.class,
@@ -59,11 +64,6 @@ import sk.gov.ekolky.estamp.fo10.infra.ListServiceRequest;
     ListDeviceInfoRequest.class,
     DeviceStateCheckRequest.class,
     IncidentRegisterRequest.class,
-    GetRequest.class,
-    CreateRequest.class,
-    LockRequest.class,
-    ExchangeRequest.class,
-    UnlockRequest.class,
     RequestOEK.class
 })
 public class RequestFE

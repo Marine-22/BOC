@@ -57,6 +57,21 @@ import sk.gov.ekolky.estamp.fo10.nominal.CheckStateResponse;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "response")
 @XmlSeeAlso({
+    sk.gov.ekolky.estamp.fo10.estamp.ListResponse.class,
+    sk.gov.ekolky.estamp.fo10.estamp.CreateResponse.class,
+    UnlockResponse.class,
+    sk.gov.ekolky.estamp.fo10.estamp.OperationConsumeResponse.class,
+    sk.gov.ekolky.estamp.fo10.estamp.ListOperationsResponse.class,
+    sk.gov.ekolky.estamp.fo10.estamp.GetResponse.class,
+    LockResponse.class,
+    ExchangeResponse.class,
+    GetInfoResponse.class,
+    sk.gov.ekolky.estamp.fo10.cashdesk.ListResponse.class,
+    CloseResponse.class,
+    MoneySendSPResponse.class,
+    MoneyTransferResponse.class,
+    TakeoverResponse.class,
+    OpenResponse.class,
     IncidentRegisterResponse.class,
     ListServiceResponse.class,
     ListCountryResponse.class,
@@ -67,22 +82,6 @@ import sk.gov.ekolky.estamp.fo10.nominal.CheckStateResponse;
     DeviceStateCheckResponse.class,
     ListDeviceInfoResponse.class,
     ListFeeResponse.class,
-    GetInfoResponse.class,
-    sk.gov.ekolky.estamp.fo10.cashdesk.ListResponse.class,
-    CloseResponse.class,
-    MoneySendSPResponse.class,
-    MoneyTransferResponse.class,
-    TakeoverResponse.class,
-    OpenResponse.class,
-    CheckStateResponse.class,
-    sk.gov.ekolky.estamp.fo10.estamp.ListResponse.class,
-    sk.gov.ekolky.estamp.fo10.estamp.CreateResponse.class,
-    UnlockResponse.class,
-    sk.gov.ekolky.estamp.fo10.estamp.OperationConsumeResponse.class,
-    sk.gov.ekolky.estamp.fo10.estamp.ListOperationsResponse.class,
-    sk.gov.ekolky.estamp.fo10.estamp.GetResponse.class,
-    LockResponse.class,
-    ExchangeResponse.class,
     OperationDeclareResponse.class,
     PrintDELETEDResponse.class,
     OperationReserveResponse.class,
@@ -96,7 +95,8 @@ import sk.gov.ekolky.estamp.fo10.nominal.CheckStateResponse;
     UpdateResponse.class,
     CancelResponse.class,
     OperationRefundResponse.class,
-    sk.gov.ekolky.estamp.fo10.assessment.ListOperationsResponse.class
+    sk.gov.ekolky.estamp.fo10.assessment.ListOperationsResponse.class,
+    CheckStateResponse.class
 })
 public class Response {
 

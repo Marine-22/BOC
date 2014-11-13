@@ -30,43 +30,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ListResponse }
+     * Create an instance of {@link CloseRequest }
      * 
      */
-    public ListResponse createListResponse() {
-        return new ListResponse();
-    }
-
-    /**
-     * Create an instance of {@link TakeoverResponse }
-     * 
-     */
-    public TakeoverResponse createTakeoverResponse() {
-        return new TakeoverResponse();
-    }
-
-    /**
-     * Create an instance of {@link ListRequest.Range }
-     * 
-     */
-    public ListRequest.Range createListRequestRange() {
-        return new ListRequest.Range();
-    }
-
-    /**
-     * Create an instance of {@link GetInfoRequest }
-     * 
-     */
-    public GetInfoRequest createGetInfoRequest() {
-        return new GetInfoRequest();
-    }
-
-    /**
-     * Create an instance of {@link TakeoverRequest }
-     * 
-     */
-    public TakeoverRequest createTakeoverRequest() {
-        return new TakeoverRequest();
+    public CloseRequest createCloseRequest() {
+        return new CloseRequest();
     }
 
     /**
@@ -78,11 +46,51 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link TakeoverResponse }
+     * 
+     */
+    public TakeoverResponse createTakeoverResponse() {
+        return new TakeoverResponse();
+    }
+
+    /**
      * Create an instance of {@link ListRequest }
      * 
      */
     public ListRequest createListRequest() {
         return new ListRequest();
+    }
+
+    /**
+     * Create an instance of {@link MoneySendSPResponse }
+     * 
+     */
+    public MoneySendSPResponse createMoneySendSPResponse() {
+        return new MoneySendSPResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetInfoRequest }
+     * 
+     */
+    public GetInfoRequest createGetInfoRequest() {
+        return new GetInfoRequest();
+    }
+
+    /**
+     * Create an instance of {@link ListRequest.Range }
+     * 
+     */
+    public ListRequest.Range createListRequestRange() {
+        return new ListRequest.Range();
+    }
+
+    /**
+     * Create an instance of {@link TakeoverRequest }
+     * 
+     */
+    public TakeoverRequest createTakeoverRequest() {
+        return new TakeoverRequest();
     }
 
     /**
@@ -94,19 +102,19 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ListRequest.Conditions }
+     * 
+     */
+    public ListRequest.Conditions createListRequestConditions() {
+        return new ListRequest.Conditions();
+    }
+
+    /**
      * Create an instance of {@link ListRequest.Order }
      * 
      */
     public ListRequest.Order createListRequestOrder() {
         return new ListRequest.Order();
-    }
-
-    /**
-     * Create an instance of {@link MoneyTransferResponse }
-     * 
-     */
-    public MoneyTransferResponse createMoneyTransferResponse() {
-        return new MoneyTransferResponse();
     }
 
     /**
@@ -126,35 +134,27 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link CloseRequest }
-     * 
-     */
-    public CloseRequest createCloseRequest() {
-        return new CloseRequest();
-    }
-
-    /**
-     * Create an instance of {@link MoneySendSPResponse }
-     * 
-     */
-    public MoneySendSPResponse createMoneySendSPResponse() {
-        return new MoneySendSPResponse();
-    }
-
-    /**
-     * Create an instance of {@link ListRequest.Conditions }
-     * 
-     */
-    public ListRequest.Conditions createListRequestConditions() {
-        return new ListRequest.Conditions();
-    }
-
-    /**
      * Create an instance of {@link MoneySendSPRequest }
      * 
      */
     public MoneySendSPRequest createMoneySendSPRequest() {
         return new MoneySendSPRequest();
+    }
+
+    /**
+     * Create an instance of {@link ListResponse }
+     * 
+     */
+    public ListResponse createListResponse() {
+        return new ListResponse();
+    }
+
+    /**
+     * Create an instance of {@link MoneyTransferResponse }
+     * 
+     */
+    public MoneyTransferResponse createMoneyTransferResponse() {
+        return new MoneyTransferResponse();
     }
 
     /**

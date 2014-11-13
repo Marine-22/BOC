@@ -34,13 +34,13 @@ import sk.gov.ekolky.estamp.fo10.estamp.UnlockResponse;
 @WebService(name = "estamp_PortType", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10")
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @XmlSeeAlso({
-    sk.gov.ekolky.estamp.fo10.nominal.ObjectFactory.class,
     sk.gov.ekolky.estamp.fo10.infra.ObjectFactory.class,
-    sk.gov.ekolky.estamp.fo10.estamp.ObjectFactory.class,
     sk.gov.ekolky.estamp.fo10.ObjectFactory.class,
-    sk.gov.ekolky.estamp.fo10.cashdesk.ObjectFactory.class,
+    sk.gov.ekolky.estamp.fo10.assessment.ObjectFactory.class,
+    sk.gov.ekolky.estamp.fo10.nominal.ObjectFactory.class,
     sk.gov.ekolky.estamp.xsd10.ObjectFactory.class,
-    sk.gov.ekolky.estamp.fo10.assessment.ObjectFactory.class
+    sk.gov.ekolky.estamp.fo10.cashdesk.ObjectFactory.class,
+    sk.gov.ekolky.estamp.fo10.estamp.ObjectFactory.class
 })
 public interface EstampPortType {
 

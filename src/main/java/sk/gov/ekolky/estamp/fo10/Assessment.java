@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "assessment", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10", wsdlLocation = "file:/C:/Users/fmo/Desktop/wsdl/r1_2.wsdl.xml")
+@WebServiceClient(name = "assessment", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10", wsdlLocation = "http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl")
 public class Assessment
     extends Service
 {
@@ -30,9 +30,9 @@ public class Assessment
         try {
             URL baseUrl;
             baseUrl = sk.gov.ekolky.estamp.fo10.Assessment.class.getResource(".");
-            url = new URL(baseUrl, "file:/C:/Users/fmo/Desktop/wsdl/r1_2.wsdl.xml");
+            url = new URL(baseUrl, "http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'file:/C:/Users/fmo/Desktop/wsdl/r1_2.wsdl.xml', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         ASSESSMENT_WSDL_LOCATION = url;

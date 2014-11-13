@@ -47,11 +47,10 @@ import sk.gov.ekolky.estamp.fo10.nominal.CheckStateRequest;
     "identityID"
 })
 @XmlSeeAlso({
-    RequestSWP.class,
-    CheckStateRequest.class,
     sk.gov.ekolky.estamp.fo10.estamp.ListOperationsRequest.class,
     sk.gov.ekolky.estamp.fo10.estamp.OperationConsumeRequest.class,
     sk.gov.ekolky.estamp.fo10.estamp.ListRequest.class,
+    RequestSWP.class,
     OperationExecutionDELTEDRequest.class,
     sk.gov.ekolky.estamp.fo10.assessment.ListRequest.class,
     PrintDELETEDRequest.class,
@@ -65,7 +64,8 @@ import sk.gov.ekolky.estamp.fo10.nominal.CheckStateRequest;
     sk.gov.ekolky.estamp.fo10.assessment.OperationConsumeRequest.class,
     sk.gov.ekolky.estamp.fo10.assessment.ListOperationsRequest.class,
     OperationReserveRequest.class,
-    CancelRequest.class
+    CancelRequest.class,
+    CheckStateRequest.class
 })
 public class RequestOEK
     extends RequestFE
