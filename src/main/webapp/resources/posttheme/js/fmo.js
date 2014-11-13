@@ -120,7 +120,9 @@ function submitUserForm(){
 				},
 				function(data){
 					if(checkRedirect(data) && checkErrs(data)){
-						// nothing to do, everything is perfect. Maybe redirect to superuser ;)
+						clearUserForm();
+						$('.newuser').hide();
+						refreshUsers();
 					}
 				},
 				"json"
@@ -342,12 +344,12 @@ function setUserUpdates(){
 function initUpdateActive(jqelem){
 	var zamId = jqelem.attr("data-zamid");
 	var boolData = jqelem.attr("data-active-bool-value");
+	boolData = (boolData == "true" ? "false" : "true");
 	$.post(GLOBAL_APP_NAME + "/updateUser", 
 			{zamId:zamId, field:"active", value:boolData, JSR:""},
 			function(data){
 				if(checkRedirect(data) && checkErrs(data)){
-					jqelem.removeClass(boolData == "true" ? "ACTIVE" : "UNACTIVE");
-					boolData = (boolData == "true" ? "false" : "true");
+					jqelem.removeClass(boolData == "true" ? "UNACTIVE" : "ACTIVE");
 					jqelem.attr("data-active-bool-value", boolData);
 					jqelem.addClass(boolData == "true" ? "ACTIVE" : "UNACTIVE");
 				}

@@ -27,13 +27,6 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter {
 			HttpServletResponse response, Object handler) throws Exception {
 		String methodName = ((HandlerMethod)handler).getMethod().getName();
 		Object uType = request.getSession().getAttribute(HomeController.USER_TYPE);
-		long date = new Date().getTime();
-		long accessedTime = request.getSession().getLastAccessedTime();
-		int maxInterval = request.getSession().getMaxInactiveInterval();
-		logger.info("getLastAccessedTime:    " + accessedTime + 
-			      "\ngetMaxInactiveInterval: " + maxInterval + 
-			      "\ndate.getTime:           " + date + 
-			      "\nrozdiel:                " + (date - (accessedTime + maxInterval*1000)));
 		if(UserType.checkPermission(uType, methodName)){
 			return true;
 		}
