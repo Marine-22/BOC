@@ -222,6 +222,7 @@ legend {font-weight:bold;font-size:1.2em;}
 input.text, input.title, textarea {margin:0.5em 0;border:1px solid #bbb;}
 input.text:focus, input.title:focus, textarea:focus {border:1px solid #666;}
 input.text, input.title {width:300px;padding:5px;}
+select.text {width: 312px; margin: 0.5em 0px; padding: 3px;}
 input.title {font-size:1.5em;}
 textarea {width:390px;height:250px;padding:5px;}
 .error, .notice, .success {padding:.8em;margin-bottom:1em;border:2px solid #ddd;}
@@ -240,7 +241,7 @@ input {border: 1px solid #d7d7d7; font-family: "Helvetica Neue", Arial, Helvetic
   .site-wrapper {width: 980px; display: block; margin-right: auto; margin-left: auto; margin-bottom: 36px; padding-top: 36px; text-align: left}
   .site-header {clear: left; float: left; width: 980px; height: 90px}
 .site-header img.logo {float: left; width: 100px; height: 90px}
-  .site-search {float: right; clear: right; margin-top: 0; margin-bottom: 0; position: relative; z-index: 1000; display: block; height: 32px; top: 30px}
+  .site-search {float: right; margin: 0px 0px 0px 10px; position: relative; z-index: 1000; display: block; height: 32px; top: 55px}
 .site-search input {font-size: 12px; color: #666; padding: 8px 30px 8px 10px; width: 218px; background: white url(../img/search-input.png) no-repeat 235px; margin-top: 0; height: 15px; outline: none; border-radius: 5px}
 .site-search-results {position: absolute; z-index: 99; width: 258px; border: 1px solid #dedede; background: white; top: 34px; left: 0; border-top: 1px solid #cbcbcb; border-radius: 5px; box-shadow: 0px 2px 8px rgba(0,0,0,0.2)}
 .site-search-results ul {margin: 0; padding: 5px 0px; list-style-type: none}
@@ -271,6 +272,7 @@ input {border: 1px solid #d7d7d7; font-family: "Helvetica Neue", Arial, Helvetic
 .news .main ul li {display: block; padding: 10px 20px; border-bottom: 1px solid #dedede; background: white url(../img/table-bcg.png) repeat-x 20px bottom; width: 937px; float: left; margin-left: 1px}
 .news .main ul li a {background-repeat: no-repeat; font-size: 1.2em}
 .news .main ul li span.sub-data {font-size: .9em; color: #979797}
+.area-post #nominal_div span.sub-data {font-size: .9em; color: #979797; width:460px; float: right; display: block; margin-top: 0.4em}
 
   .site-footer .address {float: left; background-image: none; width: 222px}
 .site-footer .info {float: left; padding-left: 20px; padding-bottom: 0; height: 80px; width: auto}
@@ -406,11 +408,22 @@ input.checkbox {margin: 12px 0px; width: auto; }
 div.site-area-main.listdata {padding: 0px; width: 980px; }
 .news .main ul li:first-child {padding:0px 20px 10px;}
 .main span.data {font-weight: bold; text-shadow: rgba(90,90,250,0.1) 1px 1px 0; }
-div.name-surname {float:left; width: 170px; }
+div.name-surname {float:left; width: 250px; }
 .main li>span.data:first-child {float: left; width: 100px; }
 .main span.data-label {color: #979797; float:left; padding-right: 5px;}
 .main li>span.data {float:left; width: 80px;}
-.main ul#table-ul li span.min-width-80 {width:auto; min-width: 80px; padding-right: 5px;}
+.main ul#table-ul li span.min-width-300 {width:auto; min-width: 350px; padding-right: 5px;}
+span.data.LOADED {}
+span.data.WAITING {color: #febf01}
+span.data.PROCESSED, span.data.ACTIVE {color: #00d500}
+span.data.ERROR, span.data.UNACTIVE {color: #f20000}
+div.box-940.tabs div.ui-tabs-panel div.main br {margin-bottom: 5px; }
+.area-post p.submit.chpass_submit {padding: 0px 0px 15px 263px;}
+
+
+.site-search input.date {font-size: 12px; color: #666; padding: 8px 30px 8px 10px; width: 118px; background: white url(../img/search-input.png) no-repeat 135px; margin-top: 0; height: 15px; outline: none; border-radius: 5px}
+
+
 
 /*
  .box-460 .bottom {background: url(../img/box-460-bcg.png) no-repeat 0 bottom; display: block; float: left; width: 460px}
