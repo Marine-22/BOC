@@ -1,5 +1,10 @@
 package sk.posta.data;
 
+/**
+ * Data container for login form
+ * @author fmo
+ *
+ */
 public class LoginData {
 	private String login;
 	private String pass;

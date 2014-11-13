@@ -17,7 +17,7 @@
 	media="screen,print" rel="stylesheet" type="text/css" />
 <script src="<c:url value="/resources/js/jquery-1.11.1.js" />"
 	type="text/javascript"></script>
-<script src="<c:url value="/resources/js/ready.functions.js" />"
+<script src="<c:url value="/resources/js/ready.admin.js" />"
 	type="text/javascript"></script>
 <script src="<c:url value="/resources/js/fmo.js" />"
 	type="text/javascript"></script>
@@ -50,7 +50,7 @@
 		<div class="site-area-main newuser inithide">
 
 			<div class="area-post">
-				<form id="new_user" action="${pageContext.request.contextPath}/addUser" method="post">
+				<form id="new_user" action="${pageContext.request.contextPath}/addUser" method="post" accept-charset="utf-8">
 					<div id="nominal_div">
 						<!--  <div style="margin:0;padding:0"><input name="authenticity_token" type="hidden" value="bvd3EDmGDVNADtADy1pQW/EI76g3NZkBilWt3uahuCs=" /></div>  -->
 						<p class="form-text">
@@ -72,9 +72,13 @@
 						</p>
 
 						<p class="form-text">
-							<label>Správca</label> <input class="checkbox" id="spravca"
-								inline="true" name="spravca" type="checkbox" /> <span
-								id="spravca_err" class="inithide errmsg"></span>
+							<label>Typ používateľa</label> <select class="text" id="userType"
+								inline="true" name="userType">
+								<option value="USER">Používateľ</option>
+								<option value="SUPER_USER">Super Používateľ</option>
+								<option value="ADMIN">Správca</option>
+								</select> <span
+								id="userType_err" class="inithide errmsg"></span>
 						</p>
 
 						<p class="form-text">

@@ -17,7 +17,7 @@
 	media="screen,print" rel="stylesheet" type="text/css" />
 <script src="<c:url value="/resources/js/jquery-1.11.1.js" />"
 	type="text/javascript"></script>
-<script src="<c:url value="/resources/js/ready.functions.js" />"
+<script src="<c:url value="/resources/js/ready.login.js" />"
 	type="text/javascript"></script>
 <script src="<c:url value="/resources/js/fmo.js" />"
 	type="text/javascript"></script>

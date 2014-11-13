@@ -4,6 +4,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
+import sk.posta.data.enumm.UserType;
+
 
 public class User{
 
@@ -20,7 +22,8 @@ public class User{
 	@JsonIgnore
 	@Transient
 	private String repHeslo;
-	private boolean spravca;
+	private UserType userType;
+	private boolean active;
 	
 	public String getId() {
 		return id;
@@ -58,14 +61,20 @@ public class User{
 	public void setRepHeslo(String repHeslo) {
 		this.repHeslo = repHeslo;
 	}
-	public boolean isSpravca() {
-		return spravca;
+	public UserType getUserType() {
+		return userType;
 	}
-	public void setSpravca(boolean spravca) {
-		this.spravca = spravca;
+	public void setUserType(UserType userType) {
+		this.userType = userType;
+	}
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	public String toString(){
-		return "User[id:'"+id+"'; idZamLogin:'"+idZamLogin+"'; meno:'"+meno+"'; priezvisko:'"+priezvisko+"'; heslo:'"+heslo+"'; repHeslo:'"+repHeslo+"'; spravca:"+(spravca ? "ANO" : "NIE")+"]";
+		return "User[id:'"+id+"'; idZamLogin:'"+idZamLogin+"'; meno:'"+meno+"'; priezvisko:'"+priezvisko+"'; heslo:'"+heslo+"'; repHeslo:'"+repHeslo+"'; type:"+ userType +"; active:"+active+"]";
 	}
 	
 	

@@ -1,0 +1,125 @@
+
+package sk.gov.ekolky.estamp.fo10.assessment;
+
+import java.math.BigDecimal;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import sk.gov.ekolky.estamp.xsd10.Key;
+import sk.gov.ekolky.estamp.xsd10.RequestOEK;
+
+
+/**
+ * <p>Java class for anonymous complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType>
+ *   &lt;complexContent>
+ *     &lt;extension base="{http://www.ekolky.gov.sk/estamp/xsd10}requestOEK">
+ *       &lt;sequence>
+ *         &lt;element name="keyFrom" type="{http://www.ekolky.gov.sk/estamp/xsd10}key"/>
+ *         &lt;element name="keyTo" type="{http://www.ekolky.gov.sk/estamp/xsd10}key"/>
+ *         &lt;element name="amount" type="{http://www.w3.org/2001/XMLSchema}decimal"/>
+ *       &lt;/sequence>
+ *     &lt;/extension>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = {
+    "keyFrom",
+    "keyTo",
+    "amount"
+})
+@XmlRootElement(name = "operationTransferRequest")
+public class OperationTransferRequest
+    extends RequestOEK
+{
+
+    @XmlElement(required = true)
+    protected Key keyFrom;
+    @XmlElement(required = true)
+    protected Key keyTo;
+    @XmlElement(required = true)
+    protected BigDecimal amount;
+
+    /**
+     * Gets the value of the keyFrom property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Key }
+     *     
+     */
+    public Key getKeyFrom() {
+        return keyFrom;
+    }
+
+    /**
+     * Sets the value of the keyFrom property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Key }
+     *     
+     */
+    public void setKeyFrom(Key value) {
+        this.keyFrom = value;
+    }
+
+    /**
+     * Gets the value of the keyTo property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Key }
+     *     
+     */
+    public Key getKeyTo() {
+        return keyTo;
+    }
+
+    /**
+     * Sets the value of the keyTo property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Key }
+     *     
+     */
+    public void setKeyTo(Key value) {
+        this.keyTo = value;
+    }
+
+    /**
+     * Gets the value of the amount property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    /**
+     * Sets the value of the amount property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public void setAmount(BigDecimal value) {
+        this.amount = value;
+    }
+
+}
