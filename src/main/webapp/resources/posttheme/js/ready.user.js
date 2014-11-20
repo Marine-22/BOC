@@ -105,29 +105,31 @@ $(document).ready(
     	
 	    $('#uradpicker input').focusout(function(){
 	    	var thiz = $(this);
-	    	$.getJSON(window.GLOBAL_APP_NAME + "/getUrad",
-	    			{term:$(this).val(),JSR:""},
-	    			function(data){
-	    				if(checkRedirect(data)){
-	    					if(checkErrs(data)){
-		    					thiz.css("border","");
-		    					$("#urad_err").hide();
-		    					$("#urad_err").text("");
-		    					$("#urad").val(data.data.busId);
-		    					$("#urad_name").show();
-		    					$("#urad_name").text(data.data.name);
-	    					}
-	    					else{
-		    					$("#urad_name").val("");
-		    					$("#urad_name").hide();
-		    					$("#urad").val("");
-		    					thiz.val("");
-		    					thiz.css("border","2px solid #F00");
-	    					}
-	    				}
-	    			},
-	    			'json'
-	    	)
+	    	if(thiz.val().length > 0){
+		    	$.getJSON(window.GLOBAL_APP_NAME + "/getUrad",
+		    			{term:$(this).val(),JSR:""},
+		    			function(data){
+		    				if(checkRedirect(data)){
+		    					if(checkErrs(data)){
+			    					thiz.css("border","");
+			    					$("#urad_err").hide();
+			    					$("#urad_err").text("");
+			    					$("#urad").val(data.data.busId);
+			    					$("#urad_name").show();
+			    					$("#urad_name").text(data.data.name);
+		    					}
+		    					else{
+			    					$("#urad_name").val("");
+			    					$("#urad_name").hide();
+			    					$("#urad").val("");
+			    					thiz.val("");
+			    					thiz.css("border","2px solid #F00");
+		    					}
+		    				}
+		    			},
+		    			'json'
+		    	)
+	    	}
 	    });
 	    
 	    $('#sluzba').focusout(function(){

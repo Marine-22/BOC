@@ -7,9 +7,11 @@ public class Sluzba {
 	
 	public Sluzba(){}
 	
-	public Sluzba(String busId, String name){
+	public Sluzba(String busId, String name, String feeType){
 		this.busId = busId;
 		this.name = name;
+		this.feeType = feeType;
+		this.active = true;
 	}
 	
 	@Id
@@ -17,6 +19,8 @@ public class Sluzba {
 	private String id;
 	private String busId;
 	private String name;
+	private String feeType;
+	private boolean active;
 	
 	public String getId() {
 		return id;
@@ -36,9 +40,22 @@ public class Sluzba {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+	public String getFeeType() {
+		return feeType;
+	}
+	public void setFeeType(String feeType) {
+		this.feeType = feeType;
+	}
+
 	public String toString(){
 		return "Sluzba[busId="+busId+"; name="+name+"]";
 	}
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
 	
 }

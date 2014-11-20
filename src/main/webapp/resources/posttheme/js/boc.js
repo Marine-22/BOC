@@ -248,6 +248,7 @@ function refreshUsers(){
 }
 
 function refreshPredpis(){
+
 	$.getJSON(GLOBAL_APP_NAME + "/searchPredpis",
 		{
 			urad:$('#searchUradId').text(),
@@ -276,6 +277,13 @@ function refreshPredpis(){
 					var date_month = datum.getMonth();
 					var date_year = datum.getFullYear();
 					
+					var errBlock = "";
+					if(data.data[i].errorMsg){
+						errBlock = "<br/> \
+							<span class=\"data-label long-label error_predpis\">Chyba:</span> \
+							<span class=\"data long error_predpis\">" + data.data[i].errorMsg + "</span>";
+					}
+					
 					htmlBlock += "<li class=\"dynamic-li\"> \
 									<span class=\"data-label\">P.č.:</span> \
 									<span class=\"data\">"+data.data[i].poradove+"</span> \
@@ -288,12 +296,14 @@ function refreshPredpis(){
 									<span class=\"data-label\">Pridal:</span> \
 									<span class=\"data\" style=\"width:150px\">"+data.data[i].fullName+"</span> \
 									<span class=\"data-label\">Stav:</span> \
-									<span class=\"data "+data.data[i].stav+"\">"+getStav(data.data[i].stav)+"</span> \
+									<span class=\"data "+data.data[i].stav+"\" style=\"width:100px\">"+getStav(data.data[i].stav)+"</span> \
 									<br/> \
-									<span class=\"data-label\">Služba:</span> \
-									<span class=\"data min-width-300\">"+data.data[i].sluzbaName+"</span> \
-									<span class=\"data-label\">Úrad:</span> \
-									<span class=\"data min-width-300\">"+data.data[i].uradName+"</span> \
+									<span class=\"data-label long-label\">Služba:</span> \
+									<span class=\"data long\">"+data.data[i].sluzbaName+"</span> \
+									<br/> \
+									<span class=\"data-label long-label\">Úrad:</span> \
+									<span class=\"data long\">"+data.data[i].uradName+"</span> \
+									" + errBlock + " \
 									<br/> \
 									<span class=\"data-label\">ID nominálov:</span> \
 									<span class=\"sub-data\">"+idNoms+"</span> \
@@ -305,6 +315,7 @@ function refreshPredpis(){
 		},
 		'json'
 	);
+
 }
 
 function getStav(stav){
@@ -399,6 +410,7 @@ function updatePassword(cancel){
 
 function initUpdateSpravca(jqelem){
 	var jqelemNew = jqelem.siblings('.new-user-type');
+	jqelemNew.val(jqelem.attr('data-enum-val'));
 	jqelem.hide();
 	jqelemNew.show();
 	

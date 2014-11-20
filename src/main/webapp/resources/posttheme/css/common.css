@@ -411,8 +411,9 @@ div.site-area-main.listdata {padding: 0px; width: 980px; }
 div.name-surname {float:left; width: 250px; }
 .main li>span.data:first-child {float: left; width: 100px; }
 .main span.data-label {color: #979797; float:left; padding-right: 5px;}
+.main span.long-label {width:45px;}
 .main li>span.data {float:left; width: 80px;}
-.main ul#table-ul li span.min-width-300 {width:auto; min-width: 350px; padding-right: 5px;}
+.main ul#table-ul li span.long {width: 887px;}
 span.data.LOADED {}
 span.data.WAITING {color: #febf01}
 span.data.PROCESSED, span.data.ACTIVE {color: #00d500}

@@ -19,7 +19,7 @@
 	type="text/javascript"></script>
 <script src="<c:url value="/resources/js/ready.admin.js" />"
 	type="text/javascript"></script>
-<script src="<c:url value="/resources/js/fmo.js" />"
+<script src="<c:url value="/resources/js/boc.js" />"
 	type="text/javascript"></script>
 <title>Slovenská pošta</title>
 </head>

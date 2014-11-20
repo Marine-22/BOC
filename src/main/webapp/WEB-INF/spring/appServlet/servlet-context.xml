@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns="http://www.springframework.org/schema/mvc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:task="http://www.springframework.org/schema/task"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:util="http://www.springframework.org/schema/util" 
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/mvc 
 		http://www.springframework.org/schema/mvc/spring-mvc.xsd
@@ -14,13 +17,25 @@
 		http://www.springframework.org/schema/data/mongo
 		http://www.springframework.org/schema/data/mongo/spring-mongo.xsd
 		http://www.springframework.org/schema/task
-		http://www.springframework.org/schema/task/spring-task.xsd">
+		http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/util 
+		http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing 
 		infrastructure -->
 
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<mvc:annotation-driven />
+
+	<!-- 
+	Bind java field to prop value: 
+	@Value("#{appProps['uploadFolder']}") 
+	private String uploadFolder; 
+	-->
+	
+	<util:properties id="appProps" location="classpath:app.properties" />
+	
+	
 
 	<context:component-scan base-package="sk.posta.boc" />
 
@@ -50,10 +65,8 @@
 	</beans:bean>
 
 
-	<mongo:mongo id="boc_posta" host="127.0.0.1" port="27017"
-		write-concern="majority" />
-	<beans:bean id="mongoTemplate"
-		class="org.springframework.data.mongodb.core.MongoTemplate">
+	<mongo:mongo id="boc_posta" host="127.0.0.1" port="27017" write-concern="majority" />
+	<beans:bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<beans:constructor-arg ref="boc_posta" />
 		<beans:constructor-arg value="develop" />
 	</beans:bean>

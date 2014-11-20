@@ -3,7 +3,6 @@ package sk.posta.data;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -56,6 +55,13 @@ public class Predpis {
 	private String uradName;
 	@Transient
 	private String sluzbaName;
+	
+	/**
+	 * Typ poplatky za sluzbu. Moze byt spravny alebo sudny
+	 */
+	@Transient
+	@JsonIgnore
+	private String feeTypeService;
 	
 	
 	public String toString(){
@@ -146,7 +152,12 @@ public class Predpis {
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
-
+	public String getFeeTypeService() {
+		return feeTypeService;
+	}
+	public void setFeeTypeService(String feeTypeService) {
+		this.feeTypeService = feeTypeService;
+	}
 	public void setGUIStaff(User u, Urad ur, Sluzba s) {
 		if(u != null){
 			this.fullName = u.getPriezvisko() + " " + u.getMeno();

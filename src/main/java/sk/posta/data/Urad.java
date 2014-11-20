@@ -10,6 +10,7 @@ public class Urad {
 	public Urad(String busId, String name){
 		this.busId = busId;
 		this.name = name;
+		this.active = true;
 	}
 	
 	
@@ -18,6 +19,8 @@ public class Urad {
 	private String id;
 	private String busId;
 	private String name;
+	private boolean active;
+	
 	public String getId() {
 		return id;
 	}
@@ -36,8 +39,12 @@ public class Urad {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 	public String toString(){
 		return "Urad[busId="+busId+"; name="+name+"]";
 	}

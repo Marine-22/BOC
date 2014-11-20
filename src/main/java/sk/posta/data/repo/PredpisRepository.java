@@ -7,5 +7,5 @@ import sk.posta.data.Predpis;
 
 @Repository
 public interface PredpisRepository extends MongoRepository<Predpis, String> {
-
+	
 }

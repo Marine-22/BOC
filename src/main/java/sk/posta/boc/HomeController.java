@@ -2,24 +2,20 @@ package sk.posta.boc;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.codehaus.jackson.annotate.JsonUnwrapped;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.BasicQuery;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.providers.encoding.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,8 +26,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.mongodb.BasicDBObject;
 
 import sk.posta.boc.util.JacksonUtil;
 import sk.posta.data.LoginData;
@@ -55,11 +49,14 @@ import sk.posta.data.repo.UserRepository;
 public class HomeController {
 	
 
+	@Value("#{appProps['app.gui.maxSuggestItems']}") 
+	private int MAX_SUGGEST_ITEMS;
+	
 	public static final String APPLICATION_PREFIX = "/boc-BOC";
 	public static final String AUTHENTICATED = "authenticated";
 	public static final String LOGIN = "userLogin";
 	public static final String USER_TYPE = "userType";
-	private static final int MAX_SUGGEST_ITEMS = 15;
+	
 
 	private static final String DATE_FORMAT = "dd.MM.yyyy";
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class.getName());
@@ -204,15 +201,6 @@ public class HomeController {
 	
 	@RequestMapping(value = "/testdb", method = RequestMethod.GET)
 	public @ResponseBody String xxx(){
-		//Query q = new Query();
-		//q.addCriteria(Criteria.where("datum").is(new Date()));
-		
-		logger.info("BasicDBObject append = " + new BasicDBObject("date", new Date()).append("doklad", "valu"));
-		logger.info("BasicDBObject put    = " + new BasicDBObject("date", new Date()).put("doklad", "valu"));
-		
-		BasicQuery bq = new BasicQuery("{ \"date\" : { \"$lt\" : { \"$date\" : \"2014-11-12T16:53:03.111Z\" } } }");
-		List<Predpis> l = customOps.find(bq, Predpis.class);
-		logger.info("List Predpiss: " + l);
 		return "OK";
 	}
 	
@@ -274,28 +262,6 @@ public class HomeController {
 		return JacksonUtil.object2Json(retVal);
 	}
 	
-	@RequestMapping(value = "/initUradSluzby", method = RequestMethod.GET)
-	public @ResponseBody String initUradSluzby(){
-		logger.info("Zavolana metoda initUradSluzby.");
-		long count = sluzbaRepo.count();
-		logger.info("Sluzba count = " + count);
-		if(count == 0){
-			sluzbaRepo.save(new Sluzba("1.1.1.", "Žiadosť o vydanie technického preukazu"));
-			sluzbaRepo.save(new Sluzba("1.2.1.", "Žiadosť o vydanie občianskeho preukazu"));
-			sluzbaRepo.save(new Sluzba("2.3.1.", "Žiadosť o stavebné povolenie"));
-			sluzbaRepo.save(new Sluzba("2.3.10.", "Žiadosť o zápis do katastra"));
-		}
-		count = uradRepo.count();
-		logger.info("Urad count = " + count);
-		if(count == 0){
-			uradRepo.save(new Urad("1", "Bratislava - Polícia"));
-			uradRepo.save(new Urad("2", "Košice Katastrálny úrad"));
-			uradRepo.save(new Urad("3", "Banká Bystrica Cudzinecká polícia"));
-			uradRepo.save(new Urad("4", "Zvolen hlavná stanica"));
-		}
-		return "OK";
-	}
-	
 	
 	@RequestMapping(value = "/superuser", method = RequestMethod.GET)
 	public String superuser(HttpSession session, Locale locale, Model model) {
@@ -338,7 +304,7 @@ public class HomeController {
 		if(u == null){
 			u = uradRepo.findByName(term);
 		}
-		if(u == null){
+		if(u == null || !u.isActive()){
 			retVal.setStatus("NOK");
 			retVal.addFieldError("#urad_err", "Úrad nenájdený!");
 			return JacksonUtil.object2Json(retVal);
@@ -355,13 +321,21 @@ public class HomeController {
 		logger.info("Zavolana metoda searchUrad. sq = " + term);
 		int maxInList = MAX_SUGGEST_ITEMS;
 		if(term == null || "".equals(term)) return "";
-		BasicQuery bq = new BasicQuery("{busId:{$regex:\"^"+term+"\\w*\", $options:\"i\"}}");
+		BasicQuery bq = new BasicQuery("{$and:["
+				+ 								"{busId:{$regex:\"^"+term+"\\w*\", $options:\"i\"}},"
+				+								"{active:true}"
+				+ 							 "]"
+				+ 						"}");
 		bq.with(new Sort("busId"));
 		bq.limit(maxInList);
 		List<Suggestion> lOut = Suggestion.getSuggestionList(customOps.find(bq, Urad.class), Suggestion.BUS_ID);
 		if(lOut.size() < 10){
 			maxInList -= lOut.size();
-			bq = new BasicQuery("{name:{$regex:\"^"+term+"\\w*\", $options:\"i\"}}");
+			bq = new BasicQuery("{$and:["
+					+ 						"{name:{$regex:\"^"+term+"\\w*\", $options:\"i\"}},"
+					+						"{active:true}"
+					+ 				  "]"
+					+ 			"}");
 			bq.with(new Sort("busId"));
 			bq.limit(maxInList);
 			lOut.addAll(Suggestion.getSuggestionList((customOps.find(bq, Urad.class)), Suggestion.NAME));
@@ -376,7 +350,7 @@ public class HomeController {
 		ReturnData retVal = new ReturnData();
 		
 		Sluzba s = sluzbaRepo.findByBusId(id);
-		if(s == null){
+		if(s == null || !s.isActive()){
 			retVal.setStatus("NOK");
 			retVal.addFieldError("#sluzba_err", "Služba nenájdená!");
 			return JacksonUtil.object2Json(retVal);
@@ -392,23 +366,28 @@ public class HomeController {
 		logger.info("Zavolana metoda searchSluzba. term = " + term);
 		int maxInList = MAX_SUGGEST_ITEMS;
 		if(term == null || "".equals(term)) return "";
-		BasicQuery bq = new BasicQuery("{busId:{$regex:\"^"+term+"\\w*\", $options:\"i\"}}");
+		BasicQuery bq = new BasicQuery("{$and:["
+				+ 								"{busId:{$regex:\"^"+term+"\\w*\", $options:\"i\"}},"
+				+ 								"{active:true}"
+				+ 							 "]"
+				+ 						"}");
 		bq.with(new Sort("busId"));
 		bq.limit(maxInList);
 		List<Suggestion> lOut = Suggestion.getSuggestionList(customOps.find(bq, Sluzba.class), Suggestion.BUS_ID);
 		return JacksonUtil.object2Json(lOut);
 	}
 	
+	
+	
 	private String getHPass(String pass){
 		return passwordEncoder.encodePassword(pass, SALT);
 	}
 	
-	private boolean checkPass(String pass, String hashPass){
-		return hashPass != null && hashPass.equals(getHPass(pass));
-	}
 	private boolean checkPass(String pass, User u){
 		return u != null && u.getHeslo().equals(getHPass(pass));
 	}
+	
+	
 
 	
 	
