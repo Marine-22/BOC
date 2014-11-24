@@ -11,6 +11,8 @@ import javax.xml.ws.WebEndpoint;
 import javax.xml.ws.WebServiceClient;
 import javax.xml.ws.WebServiceFeature;
 
+import sk.posta.boc.ispep.PepConfig;
+
 
 
 /**
@@ -19,12 +21,11 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  *  
  */
-@WebServiceClient(name = "assessment", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10", wsdlLocation = "http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl")
+@WebServiceClient(name = "assessment", targetNamespace = PepConfig.TARGET_NAMESPACE, wsdlLocation = PepConfig.WSDL_LOCATION)
 public class Assessment
     extends Service
 {
 
-	
     private final static URL ASSESSMENT_WSDL_LOCATION;
     private final static Logger logger = Logger.getLogger(sk.gov.ekolky.estamp.fo10.Assessment.class.getName());
 
@@ -33,9 +34,9 @@ public class Assessment
         try {
             URL baseUrl;
             baseUrl = sk.gov.ekolky.estamp.fo10.Assessment.class.getResource(".");
-            url = new URL(baseUrl, "http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl");
+            url = new URL(baseUrl, PepConfig.URL);
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: '"+PepConfig.URL+"', retrying as a local file");
             logger.warning(e.getMessage());
         }
         ASSESSMENT_WSDL_LOCATION = url;
@@ -46,7 +47,7 @@ public class Assessment
     }
 
     public Assessment() {
-        super(ASSESSMENT_WSDL_LOCATION, new QName("http://www.ekolky.gov.sk/estamp/fo10", "assessment"));
+        super(ASSESSMENT_WSDL_LOCATION, new QName(PepConfig.QNAME_URI, "assessment"));
     }
 
     /**
@@ -56,7 +57,7 @@ public class Assessment
      */
     @WebEndpoint(name = "assessment_Port")
     public AssessmentPortType getAssessmentPort() {
-        return super.getPort(new QName("http://www.ekolky.gov.sk/estamp/fo10", "assessment_Port"), AssessmentPortType.class);
+        return super.getPort(new QName(PepConfig.QNAME_URI, "assessment_Port"), AssessmentPortType.class);
     }
 
     /**
@@ -68,7 +69,7 @@ public class Assessment
      */
     @WebEndpoint(name = "assessment_Port")
     public AssessmentPortType getAssessmentPort(WebServiceFeature... features) {
-        return super.getPort(new QName("http://www.ekolky.gov.sk/estamp/fo10", "assessment_Port"), AssessmentPortType.class, features);
+        return super.getPort(new QName(PepConfig.QNAME_URI, "assessment_Port"), AssessmentPortType.class, features);
     }
 
 }

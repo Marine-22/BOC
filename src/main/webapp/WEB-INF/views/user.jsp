@@ -24,16 +24,16 @@
       <div class="site-header" style="position: relative">
           <img alt="Slovenská pošta" class="logo" src="<c:url value="/resources/img/sl-posta-logo.png" />" title="Slovenská pošta" />  
         <div class="site-search">
-          <input id="searchPredpisInput" type="text" value="" class="noautocomplete"  />
+          <input id="searchPredpisInput" type="text" value=""  />
        </div>
        <div class="site-search">
-          <input id="searchDatumDoInput" type="text" value="" class="noautocomplete date" placeholder="-- Dátum do --"/>
+          <input id="searchDatumDoInput" type="text" value="" class="del_button date" placeholder="-- Dátum do --"/>
        </div>
        <div class="site-search">
-          <input id="searchDatumOdInput" type="text" value="" class="noautocomplete date" placeholder="-- Dátum od --" />
+          <input id="searchDatumOdInput" type="text" value="" class="del_button date" placeholder="-- Dátum od --" />
        </div>
        <div class="site-search">
-          <input id="searchUradInput" type="text" value="" class="noautocomplete" placeholder="-- Úrad --"/>
+          <input id="searchUradInput" type="text" value="" class="del_button" placeholder="-- Úrad --"/>
           <span id="searchUradId" class="hide"></span>
        </div>     
       

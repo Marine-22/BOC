@@ -1,2 +1,2 @@
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://www.ekolky.gov.sk/estamp/fo10/estamp", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@javax.xml.bind.annotation.XmlSchema(namespace = sk.posta.boc.ispep.PepConfig.TARGET_NAMESPACE + "/estamp", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package sk.gov.ekolky.estamp.fo10.estamp;

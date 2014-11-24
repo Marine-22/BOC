@@ -4,11 +4,14 @@ package sk.gov.ekolky.estamp.fo10;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
+
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import javax.xml.ws.WebEndpoint;
 import javax.xml.ws.WebServiceClient;
 import javax.xml.ws.WebServiceFeature;
+
+import sk.posta.boc.ispep.PepConfig;
 
 
 /**
@@ -17,7 +20,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "cashdesk", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10", wsdlLocation = "http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl")
+@WebServiceClient(name = "cashdesk", targetNamespace = PepConfig.TARGET_NAMESPACE, wsdlLocation = PepConfig.WSDL_LOCATION)
 public class Cashdesk
     extends Service
 {
@@ -30,9 +33,9 @@ public class Cashdesk
         try {
             URL baseUrl;
             baseUrl = sk.gov.ekolky.estamp.fo10.Cashdesk.class.getResource(".");
-            url = new URL(baseUrl, "http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl");
+            url = new URL(baseUrl, PepConfig.URL);
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: '"+PepConfig.URL+"', retrying as a local file");
             logger.warning(e.getMessage());
         }
         CASHDESK_WSDL_LOCATION = url;
@@ -43,7 +46,7 @@ public class Cashdesk
     }
 
     public Cashdesk() {
-        super(CASHDESK_WSDL_LOCATION, new QName("http://www.ekolky.gov.sk/estamp/fo10", "cashdesk"));
+        super(CASHDESK_WSDL_LOCATION, new QName(PepConfig.QNAME_URI, "cashdesk"));
     }
 
     /**
@@ -53,7 +56,7 @@ public class Cashdesk
      */
     @WebEndpoint(name = "cashdesk_Port")
     public CashdeskPortType getCashdeskPort() {
-        return super.getPort(new QName("http://www.ekolky.gov.sk/estamp/fo10", "cashdesk_Port"), CashdeskPortType.class);
+        return super.getPort(new QName(PepConfig.QNAME_URI, "cashdesk_Port"), CashdeskPortType.class);
     }
 
     /**
@@ -65,7 +68,7 @@ public class Cashdesk
      */
     @WebEndpoint(name = "cashdesk_Port")
     public CashdeskPortType getCashdeskPort(WebServiceFeature... features) {
-        return super.getPort(new QName("http://www.ekolky.gov.sk/estamp/fo10", "cashdesk_Port"), CashdeskPortType.class, features);
+        return super.getPort(new QName(PepConfig.QNAME_URI, "cashdesk_Port"), CashdeskPortType.class, features);
     }
 
 }

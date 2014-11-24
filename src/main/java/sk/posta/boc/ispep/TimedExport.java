@@ -107,7 +107,7 @@ public class TimedExport {
     }
 	
 	private void saveExceptioin(Predpis p, Exception e){
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy' 'HH.mm.ss': '");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy' 'HH.mm.ss:' '");
 		p.setStav(PredpisStav.ERROR);
 		p.setErrorMsg(sdf.format(new Date()) + e.getMessage());
 		predpisRepo.save(p);
@@ -200,10 +200,6 @@ public class TimedExport {
 			logger.info("Chyba pri synchronizacii sluzieb.", e);
 		}
 
-		
-		
-		
-		
 		
 		
 		try{

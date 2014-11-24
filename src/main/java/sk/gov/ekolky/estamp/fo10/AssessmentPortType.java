@@ -7,6 +7,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
+
 import sk.gov.ekolky.estamp.fo10.assessment.CancelRequest;
 import sk.gov.ekolky.estamp.fo10.assessment.CancelResponse;
 import sk.gov.ekolky.estamp.fo10.assessment.CreateRequest;
@@ -35,6 +36,7 @@ import sk.gov.ekolky.estamp.fo10.assessment.PrintDELETEDRequest;
 import sk.gov.ekolky.estamp.fo10.assessment.PrintDELETEDResponse;
 import sk.gov.ekolky.estamp.fo10.assessment.UpdateRequest;
 import sk.gov.ekolky.estamp.fo10.assessment.UpdateResponse;
+import sk.posta.boc.ispep.PepConfig;
 
 
 /**
@@ -43,7 +45,7 @@ import sk.gov.ekolky.estamp.fo10.assessment.UpdateResponse;
  * Generated source version: 2.1
  * 
  */
-@WebService(name = "assessment_PortType", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10")
+@WebService(name = "assessment_PortType", targetNamespace = PepConfig.TARGET_NAMESPACE)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @XmlSeeAlso({
     sk.gov.ekolky.estamp.fo10.infra.ObjectFactory.class,
@@ -65,9 +67,9 @@ public interface AssessmentPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "getResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+    @WebResult(name = "getResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
     public GetResponse get(
-        @WebParam(name = "getRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+        @WebParam(name = "getRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
         GetRequest parameters)
         throws BloxFaultMessage
     ;
@@ -80,9 +82,9 @@ public interface AssessmentPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+    @WebResult(name = "listResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
     public ListResponse list(
-        @WebParam(name = "listRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+        @WebParam(name = "listRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
         ListRequest parameters)
         throws BloxFaultMessage
     ;
@@ -95,9 +97,9 @@ public interface AssessmentPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listOperationsResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+    @WebResult(name = "listOperationsResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
     public ListOperationsResponse listOperations(
-        @WebParam(name = "listOperationsRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+        @WebParam(name = "listOperationsRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
         ListOperationsRequest parameters)
         throws BloxFaultMessage
     ;
@@ -110,9 +112,9 @@ public interface AssessmentPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "createResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+    @WebResult(name = "createResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
     public CreateResponse create(
-        @WebParam(name = "createRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+        @WebParam(name = "createRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
         CreateRequest parameters)
         throws BloxFaultMessage
     ;
@@ -125,9 +127,9 @@ public interface AssessmentPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "cancelResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+    @WebResult(name = "cancelResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
     public CancelResponse cancel(
-        @WebParam(name = "cancelRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+        @WebParam(name = "cancelRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
         CancelRequest parameters)
         throws BloxFaultMessage
     ;
@@ -140,9 +142,9 @@ public interface AssessmentPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod(operationName = "print_DELETED")
-    @WebResult(name = "print_DELETEDResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+    @WebResult(name = "print_DELETEDResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
     public PrintDELETEDResponse printDELETED(
-        @WebParam(name = "print_DELETEDRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+        @WebParam(name = "print_DELETEDRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
         PrintDELETEDRequest parameters)
         throws BloxFaultMessage
     ;
@@ -155,9 +157,9 @@ public interface AssessmentPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "updateResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+    @WebResult(name = "updateResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
     public UpdateResponse update(
-        @WebParam(name = "updateRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+        @WebParam(name = "updateRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
         UpdateRequest parameters)
         throws BloxFaultMessage
     ;
@@ -170,9 +172,9 @@ public interface AssessmentPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "operationPaymentResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+    @WebResult(name = "operationPaymentResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
     public OperationPaymentResponse operationPayment(
-        @WebParam(name = "operationPaymentRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+        @WebParam(name = "operationPaymentRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
         OperationPaymentRequest parameters)
         throws BloxFaultMessage
     ;
@@ -185,9 +187,9 @@ public interface AssessmentPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "operationDeclareResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+    @WebResult(name = "operationDeclareResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
     public OperationDeclareResponse operationDeclare(
-        @WebParam(name = "operationDeclareRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+        @WebParam(name = "operationDeclareRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
         OperationDeclareRequest parameters)
         throws BloxFaultMessage
     ;
@@ -200,9 +202,9 @@ public interface AssessmentPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "operationReserveResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+    @WebResult(name = "operationReserveResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
     public OperationReserveResponse operationReserve(
-        @WebParam(name = "operationReserveRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+        @WebParam(name = "operationReserveRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
         OperationReserveRequest parameters)
         throws BloxFaultMessage
     ;
@@ -215,9 +217,9 @@ public interface AssessmentPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod(operationName = "operationExecution_DELTED")
-    @WebResult(name = "operationExecution_DELTEDResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+    @WebResult(name = "operationExecution_DELTEDResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
     public OperationExecutionDELTEDResponse operationExecutionDELTED(
-        @WebParam(name = "operationExecution_DELTEDRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+        @WebParam(name = "operationExecution_DELTEDRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
         OperationExecutionDELTEDRequest parameters)
         throws BloxFaultMessage
     ;
@@ -230,9 +232,9 @@ public interface AssessmentPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "operationRefundResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+    @WebResult(name = "operationRefundResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
     public OperationRefundResponse operationRefund(
-        @WebParam(name = "operationRefundRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+        @WebParam(name = "operationRefundRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
         OperationRefundRequest parameters)
         throws BloxFaultMessage
     ;
@@ -245,9 +247,9 @@ public interface AssessmentPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "operationConsumeResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+    @WebResult(name = "operationConsumeResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
     public OperationConsumeResponse operationConsume(
-        @WebParam(name = "operationConsumeRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+        @WebParam(name = "operationConsumeRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
         OperationConsumeRequest parameters)
         throws BloxFaultMessage
     ;
@@ -260,9 +262,9 @@ public interface AssessmentPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "operationTransferResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+    @WebResult(name = "operationTransferResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
     public OperationTransferResponse operationTransfer(
-        @WebParam(name = "operationTransferRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/assessment", partName = "parameters")
+        @WebParam(name = "operationTransferRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/assessment", partName = "parameters")
         OperationTransferRequest parameters)
         throws BloxFaultMessage
     ;

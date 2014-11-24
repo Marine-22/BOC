@@ -4,11 +4,14 @@ package sk.gov.ekolky.estamp.fo10;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
+
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import javax.xml.ws.WebEndpoint;
 import javax.xml.ws.WebServiceClient;
 import javax.xml.ws.WebServiceFeature;
+
+import sk.posta.boc.ispep.PepConfig;
 
 
 /**
@@ -17,7 +20,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "infra", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10", wsdlLocation = "http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl")
+@WebServiceClient(name = "infra", targetNamespace = PepConfig.TARGET_NAMESPACE, wsdlLocation = PepConfig.WSDL_LOCATION)
 public class Infra
     extends Service
 {
@@ -30,9 +33,9 @@ public class Infra
         try {
             URL baseUrl;
             baseUrl = sk.gov.ekolky.estamp.fo10.Infra.class.getResource(".");
-            url = new URL(baseUrl, "http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl");
+            url = new URL(baseUrl, PepConfig.URL);
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: '"+PepConfig.URL+"', retrying as a local file");
             logger.warning(e.getMessage());
         }
         INFRA_WSDL_LOCATION = url;
@@ -43,7 +46,7 @@ public class Infra
     }
 
     public Infra() {
-        super(INFRA_WSDL_LOCATION, new QName("http://www.ekolky.gov.sk/estamp/fo10", "infra"));
+        super(INFRA_WSDL_LOCATION, new QName(PepConfig.QNAME_URI, "infra"));
     }
 
     /**
@@ -53,7 +56,7 @@ public class Infra
      */
     @WebEndpoint(name = "infra_Port")
     public InfraPortType getInfraPort() {
-        return super.getPort(new QName("http://www.ekolky.gov.sk/estamp/fo10", "infra_Port"), InfraPortType.class);
+        return super.getPort(new QName(PepConfig.QNAME_URI, "infra_Port"), InfraPortType.class);
     }
 
     /**
@@ -65,7 +68,7 @@ public class Infra
      */
     @WebEndpoint(name = "infra_Port")
     public InfraPortType getInfraPort(WebServiceFeature... features) {
-        return super.getPort(new QName("http://www.ekolky.gov.sk/estamp/fo10", "infra_Port"), InfraPortType.class, features);
+        return super.getPort(new QName(PepConfig.QNAME_URI, "infra_Port"), InfraPortType.class, features);
     }
 
 }

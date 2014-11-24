@@ -168,6 +168,29 @@ $(document).ready(
 	    	$(".site-nav-main ul li:not(:last-child, :first-child)").css("background", "#fec006 url(resources/img/main-navi-bcg.png) repeat-x");
 	    });
 	    
+	    $('.del_button').mousemove( 
+	 	       function(e){
+	 	    	   if(e.pageX > ($(this).offset().left + $(this).width() + 42 - 30)){
+	 	    		   $(this).css('cursor','pointer');
+	 	    	   }
+	 	    	   else{
+	 	    		   $(this).css('cursor','auto');
+	 	    	   }
+	 	    	   
+	 	    	   // 42 - padding + borders
+	 	    	   // 16 - width
+	 	    }
+	 	);
+	    
+	    $('.del_button').click( 
+	 	       function(e){
+	 	    	   if(e.pageX > ($(this).offset().left + $(this).width() + 42 - 30)){
+	 	    		   $(this).val("");
+	 	    		   $(this).keyup();
+	 	    		   $(this).change();
+	 	    	   }
+	 	    });
+	    
 	    refreshPredpis();
     }
 )

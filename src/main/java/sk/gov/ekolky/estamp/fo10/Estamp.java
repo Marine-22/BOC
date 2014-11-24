@@ -4,11 +4,14 @@ package sk.gov.ekolky.estamp.fo10;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
+
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import javax.xml.ws.WebEndpoint;
 import javax.xml.ws.WebServiceClient;
 import javax.xml.ws.WebServiceFeature;
+
+import sk.posta.boc.ispep.PepConfig;
 
 
 /**
@@ -17,7 +20,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.1
  * 
  */
-@WebServiceClient(name = "estamp", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10", wsdlLocation = "http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl")
+@WebServiceClient(name = "estamp", targetNamespace = PepConfig.TARGET_NAMESPACE, wsdlLocation = PepConfig.WSDL_LOCATION)
 public class Estamp
     extends Service
 {
@@ -30,9 +33,9 @@ public class Estamp
         try {
             URL baseUrl;
             baseUrl = sk.gov.ekolky.estamp.fo10.Estamp.class.getResource(".");
-            url = new URL(baseUrl, "http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl");
+            url = new URL(baseUrl, PepConfig.URL);
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: '"+PepConfig.URL+"', retrying as a local file");
             logger.warning(e.getMessage());
         }
         ESTAMP_WSDL_LOCATION = url;
@@ -43,7 +46,7 @@ public class Estamp
     }
 
     public Estamp() {
-        super(ESTAMP_WSDL_LOCATION, new QName("http://www.ekolky.gov.sk/estamp/fo10", "estamp"));
+        super(ESTAMP_WSDL_LOCATION, new QName(PepConfig.QNAME_URI, "estamp"));
     }
 
     /**
@@ -53,7 +56,7 @@ public class Estamp
      */
     @WebEndpoint(name = "estamp_Port")
     public EstampPortType getEstampPort() {
-        return super.getPort(new QName("http://www.ekolky.gov.sk/estamp/fo10", "estamp_Port"), EstampPortType.class);
+        return super.getPort(new QName(PepConfig.QNAME_URI, "estamp_Port"), EstampPortType.class);
     }
 
     /**
@@ -65,7 +68,7 @@ public class Estamp
      */
     @WebEndpoint(name = "estamp_Port")
     public EstampPortType getEstampPort(WebServiceFeature... features) {
-        return super.getPort(new QName("http://www.ekolky.gov.sk/estamp/fo10", "estamp_Port"), EstampPortType.class, features);
+        return super.getPort(new QName(PepConfig.QNAME_URI, "estamp_Port"), EstampPortType.class, features);
     }
 
 }

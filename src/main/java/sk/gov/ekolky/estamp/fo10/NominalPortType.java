@@ -7,8 +7,10 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
+
 import sk.gov.ekolky.estamp.fo10.nominal.CheckStateRequest;
 import sk.gov.ekolky.estamp.fo10.nominal.CheckStateResponse;
+import sk.posta.boc.ispep.PepConfig;
 
 
 /**
@@ -17,7 +19,7 @@ import sk.gov.ekolky.estamp.fo10.nominal.CheckStateResponse;
  * Generated source version: 2.1
  * 
  */
-@WebService(name = "nominal_PortType", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10")
+@WebService(name = "nominal_PortType", targetNamespace = PepConfig.TARGET_NAMESPACE)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @XmlSeeAlso({
     sk.gov.ekolky.estamp.fo10.infra.ObjectFactory.class,
@@ -39,9 +41,9 @@ public interface NominalPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "checkStateResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/nominal", partName = "parameters")
+    @WebResult(name = "checkStateResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/nominal", partName = "parameters")
     public CheckStateResponse checkState(
-        @WebParam(name = "checkStateRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/nominal", partName = "parameters")
+        @WebParam(name = "checkStateRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/nominal", partName = "parameters")
         CheckStateRequest parameters)
         throws BloxFaultMessage
     ;

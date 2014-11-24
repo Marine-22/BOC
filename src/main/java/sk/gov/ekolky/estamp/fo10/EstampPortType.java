@@ -7,6 +7,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
+
 import sk.gov.ekolky.estamp.fo10.estamp.CreateRequest;
 import sk.gov.ekolky.estamp.fo10.estamp.CreateResponse;
 import sk.gov.ekolky.estamp.fo10.estamp.ExchangeRequest;
@@ -23,6 +24,7 @@ import sk.gov.ekolky.estamp.fo10.estamp.OperationConsumeRequest;
 import sk.gov.ekolky.estamp.fo10.estamp.OperationConsumeResponse;
 import sk.gov.ekolky.estamp.fo10.estamp.UnlockRequest;
 import sk.gov.ekolky.estamp.fo10.estamp.UnlockResponse;
+import sk.posta.boc.ispep.PepConfig;
 
 
 /**
@@ -31,7 +33,7 @@ import sk.gov.ekolky.estamp.fo10.estamp.UnlockResponse;
  * Generated source version: 2.1
  * 
  */
-@WebService(name = "estamp_PortType", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10")
+@WebService(name = "estamp_PortType", targetNamespace = PepConfig.TARGET_NAMESPACE)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @XmlSeeAlso({
     sk.gov.ekolky.estamp.fo10.infra.ObjectFactory.class,
@@ -53,9 +55,9 @@ public interface EstampPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "getResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/estamp", partName = "parameters")
+    @WebResult(name = "getResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
     public GetResponse get(
-        @WebParam(name = "getRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/estamp", partName = "parameters")
+        @WebParam(name = "getRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
         GetRequest parameters)
         throws BloxFaultMessage
     ;
@@ -68,9 +70,9 @@ public interface EstampPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/estamp", partName = "parameters")
+    @WebResult(name = "listResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
     public ListResponse list(
-        @WebParam(name = "listRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/estamp", partName = "parameters")
+        @WebParam(name = "listRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
         ListRequest parameters)
         throws BloxFaultMessage
     ;
@@ -83,9 +85,9 @@ public interface EstampPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listOperationsResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/estamp", partName = "parameters")
+    @WebResult(name = "listOperationsResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
     public ListOperationsResponse listOperations(
-        @WebParam(name = "listOperationsRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/estamp", partName = "parameters")
+        @WebParam(name = "listOperationsRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
         ListOperationsRequest parameters)
         throws BloxFaultMessage
     ;
@@ -98,9 +100,9 @@ public interface EstampPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "createResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/estamp", partName = "parameters")
+    @WebResult(name = "createResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
     public CreateResponse create(
-        @WebParam(name = "createRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/estamp", partName = "parameters")
+        @WebParam(name = "createRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
         CreateRequest parameters)
         throws BloxFaultMessage
     ;
@@ -113,9 +115,9 @@ public interface EstampPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "exchangeResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/estamp", partName = "parameters")
+    @WebResult(name = "exchangeResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
     public ExchangeResponse exchange(
-        @WebParam(name = "exchangeRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/estamp", partName = "parameters")
+        @WebParam(name = "exchangeRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
         ExchangeRequest parameters)
         throws BloxFaultMessage
     ;
@@ -128,9 +130,9 @@ public interface EstampPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "lockResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/estamp", partName = "parameters")
+    @WebResult(name = "lockResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
     public LockResponse lock(
-        @WebParam(name = "lockRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/estamp", partName = "parameters")
+        @WebParam(name = "lockRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
         LockRequest parameters)
         throws BloxFaultMessage
     ;
@@ -143,9 +145,9 @@ public interface EstampPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "unlockResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/estamp", partName = "parameters")
+    @WebResult(name = "unlockResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
     public UnlockResponse unlock(
-        @WebParam(name = "unlockRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/estamp", partName = "parameters")
+        @WebParam(name = "unlockRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
         UnlockRequest parameters)
         throws BloxFaultMessage
     ;
@@ -158,9 +160,9 @@ public interface EstampPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "operationConsumeResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/estamp", partName = "parameters")
+    @WebResult(name = "operationConsumeResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
     public OperationConsumeResponse operationConsume(
-        @WebParam(name = "operationConsumeRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/estamp", partName = "parameters")
+        @WebParam(name = "operationConsumeRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
         OperationConsumeRequest parameters)
         throws BloxFaultMessage
     ;

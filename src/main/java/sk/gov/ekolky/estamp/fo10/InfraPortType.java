@@ -7,6 +7,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
+
 import sk.gov.ekolky.estamp.fo10.infra.DeviceStateCheckRequest;
 import sk.gov.ekolky.estamp.fo10.infra.DeviceStateCheckResponse;
 import sk.gov.ekolky.estamp.fo10.infra.IncidentRegisterRequest;
@@ -27,6 +28,7 @@ import sk.gov.ekolky.estamp.fo10.infra.ListSWPRequest;
 import sk.gov.ekolky.estamp.fo10.infra.ListSWPResponse;
 import sk.gov.ekolky.estamp.fo10.infra.ListServiceRequest;
 import sk.gov.ekolky.estamp.fo10.infra.ListServiceResponse;
+import sk.posta.boc.ispep.PepConfig;
 
 
 /**
@@ -35,7 +37,7 @@ import sk.gov.ekolky.estamp.fo10.infra.ListServiceResponse;
  * Generated source version: 2.1
  * 
  */
-@WebService(name = "infra_PortType", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10")
+@WebService(name = "infra_PortType", targetNamespace = PepConfig.TARGET_NAMESPACE)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @XmlSeeAlso({
     sk.gov.ekolky.estamp.fo10.infra.ObjectFactory.class,
@@ -57,9 +59,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "incidentRegisterResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+    @WebResult(name = "incidentRegisterResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
     public IncidentRegisterResponse incidentRegister(
-        @WebParam(name = "incidentRegisterRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+        @WebParam(name = "incidentRegisterRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
         IncidentRegisterRequest parameters)
         throws BloxFaultMessage
     ;
@@ -72,9 +74,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "deviceStateCheckResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+    @WebResult(name = "deviceStateCheckResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
     public DeviceStateCheckResponse deviceStateCheck(
-        @WebParam(name = "deviceStateCheckRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+        @WebParam(name = "deviceStateCheckRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
         DeviceStateCheckRequest parameters)
         throws BloxFaultMessage
     ;
@@ -87,9 +89,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listParameterResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+    @WebResult(name = "listParameterResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
     public ListParameterResponse listParameter(
-        @WebParam(name = "listParameterRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+        @WebParam(name = "listParameterRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
         ListParameterRequest parameters)
         throws BloxFaultMessage
     ;
@@ -102,9 +104,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listServiceResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+    @WebResult(name = "listServiceResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
     public ListServiceResponse listService(
-        @WebParam(name = "listServiceRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+        @WebParam(name = "listServiceRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
         ListServiceRequest parameters)
         throws BloxFaultMessage
     ;
@@ -117,9 +119,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listFeeResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+    @WebResult(name = "listFeeResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
     public ListFeeResponse listFee(
-        @WebParam(name = "listFeeRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+        @WebParam(name = "listFeeRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
         ListFeeRequest parameters)
         throws BloxFaultMessage
     ;
@@ -132,9 +134,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listOfficeResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+    @WebResult(name = "listOfficeResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
     public ListOfficeResponse listOffice(
-        @WebParam(name = "listOfficeRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+        @WebParam(name = "listOfficeRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
         ListOfficeRequest parameters)
         throws BloxFaultMessage
     ;
@@ -147,9 +149,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listSWPResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+    @WebResult(name = "listSWPResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
     public ListSWPResponse listSWP(
-        @WebParam(name = "listSWPRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+        @WebParam(name = "listSWPRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
         ListSWPRequest parameters)
         throws BloxFaultMessage
     ;
@@ -162,9 +164,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listCountryResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+    @WebResult(name = "listCountryResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
     public ListCountryResponse listCountry(
-        @WebParam(name = "listCountryRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+        @WebParam(name = "listCountryRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
         ListCountryRequest parameters)
         throws BloxFaultMessage
     ;
@@ -177,9 +179,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listDeviceInfoResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+    @WebResult(name = "listDeviceInfoResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
     public ListDeviceInfoResponse listDeviceInfo(
-        @WebParam(name = "listDeviceInfoRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+        @WebParam(name = "listDeviceInfoRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
         ListDeviceInfoRequest parameters)
         throws BloxFaultMessage
     ;
@@ -192,9 +194,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listFeDevicesResponse", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+    @WebResult(name = "listFeDevicesResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
     public ListFeDevicesResponse listFeDevices(
-        @WebParam(name = "listFeDevicesRequest", targetNamespace = "http://www.ekolky.gov.sk/estamp/fo10/infra", partName = "parameters")
+        @WebParam(name = "listFeDevicesRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
         ListFeDevicesRequest parameters)
         throws BloxFaultMessage
     ;
