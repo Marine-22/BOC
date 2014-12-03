@@ -5,18 +5,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import sk.posta.boc.HomeController;
 
 public enum UserType {
 	ADMIN,
 	USER,
 	SUPER_USER;
-
-	
-	private static final Logger logger = LoggerFactory.getLogger(UserType.class.getName());
 	
 	static Map<UserType, Set<Permissions>> permap;
 	

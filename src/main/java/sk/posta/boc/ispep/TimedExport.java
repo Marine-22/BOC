@@ -1,6 +1,7 @@
 package sk.posta.boc.ispep;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -19,6 +20,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.scheduling.annotation.Scheduled;
+
 
 
 
@@ -59,6 +61,7 @@ public class TimedExport {
 	@Value("#{appProps['app.export.feDeviceId']}") 
 	private String feDeviceId;
 	
+	private String SUFFIX_POTVRDENIA = "suffixPotvrdenia";
 	
 	@Autowired
 	private ConfigVersionRepository confRepo;
@@ -73,7 +76,7 @@ public class TimedExport {
 	
 	private static final Logger logger = LoggerFactory.getLogger(TimedExport.class.getName());
 	
-	@Scheduled(fixedRate=(1000 * 60 * 60 * 24), initialDelay=1000)
+	@Scheduled(fixedRate=(1000 * 60 * 60 * 24), initialDelay=PepConfig.initialDelayPredpis)
 	public void exportPredpis()
     {
 		BasicQuery bq = new BasicQuery("{stav:\"LOADED\"}");
@@ -83,13 +86,16 @@ public class TimedExport {
 		upd.set("stav", "WAITING");
 		customOps.updateMulti(bq, upd, Predpis.class);
 		
+		int cisloPotvrdenia = getCisloPotvrdenia();
+		
 		for(Predpis p : lP){
 			try{
 				Sluzba s = sluzbaRepo.findByBusId(p.getSluzba());
 				p.setFeeTypeService(s.getFeeType());
-				uploadPredpis(p);
+				uploadPredpis(p, cisloPotvrdenia);
 				p.setStav(PredpisStav.PROCESSED);
 				predpisRepo.save(p);
+				cisloPotvrdenia++;
 			} catch(BloxFaultMessage e){
 				saveExceptioin(p, e);
 				logger.info("Chyba pri synchronizacii predpisov.", e);
@@ -104,6 +110,7 @@ public class TimedExport {
 				logger.info("Chyba pri synchronizacii predpisov.", e);
 			}
 		}
+		saveIdPotvrdenia(cisloPotvrdenia);
     }
 	
 	private void saveExceptioin(Predpis p, Exception e){
@@ -114,7 +121,7 @@ public class TimedExport {
 	}
 	
 	//fixedRate = 1 den v milisekundach
-	@Scheduled(fixedRate=(1000 * 60 * 60 * 24), initialDelay=1000)
+	@Scheduled(fixedRate=(1000 * 60 * 60 * 24), initialDelay=PepConfig.initialDelaySluzbyUrady)
 	public void checkEnums()
     {
 		ConfigVersion cv;
@@ -319,7 +326,7 @@ public class TimedExport {
 		return xgc;
 	}
 	
-	private void uploadPredpis(Predpis p) throws 
+	private void uploadPredpis(Predpis p, int cisloPotvrdenia) throws 
 										DatatypeConfigurationException, 
 										InstantiationException, 
 										IllegalAccessException, 
@@ -330,9 +337,12 @@ public class TimedExport {
 		predpis.setOfficeID(p.getUrad());
 		predpis.setFeeType(AssesmentType.fromValue(p.getFeeTypeService()));
 		predpis.setKey(new Key());
-		predpis.getKey().setConfirmID(getConfirmId(p));
+		predpis.getKey().setConfirmID(getConfirmId(cisloPotvrdenia));
 		predpis.getKey().setIssueDate(getDate(p.getDatum()));
-		predpis.getKey().setVariableSymbol("0987654321");
+		//predpis.getKey().setVariableSymbol("0987654321");
+		
+		// pocitam vyslednu sumu = sucet vsetkych kolkov na predpise
+		float cashAmount = getCashAmount(p);
 		
 		for(String idNom : p.getIdnom()){
 			
@@ -349,8 +359,8 @@ public class TimedExport {
 			nominal.setKey(k);
 			pType.setNominal(nominal);
 			
-			// picovina, amount nemam
-			oPay.setAmount(4.5f);
+			// amount vypocitany ako suma nominalov
+			oPay.setAmount(cashAmount);
 			
 			oPay.setPayType(pType);
 			oType.setPayment(oPay);
@@ -370,10 +380,85 @@ public class TimedExport {
 		logger.info("Dokoncenie uploadu. " + cres);
 	}
 	
+	private float getCashAmount(Predpis p){
+		float retVal = 0;
+		for(String idNom : p.getIdnom()){
+			switch(idNom.charAt(0)){
+			case '1':
+				retVal += 0.5;
+				break;
+			case '2':
+				retVal += 1;
+				break;
+			case '3':
+				retVal += 2;
+				break;
+			case '4':
+				retVal += 5;
+				break;
+			case '5':
+				retVal += 10;
+				break;
+			case '6':
+				retVal += 20;
+				break;
+			case '7':
+				retVal += 50;
+				break;
+			case '8':
+				retVal += 100;
+				break;
+			}
+		}
+		return retVal;
+	}
+	
 	//XXX-YYMMDD-NNNN 
-	private String getConfirmId(Predpis p){
-		String s = p.getIdnom().get(0);
-		return feDeviceId + "-" + s.substring(0,6) + "-" + s.substring(6, s.length());
+	private String getConfirmId(int cisloPotvrdenia){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
+		logger.info("getConfirmId vracia: " + feDeviceId + "-" + sdf.format(new Date()) + "-" + String.format("%04d", cisloPotvrdenia));
+		return feDeviceId + "-" + sdf.format(new Date()) + "-" + String.format("%04d", cisloPotvrdenia);
+	}
+	
+	
+	private int getCisloPotvrdenia(){
+		int retVal = 0;
+		ConfigVersion conf = confRepo.findByName(SUFFIX_POTVRDENIA);
+		if(conf == null){
+			retVal = 1;
+		}
+		else{
+			String info = conf.getVersion();
+			if(isLastFromToday(info)){ // musim zvysit index
+				int last = Integer.parseInt(info.substring(13));
+				retVal = last + 1;
+			}
+			else{ // novy den, index ide od 1
+				retVal = 1;
+			}
+		}
+		return retVal;
+	}
+	
+	private void saveIdPotvrdenia(int idPotvrdenia){
+		ConfigVersion conf = confRepo.findByName(SUFFIX_POTVRDENIA);
+		if(conf == null){
+			conf = new ConfigVersion();
+			conf.setName(SUFFIX_POTVRDENIA);
+			confRepo.save(conf);
+		}
+		conf.setVersion("" + new Date().getTime() + idPotvrdenia);
+		confRepo.save(conf);
+	}
+	
+	private boolean isLastFromToday(String info){
+		Calendar cNow = Calendar.getInstance();
+		// prvych 13 znakov su milisekundy date
+		Calendar cLast = Calendar.getInstance();
+		cLast.setTimeInMillis(Long.parseLong(info.substring(0, 13)));
+		return ((cNow.get(Calendar.YEAR) == cLast.get(Calendar.YEAR)) &&
+				cNow.get(Calendar.DAY_OF_YEAR) == cLast.get(Calendar.DAY_OF_YEAR));
+		
 	}
 	
 	private class SyncStats{

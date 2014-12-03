@@ -1,8 +1,5 @@
 package sk.posta.boc;
 
-
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -41,6 +38,5 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter {
 			response.getWriter().append(JacksonUtil.object2Json(retVal));
 		}
 		return false;
-
 	}
 }
