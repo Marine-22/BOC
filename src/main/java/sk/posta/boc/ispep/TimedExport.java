@@ -1,5 +1,19 @@
 package sk.posta.boc.ispep;
 
+/*
+BLOX ERROR:
+      <env:Fault>
+         <faultcode>env:Server</faultcode>
+         <faultstring>Nominálny kredit nie je v žiadnej emisii: 7777777777</faultstring>
+         <faultactor>server/r1_2/assessment/create</faultactor>
+         <detail>
+            <tns:BloxFaultType>
+               <tns:error>ERR-07-003</tns:error>
+            </tns:BloxFaultType>
+         </detail>
+
+ */
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,11 +39,16 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 
 
+import com.sun.xml.ws.wsdl.parser.InaccessibleWSDLException;
+
 import sk.gov.ekolky.estamp.fo10.Assessment;
 import sk.gov.ekolky.estamp.fo10.AssessmentPortType;
 import sk.gov.ekolky.estamp.fo10.BloxFaultMessage;
+import sk.gov.ekolky.estamp.fo10.BloxFaultType;
 import sk.gov.ekolky.estamp.fo10.Infra;
 import sk.gov.ekolky.estamp.fo10.InfraPortType;
+import sk.gov.ekolky.estamp.fo10.Nominal;
+import sk.gov.ekolky.estamp.fo10.NominalPortType;
 import sk.gov.ekolky.estamp.fo10.assessment.CreateRequest;
 import sk.gov.ekolky.estamp.fo10.assessment.CreateResponse;
 import sk.gov.ekolky.estamp.fo10.infra.DeviceStateCheckRequest;
@@ -37,6 +56,8 @@ import sk.gov.ekolky.estamp.fo10.infra.DeviceStateCheckResponse;
 import sk.gov.ekolky.estamp.fo10.infra.ListOfficeRequest;
 import sk.gov.ekolky.estamp.fo10.infra.ListOfficeResponse.Offices;
 import sk.gov.ekolky.estamp.fo10.infra.ListServiceRequest;
+import sk.gov.ekolky.estamp.fo10.nominal.CheckStateRequest;
+import sk.gov.ekolky.estamp.fo10.nominal.CheckStateResponse;
 import sk.gov.ekolky.estamp.xsd10.AssesmentType;
 import sk.gov.ekolky.estamp.xsd10.Key;
 import sk.gov.ekolky.estamp.xsd10.OperPayment;
@@ -56,7 +77,7 @@ import sk.posta.data.repo.UradRepository;
 
 
 @org.springframework.stereotype.Service
-public class TimedExport {
+public class TimedExport implements ExportPredpis{
     
 	@Value("#{appProps['app.export.feDeviceId']}") 
 	private String feDeviceId;
@@ -76,52 +97,85 @@ public class TimedExport {
 	
 	private static final Logger logger = LoggerFactory.getLogger(TimedExport.class.getName());
 	
-	@Scheduled(fixedRate=(1000 * 60 * 60 * 24), initialDelay=PepConfig.initialDelayPredpis)
+	public void exportPredpis(final Predpis p){
+		Runnable r = new Runnable() {
+			@Override
+			public void run() {
+				int cisloPotvrdenia = getCisloPotvrdenia();
+				if(exportPredpis(p, cisloPotvrdenia)){
+					cisloPotvrdenia++;
+					saveIdPotvrdenia(cisloPotvrdenia);
+				}
+			}
+		};
+		new Thread(r).start();
+	}
+	
+	public boolean exportPredpis(Predpis p, int cisloPotvrdenia){
+		try{
+			Sluzba s = sluzbaRepo.findByBusId(p.getSluzba());
+			p.setFeeTypeService(s.getFeeType());
+			checkPredpis(p);
+			uploadPredpis(p, cisloPotvrdenia);
+			p.setStav(PredpisStav.PROCESSED);
+			predpisRepo.save(p);
+			return true;
+		} catch(BloxFaultMessage e){
+			saveExceptioin(p, e);
+			logger.info("Chyba pri synchronizacii predpisov.", e);
+		} catch (InstantiationException e) {
+			saveExceptioin(p, e);
+			logger.info("Chyba pri synchronizacii predpisov.", e);
+		} catch (IllegalAccessException e) {
+			saveExceptioin(p, e);
+			logger.info("Chyba pri synchronizacii predpisov.", e);
+		} catch (DatatypeConfigurationException e) {
+			saveExceptioin(p, e);
+			logger.info("Chyba pri synchronizacii predpisov.", e);
+		}catch(InaccessibleWSDLException e){
+			Exception wrapItBaby = new Exception("Chyba pri nadviazaní spojenia s PEP.", e);
+			saveExceptioin(p, wrapItBaby);
+			logger.info("Chyba pri synchronizacii predpisov.", wrapItBaby);
+		}
+		return false;
+	}
+	//com.sun.xml.ws.wsdl.parser.InaccessibleWSDLException: 2 counts of InaccessibleWSDLException.
+	//com.sun.xml.ws.wsdl.parser.InaccessibleWSDLException
+
+	
+	@SuppressWarnings("unused")
+	@Scheduled(fixedRate=PepConfig.fixedRatePredpis, initialDelay=PepConfig.initialDelayPredpis)
 	public void exportPredpis()
     {
-		BasicQuery bq = new BasicQuery("{stav:\"LOADED\"}");
-		List<Predpis> lP = customOps.find(bq, Predpis.class);
-
-		Update upd = new Update();
-		upd.set("stav", "WAITING");
-		customOps.updateMulti(bq, upd, Predpis.class);
-		
-		int cisloPotvrdenia = getCisloPotvrdenia();
-		
-		for(Predpis p : lP){
-			try{
-				Sluzba s = sluzbaRepo.findByBusId(p.getSluzba());
-				p.setFeeTypeService(s.getFeeType());
-				uploadPredpis(p, cisloPotvrdenia);
-				p.setStav(PredpisStav.PROCESSED);
-				predpisRepo.save(p);
-				cisloPotvrdenia++;
-			} catch(BloxFaultMessage e){
-				saveExceptioin(p, e);
-				logger.info("Chyba pri synchronizacii predpisov.", e);
-			} catch (InstantiationException e) {
-				saveExceptioin(p, e);
-				logger.info("Chyba pri synchronizacii predpisov.", e);
-			} catch (IllegalAccessException e) {
-				saveExceptioin(p, e);
-				logger.info("Chyba pri synchronizacii predpisov.", e);
-			} catch (DatatypeConfigurationException e) {
-				saveExceptioin(p, e);
-				logger.info("Chyba pri synchronizacii predpisov.", e);
+		if(PepConfig.initialDelayPredpis < Integer.MAX_VALUE){
+			BasicQuery bq = new BasicQuery("{stav:\"LOADED\"}");
+			List<Predpis> lP = customOps.find(bq, Predpis.class);
+	
+			Update upd = new Update();
+			upd.set("stav", "WAITING");
+			customOps.updateMulti(bq, upd, Predpis.class);
+			
+			int cisloPotvrdenia = getCisloPotvrdenia();
+			
+			for(Predpis p : lP){
+				
+					if(exportPredpis(p, cisloPotvrdenia)){
+						cisloPotvrdenia++;
+					}
 			}
+			saveIdPotvrdenia(cisloPotvrdenia);
 		}
-		saveIdPotvrdenia(cisloPotvrdenia);
     }
 	
 	private void saveExceptioin(Predpis p, Exception e){
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy' 'HH.mm.ss:' '");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy' 'HH:mm:ss:' '");
 		p.setStav(PredpisStav.ERROR);
 		p.setErrorMsg(sdf.format(new Date()) + e.getMessage());
 		predpisRepo.save(p);
 	}
 	
 	//fixedRate = 1 den v milisekundach
-	@Scheduled(fixedRate=(1000 * 60 * 60 * 24), initialDelay=PepConfig.initialDelaySluzbyUrady)
+	@Scheduled(fixedRate=PepConfig.fixedRateSluzbyUrady, initialDelay=PepConfig.initialDelaySluzbyUrady)
 	public void checkEnums()
     {
 		ConfigVersion cv;
@@ -326,6 +380,76 @@ public class TimedExport {
 		return xgc;
 	}
 	
+	private void checkPredpis(Predpis p) throws BloxFaultMessage, IllegalAccessException, InstantiationException, DatatypeConfigurationException{
+		String errMsg = "";
+		for(String idNom : p.getIdnom()){
+			Nominal nom = new Nominal();
+			NominalPortType nomPort = nom.getNominalPort();
+			CheckStateRequest chsrq = getRequest(CheckStateRequest.class);
+			Key k = new Key();
+			k.setNominalID(idNom);
+			chsrq.setKey(k);
+/*
+Stavy:
+nevalidny - nominalID nebolo vygenerovane v emisii
+vydany - bol predany
+nepredany - nebol predany ani pouzity na uhrade ale je to validne ID nominalu (zatial vraciame nezaevidovany ale bude opravene v najblizsej verzii)
+nezaevidovany - bol spotrebovany ale este nedosla informacia o predaji
+spotrebovany - predany a aj spotrebovany
+refundReserve - predany a rezervovany na refundaciu
+zaslanyNaRefundaciu - predany a zaslany na refundaciu
+nevyplateny - predany a refundacia nebola vyplatena
+zaslanyNaRefundZnova - predany potom zaslany na refundaciu no nevyplateny a nasledne znova zaslany na refundaciu
+refundovany - predany a refundacia bola vyplatena
+fraudovany - do piatich dni po spotrebe neprisla informacia o predaji
+spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
+ */
+			CheckStateResponse chsrs = nomPort.checkState(chsrq);
+			if("nezaevidovany".equals(chsrs.getState())){
+				errMsg = addError(errMsg, "Kolok " + idNom + " už bol spotrebovaný");
+			}
+			else if("nevalidny".equals(chsrs.getState())){
+				errMsg = addError(errMsg, "Kolok " + idNom + " nie je platný");
+			}
+			else if("spotrebovany".equals(chsrs.getState())){
+				errMsg = addError(errMsg, "Kolok " + idNom + " už bol spotrebovaný");
+			}
+			else if("refundReserve".equals(chsrs.getState())){
+				errMsg = addError(errMsg, "Kolok " + idNom + " je rezervovaný na refundáciu");
+			}
+			else if("zaslanyNaRefundaciu".equals(chsrs.getState())){
+				errMsg = addError(errMsg, "Kolok " + idNom + " bol zaslaný na refundáciu");
+			}
+			else if("nevyplateny".equals(chsrs.getState())){
+				errMsg = addError(errMsg, "Kolok " + idNom + " je nevyplatený");
+			}
+			else if("zaslanyNaRefundZnova".equals(chsrs.getState())){
+				errMsg = addError(errMsg, "Kolok " + idNom + " bol znova zaslaný na refundáciu");
+			}
+			else if("refundovany".equals(chsrs.getState())){
+				errMsg = addError(errMsg, "Kolok " + idNom + " bol refundovaný");
+			}
+			else if("fraudovany".equals(chsrs.getState())){
+				errMsg = addError(errMsg, "Kolok " + idNom + " je fraud");
+			}
+			else if("nepredany".equals(chsrs.getState())){
+				// OK
+			}
+			else if("vydany".equals(chsrs.getState())){
+				// OK
+			}
+		}
+		if(errMsg.length() > 0){
+			BloxFaultType bft = new BloxFaultType();
+			bft.setError("ERR-00-000");
+			throw new BloxFaultMessage(errMsg, bft);
+		}
+	}
+	
+	private String addError(String actual, String adding){
+		return "".equals(actual) ? adding : (actual + "; " + adding);
+	}
+	
 	private void uploadPredpis(Predpis p, int cisloPotvrdenia) throws 
 										DatatypeConfigurationException, 
 										InstantiationException, 
@@ -342,7 +466,7 @@ public class TimedExport {
 		//predpis.getKey().setVariableSymbol("0987654321");
 		
 		// pocitam vyslednu sumu = sucet vsetkych kolkov na predpise
-		float cashAmount = getCashAmount(p);
+		//float cashAmount = getCashAmount(p);
 		
 		for(String idNom : p.getIdnom()){
 			
@@ -360,7 +484,7 @@ public class TimedExport {
 			pType.setNominal(nominal);
 			
 			// amount vypocitany ako suma nominalov
-			oPay.setAmount(cashAmount);
+			oPay.setAmount(getCashAmount(idNom));
 			
 			oPay.setPayType(pType);
 			oType.setPayment(oPay);
@@ -380,35 +504,42 @@ public class TimedExport {
 		logger.info("Dokoncenie uploadu. " + cres);
 	}
 	
+	@SuppressWarnings("unused")
 	private float getCashAmount(Predpis p){
 		float retVal = 0;
 		for(String idNom : p.getIdnom()){
-			switch(idNom.charAt(0)){
-			case '1':
-				retVal += 0.5;
-				break;
-			case '2':
-				retVal += 1;
-				break;
-			case '3':
-				retVal += 2;
-				break;
-			case '4':
-				retVal += 5;
-				break;
-			case '5':
-				retVal += 10;
-				break;
-			case '6':
-				retVal += 20;
-				break;
-			case '7':
-				retVal += 50;
-				break;
-			case '8':
-				retVal += 100;
-				break;
-			}
+			retVal += getCashAmount(idNom);
+		}
+		return retVal;
+	}
+	
+	private float getCashAmount(String idNom){
+		float retVal = 0;
+		switch(idNom.charAt(0)){
+		case '1':
+			retVal += 0.5;
+			break;
+		case '2':
+			retVal += 1;
+			break;
+		case '3':
+			retVal += 2;
+			break;
+		case '4':
+			retVal += 5;
+			break;
+		case '5':
+			retVal += 10;
+			break;
+		case '6':
+			retVal += 20;
+			break;
+		case '7':
+			retVal += 50;
+			break;
+		case '8':
+			retVal += 100;
+			break;
 		}
 		return retVal;
 	}

@@ -36,7 +36,6 @@ public class Predpis {
 	}
 	
 	@Id
-	@JsonIgnore
 	private String id;
 	private String doklad;
 	private String konanie;
@@ -65,7 +64,7 @@ public class Predpis {
 	
 	
 	public String toString(){
-		return "Predpis: doklad=" + doklad + "; konanie=" + konanie + "; sluzba=" + sluzba + "; datum: "+datum + "; pocetId=" + (idnom == null ? 0 : (idnom.size()  + "; idnom: " + idnom));
+		return "Predpis: id="+id+" doklad=" + doklad + "; konanie=" + konanie + "; sluzba=" + sluzba + "; datum: "+datum + "; pocetId=" + (idnom == null ? 0 : (idnom.size()  + "; idnom: " + idnom));
 	}
 	
 	public String getDoklad() {

@@ -23,21 +23,26 @@
     <div class="site-wrapper">
       <div class="site-header" style="position: relative">
           <img alt="Slovenská pošta" class="logo" src="<c:url value="/resources/img/sl-posta-logo.png" />" title="Slovenská pošta" />  
-        <div class="site-search">
-          <input id="searchPredpisInput" type="text" value=""  />
-       </div>
-       <div class="site-search">
-          <input id="searchDatumDoInput" type="text" value="" class="del_button date" placeholder="-- Dátum do --"/>
-       </div>
-       <div class="site-search">
-          <input id="searchDatumOdInput" type="text" value="" class="del_button date" placeholder="-- Dátum od --" />
-       </div>
        <div class="site-search">
           <input id="searchUradInput" type="text" value="" class="del_button" placeholder="-- Úrad --"/>
           <span id="searchUradId" class="hide"></span>
        </div>     
+       
+       <div class="site-search">
+          <input id="searchDatumOdInput" type="text" value="" class="del_button small" placeholder="-- Dátum od --" />
+       </div>
+              
+       <div class="site-search">
+          <input id="searchDatumDoInput" type="text" value="" class="del_button small" placeholder="-- Dátum do --"/>
+       </div>
+       
+       <div class="site-search">
+          <input id="searchStavInput" type="text" value="" class="del_button small" placeholder="-- Stav --" maxlength="0" />
+       </div>
       
-      
+       <div class="site-search">
+          <input id="searchPredpisInput" class="small search_button" type="text" value=""  />
+       </div>
       
       
     </div>
@@ -175,5 +180,11 @@
 </div>
 <div class="site-area-bottom listdata"></div>
 </div>    
+<ul id="state-filter" tabindex="0" class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content" style="display:none">
+	<li tabindex="-1" id="state-filter-li1" class="ui-menu-item">NAHRANÉ<input id="filter-loaded" type="checkbox" checked/></li>
+	<li tabindex="-1" id="state-filter-li2" class="ui-menu-item">SPRACOVÁVA SA<input id="filter-waiting" type="checkbox" checked /></li>
+	<li tabindex="-1" id="state-filter-li3" class="ui-menu-item">PEP OK<input id="filter-processed" type="checkbox" checked /></li>
+	<li tabindex="-1" id="state-filter-li4" class="ui-menu-item">PEP CHYBA<input id="filter-error" type="checkbox" checked /></li>
+</ul>
   </body>
 </html>

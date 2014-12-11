@@ -19,7 +19,8 @@ public enum Permissions {
 	GET_URAD("getUrad"),
 	SEARCH_URAD("searchUrad"),
 	GET_SLUZBA("getSluzba"),
-	SEARCH_SLUZBA("searchSluzba");
+	SEARCH_SLUZBA("searchSluzba"),
+	RESEND_PREDPIS("resendPredpis");
 	
 	private String methodName;
 	

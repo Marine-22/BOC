@@ -176,21 +176,71 @@ $(document).ready(
 	 	    	   else{
 	 	    		   $(this).css('cursor','auto');
 	 	    	   }
-	 	    	   
-	 	    	   // 42 - padding + borders
-	 	    	   // 16 - width
 	 	    }
 	 	);
 	    
-	    $('.del_button').click( 
-	 	       function(e){
-	 	    	   if(e.pageX > ($(this).offset().left + $(this).width() + 42 - 30)){
-	 	    		   $(this).val("");
-	 	    		   $(this).keyup();
-	 	    		   $(this).change();
-	 	    	   }
-	 	    });
-	    
+		$('.del_button').click( 
+				function(e){
+					if(e.pageX > ($(this).offset().left + $(this).width() + 42 - 30)){
+						if($(this)[0] == $('#searchStavInput')[0]){
+							$('#filter-loaded').prop('checked', true); 
+							$('#filter-waiting').prop('checked', true);
+							$('#filter-processed').prop('checked', true);
+							$('#filter-error').prop('checked', true);
+							//refreshPredpis();
+						}
+						else{
+							$(this).val("");
+							$(this).keyup();
+							$(this).change();
+						}
+					}
+		});
+		
+		
+	    $('.search_button').mousemove( 
+		 	       function(e){
+		 	    	   if(e.pageX > ($(this).offset().left + $(this).width() + 42 - 30)){
+		 	    		   $(this).css('cursor','pointer');
+		 	    	   }
+		 	    	   else{
+		 	    		   $(this).css('cursor','auto');
+		 	    	   }
+		 	    }
+		 	);
+		    
+			$('.search_button').click( 
+					function(e){
+						if(e.pageX > ($(this).offset().left + $(this).width() + 42 - 30)){
+							refreshPredpis();
+						}
+			});
+	    $('#searchStavInput').focus(function(){
+	    	$('#state-filter').show();
+	    	prepareStates();
+	    	$('#state-filter').click(function(e){
+	    		e.stopPropagation();
+	    	});
+	    	$('#searchStavInput').click(function(e){
+	    		e.stopPropagation();
+	    	});
+			$(document).click(function(){
+	    		$('#state-filter').hide();
+		    	refreshPredpis();
+	    		$(this).off('click');
+	    		$('#state-filter').off('click');
+		    	$('#searchStavInput').click(function(e){
+		    		if(e.pageX > ($(this).offset().left + $(this).width() + 42 - 30)){
+		    			$('#filter-loaded').prop('checked', true); 
+ 	    				$('#filter-waiting').prop('checked', true);
+ 	    				$('#filter-processed').prop('checked', true);
+ 	    				$('#filter-error').prop('checked', true);
+		    		}
+		    	});
+	    	});
+	    	
+	    });
 	    refreshPredpis();
     }
 )
+

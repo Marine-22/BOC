@@ -3,13 +3,16 @@ package sk.posta.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import sk.posta.data.enumm.UserType;
+
 public class ReturnData {
 	private String status; // OK, NOK alebo REDIRECT
-	private String redirect; // KAM
-	private String reason; // alert
+	private String redirect; // KAM sa ma spravit redirect
+	private String reason; // sprava, ktora sa zobrazi v alert 
 	private List<String> errors;
 	private List<FieldError> fieldErrors;
-	private Object data;
+	private UserType userType;
+	private Object data; // data do GUI
 	
 	public String getStatus() {
 		return status;
@@ -57,7 +60,12 @@ public class ReturnData {
 	public void setData(Object data) {
 		this.data = data;
 	}
-	
+	public UserType getUserType() {
+		return userType;
+	}
+	public void setUserType(UserType userType) {
+		this.userType = userType;
+	}
 }
 
 class FieldError{

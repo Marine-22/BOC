@@ -27,7 +27,7 @@ function submitPredpisForm(){
 	var jsonData = new Object();	
 	jsonData.idnom = [];
 	var finalCount = 0;
-	ids = $(".nominal input").each(function(index){
+	$(".nominal input").each(function(index){
 		if($(this).val().length == 10){
 			jsonData.idnom.push($(this).val());
 			finalCount++;
@@ -197,7 +197,6 @@ function clearUserFormErrors(){
 
 function checkRequired(fieldId){
 	if($(fieldId).val() == ""){
-		errs = 1;
 		$(fieldId + '_err').text("Toto pole je povinné");
 		$(fieldId + '_err').show();
 		return 1;
@@ -249,11 +248,17 @@ function refreshUsers(){
 
 function refreshPredpis(){
 
+	var states = [$('#filter-loaded').prop('checked'), 
+	              $('#filter-waiting').prop('checked'),
+	              $('#filter-processed').prop('checked'),
+	              $('#filter-error').prop('checked')];
+	
 	$.getJSON(GLOBAL_APP_NAME + "/searchPredpis",
 		{
 			urad:$('#searchUradId').text(),
 			datumOd:$("#searchDatumOdInput").val(),
 			datumDo:$("#searchDatumDoInput").val(),
+			states:states,
 			sq:$("#searchPredpisInput").val(),
 			JSR:""
 		},
@@ -297,6 +302,7 @@ function refreshPredpis(){
 									<span class=\"data\" style=\"width:150px\">"+data.data[i].fullName+"</span> \
 									<span class=\"data-label\">Stav:</span> \
 									<span class=\"data "+data.data[i].stav+"\" style=\"width:100px\">"+getStav(data.data[i].stav)+"</span> \
+									"+((data.data[i].stav == "ERROR" && isSuperUser(data)) ? "<a href=\"javascript:{}\" class=\"blue_button\" style=\"padding: 4px 10px 3px; margin-left: 10px; line-height: 1;\" onclick=\"resendPredpis('"+data.data[i].id+"')\">Znovu</a>" : "")+" \
 									<br/> \
 									<span class=\"data-label long-label\">Služba:</span> \
 									<span class=\"data long\">"+data.data[i].sluzbaName+"</span> \
@@ -315,7 +321,9 @@ function refreshPredpis(){
 		},
 		'json'
 	);
-
+	// Potrebujem znovu nastavit X a Y suradnice checkboxov so stavmi. 
+	// Mohlo sa to zmenit kvoli scrollbaru. 
+	// prepareStates();
 }
 
 function getStav(stav){
@@ -331,6 +339,22 @@ function getStav(stav){
 	else if("ERROR" == stav){
 		return "PEP CHYBA";
 	}
+}
+
+function resendPredpis(id){
+	$.post(GLOBAL_APP_NAME + '/resendPredpis',
+			{
+				id:		id,
+				JSR:	""
+			},
+			function(data){
+				if(checkRedirect(data) && checkErrs(data)){
+					// nothing to do with that god damn data, just check
+				}
+			},
+			"json"
+	)
+	refreshPredpis();
 }
 
 function setUserUpdates(){
@@ -540,4 +564,21 @@ function getUserType(uType){
 	else{
 		return "unknown";
 	}
+}
+
+function prepareStates(){
+	var stateFil = $('#searchStavInput').parent();
+	//var posx = parseInt(stateFil.offset().left) - parseInt(stateFil.css('padding-left')) + 2;
+	var posx = parseInt(stateFil.offset().left) - parseInt(stateFil.css('padding-left'));
+	var posy = parseInt(stateFil.offset().top);
+	$('#state-filter').offset({top:posy, left:posx});
+	//$('#state-filter').hide();
+}
+
+function isSuperUser(retVal){
+	return retVal.userType == "SUPER_USER";
+}
+
+function isAdmin(retVal){
+	return retVal.userType == "ADMIN";
 }

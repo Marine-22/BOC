@@ -43,6 +43,7 @@ public enum UserType {
 		s.add(Permissions.SEARCH_URAD);
 		s.add(Permissions.UPDATE_PASS);
 		s.add(Permissions.USER_VIEW);
+		s.add(Permissions.RESEND_PREDPIS);
 		permap.put(SUPER_USER, s);
 	}
 	

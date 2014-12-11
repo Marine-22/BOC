@@ -241,8 +241,10 @@ input {border: 1px solid #d7d7d7; font-family: "Helvetica Neue", Arial, Helvetic
   .site-wrapper {width: 980px; display: block; margin-right: auto; margin-left: auto; margin-bottom: 36px; padding-top: 36px; text-align: left}
   .site-header {clear: left; float: left; width: 980px; height: 90px}
 .site-header img.logo {float: left; width: 100px; height: 90px}
-  .site-search {float: right; margin: 0px 0px 0px 10px; position: relative; z-index: 1000; display: block; height: 32px; top: 55px}
-.site-search input {font-size: 12px; color: #666; padding: 8px 30px 8px 10px; width: 218px; background: white url(../img/search-input.png) no-repeat 235px; margin-top: 0; height: 15px; outline: none; border-radius: 5px}
+  .site-search {float: left; margin: 0px 0px 0px 10px; position: relative; z-index: 100; display: block; height: 32px; top: 55px}
+.site-search input {font-size: 12px; color: #666; padding: 8px 30px 8px 10px; width: 148px; background: white url(../img/search-input.png) no-repeat 165px; margin-top: 0; height: 15px; outline: none; border-radius: 5px}
+.site-search input.small {width: 118px; background-position: 135px;}
+.site-search input.del_button {background-image: url(../img/delete.bmp)}
 .site-search-results {position: absolute; z-index: 99; width: 258px; border: 1px solid #dedede; background: white; top: 34px; left: 0; border-top: 1px solid #cbcbcb; border-radius: 5px; box-shadow: 0px 2px 8px rgba(0,0,0,0.2)}
 .site-search-results ul {margin: 0; padding: 5px 0px; list-style-type: none}
 .site-search-results li a {display: block; padding: 5px 14px}
@@ -421,9 +423,9 @@ span.data.ERROR, span.data.UNACTIVE {color: #f20000}
 div.box-940.tabs div.ui-tabs-panel div.main br {margin-bottom: 5px; }
 .area-post p.submit.chpass_submit {padding: 0px 0px 15px 263px;}
 
-
-.site-search input.date {width: 118px; background-position: 135px;}
-.site-search input.del_button {background-image: url(../img/delete.bmp)}
+#state-filter .ui-menu-item input{float: right; display:inline; margin-left: 11px;}
+#state-filter li {cursor: default; width: 141px; height: auto}
+    
 
 
 
