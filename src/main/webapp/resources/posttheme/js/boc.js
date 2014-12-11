@@ -301,7 +301,8 @@ function refreshPredpis(){
 									<span class=\"data-label\">Pridal:</span> \
 									<span class=\"data\" style=\"width:150px\">"+data.data[i].fullName+"</span> \
 									<span class=\"data-label\">Stav:</span> \
-									<span class=\"data "+data.data[i].stav+"\" style=\"width:100px\">"+getStav(data.data[i].stav)+"</span> \
+									<span class=\"data "+data.data[i].stav+"\" style=\"width:"+(data.data[i].stav == "PROCESSED" ? "60" : "100")+"px\">"+getStav(data.data[i].stav)+"</span> \
+									"+(data.data[i].stav == "PROCESSED" ? ("<span class=\"data-label\">"+(data.data[i].idPredpisu == null ? "" : ("(" + data.data[i].idPredpisu + ")"))+"</span>") : "") + " \
 									"+((data.data[i].stav == "ERROR" && isSuperUser(data)) ? "<a href=\"javascript:{}\" class=\"blue_button\" style=\"padding: 4px 10px 3px; margin-left: 10px; line-height: 1;\" onclick=\"resendPredpis('"+data.data[i].id+"')\">Znovu</a>" : "")+" \
 									<br/> \
 									<span class=\"data-label long-label\">Služba:</span> \

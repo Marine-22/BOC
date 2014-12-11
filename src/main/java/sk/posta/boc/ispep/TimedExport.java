@@ -103,7 +103,6 @@ public class TimedExport implements ExportPredpis{
 			public void run() {
 				int cisloPotvrdenia = getCisloPotvrdenia();
 				if(exportPredpis(p, cisloPotvrdenia)){
-					cisloPotvrdenia++;
 					saveIdPotvrdenia(cisloPotvrdenia);
 				}
 			}
@@ -111,12 +110,19 @@ public class TimedExport implements ExportPredpis{
 		new Thread(r).start();
 	}
 	
+	/**
+	 * Exportuje jeden predpis do IS PEP.
+	 * @param p
+	 * @param cisloPotvrdenia
+	 * @return true ak bolo nahranie predpisu uspesne, inak false
+	 */
 	public boolean exportPredpis(Predpis p, int cisloPotvrdenia){
 		try{
 			Sluzba s = sluzbaRepo.findByBusId(p.getSluzba());
 			p.setFeeTypeService(s.getFeeType());
 			checkPredpis(p);
-			uploadPredpis(p, cisloPotvrdenia);
+			String retVal = uploadPredpis(p, cisloPotvrdenia);
+			p.setIdPredpisu(retVal);
 			p.setStav(PredpisStav.PROCESSED);
 			predpisRepo.save(p);
 			return true;
@@ -156,13 +162,16 @@ public class TimedExport implements ExportPredpis{
 			customOps.updateMulti(bq, upd, Predpis.class);
 			
 			int cisloPotvrdenia = getCisloPotvrdenia();
-			
+			boolean wasSuccess = false;
 			for(Predpis p : lP){
-				
 					if(exportPredpis(p, cisloPotvrdenia)){
 						cisloPotvrdenia++;
+						wasSuccess = true;
 					}
 			}
+			// ak bol aspon 1 uspesne uploadovany, 
+			// musim ulozit cislo potvrdenia o 1 mensie ako mam pripravene pre dalsi predpis
+			if(wasSuccess) cisloPotvrdenia--;  
 			saveIdPotvrdenia(cisloPotvrdenia);
 		}
     }
@@ -450,7 +459,7 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 		return "".equals(actual) ? adding : (actual + "; " + adding);
 	}
 	
-	private void uploadPredpis(Predpis p, int cisloPotvrdenia) throws 
+	private String uploadPredpis(Predpis p, int cisloPotvrdenia) throws 
 										DatatypeConfigurationException, 
 										InstantiationException, 
 										IllegalAccessException, 
@@ -458,10 +467,11 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 		
 		CreateRequest requestCreate = getRequest(CreateRequest.class);
 		sk.gov.ekolky.estamp.xsd10.Assessment predpis = new sk.gov.ekolky.estamp.xsd10.Assessment();
+		String idPotvrdenia = getConfirmId(cisloPotvrdenia);
 		predpis.setOfficeID(p.getUrad());
 		predpis.setFeeType(AssesmentType.fromValue(p.getFeeTypeService()));
 		predpis.setKey(new Key());
-		predpis.getKey().setConfirmID(getConfirmId(cisloPotvrdenia));
+		predpis.getKey().setConfirmID(idPotvrdenia);
 		predpis.getKey().setIssueDate(getDate(p.getDatum()));
 		//predpis.getKey().setVariableSymbol("0987654321");
 		
@@ -502,6 +512,7 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 		
 		CreateResponse cres = apt.create(requestCreate);
 		logger.info("Dokoncenie uploadu. " + cres);
+		return idPotvrdenia;
 	}
 	
 	@SuppressWarnings("unused")
@@ -568,6 +579,7 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 				retVal = 1;
 			}
 		}
+		logger.info("getCisloPotvrdenia: " + retVal);
 		return retVal;
 	}
 	
@@ -587,13 +599,12 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 		// prvych 13 znakov su milisekundy date
 		Calendar cLast = Calendar.getInstance();
 		cLast.setTimeInMillis(Long.parseLong(info.substring(0, 13)));
+		logger.info("isLastFromToday: cNow = " + cNow.getTimeInMillis() + " cLast = " + cLast.getTimeInMillis() + " " + ((cNow.get(Calendar.YEAR) == cLast.get(Calendar.YEAR)) && cNow.get(Calendar.DAY_OF_YEAR) == cLast.get(Calendar.DAY_OF_YEAR)));
 		return ((cNow.get(Calendar.YEAR) == cLast.get(Calendar.YEAR)) &&
 				cNow.get(Calendar.DAY_OF_YEAR) == cLast.get(Calendar.DAY_OF_YEAR));
-		
 	}
-	
+
 	private class SyncStats{
-		
 		SyncStats(DeviceStateCheckResponse check){
 			this.sluzbyI = 0;
 			this.sluzbyD = 0;

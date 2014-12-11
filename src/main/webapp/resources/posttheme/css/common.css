@@ -266,8 +266,8 @@ input {border: 1px solid #d7d7d7; font-family: "Helvetica Neue", Arial, Helvetic
 .site-area-bottom {clear: both; width: 980px; height: 18px; background: url(../img/area-bcg.png) no-repeat 0 bottom}
 .site-area-bottom.last {margin-bottom: 20px}
 
-.site-area-main .cleft {width: 940px; float: left}
-.box-940 {width: 940px}
+.site-area-main .cleft {width: 980px; float: left}
+.box-940 {width: 980px}
 .box-940.tabs {float: left}
 .box-940 .main {background: url(../img/box-940-main-bcg.png) repeat-y; float: left; width: 940px}
 .site-area-main .cleft ul, .site-area-main .cright ul {margin: 0; padding: 0; list-style-type: none}

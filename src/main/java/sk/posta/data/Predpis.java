@@ -47,6 +47,7 @@ public class Predpis {
 	private PredpisStav stav;
 	private String errorMsg;
 	private String idZamLogin;
+	private String idPredpisu; //XXX-YYMMDD-NNNN 
 	
 	@Transient
 	private String fullName;
@@ -156,6 +157,12 @@ public class Predpis {
 	}
 	public void setFeeTypeService(String feeTypeService) {
 		this.feeTypeService = feeTypeService;
+	}
+	public String getIdPredpisu() {
+		return idPredpisu;
+	}
+	public void setIdPredpisu(String idPredpisu) {
+		this.idPredpisu = idPredpisu;
 	}
 	public void setGUIStaff(User u, Urad ur, Sluzba s) {
 		if(u != null){
