@@ -1,4 +1,4 @@
-var GLOBAL_APP_NAME = '/boc-BOC';
+var GLOBAL_APP_NAME = '/BOC';
 
 function addNewPredpisElement(){
 	

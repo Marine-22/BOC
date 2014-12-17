@@ -55,7 +55,7 @@ public class HomeController {
 	@Value("#{appProps['app.gui.maxSuggestItems']}") 
 	private int MAX_SUGGEST_ITEMS;
 	
-	public static final String APPLICATION_PREFIX = "/boc-BOC";
+	public static final String APPLICATION_PREFIX = "/BOC";
 	public static final String AUTHENTICATED = "authenticated";
 	public static final String LOGIN = "userLogin";
 	public static final String USER_TYPE = "userType";

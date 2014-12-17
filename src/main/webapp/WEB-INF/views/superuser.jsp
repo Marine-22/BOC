@@ -30,7 +30,7 @@
 				src="<c:url value="/resources/img/sl-posta-logo.png" />"
 				title="Slovenská pošta" />
 			<div class="site-nav-top"></div>
-			<div class="site-search">
+			<div class="site-search right-site-search">
 				<input id="searchUsersInput" type="text" value="" class="noautocomplete" />
 				<div class="site-search-results hide"></div>
 			</div>
