@@ -220,14 +220,6 @@ public class HomeController {
 			@RequestParam(value="sq", required=false) String sq) {
 		logger.info("Zavolana metoda searchPredpis. sq = " + sq + "; urad = " + urad + "; datumPredajaOd = " + datumPredajaOd + "; datumPredajaDo = " + datumPredajaDo + "States count: " + states.length);
 		ReturnData retVal = null;
-		/*
-29.12.2014-14:02:02: Zavolana metoda searchPredpis. sq = ; urad = ; datumPredajaOd = ; datumPredajaDo = States count: 4
-29.12.2014-14:02:02: Bools: false true false true
-29.12.2014-14:02:02: Zapina filter: 0
-29.12.2014-14:02:02: Zapina filter: 2
-29.12.2014-14:02:02: filter: {stav:"UNDEFINED"}, {stav:"WAITING"}, {stav:"ERROR"}
-29.12.2014-14:02:02: Filter stavov: true: {$or:[{stav:"UNDEFINED"}, {stav:"WAITING"}, {stav:"ERROR"}]}
-		 */
 		
 		class StatesFilter{
 			private boolean isFiltering;
