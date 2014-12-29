@@ -252,12 +252,17 @@ function refreshPredpis(){
 	              $('#filter-waiting').prop('checked'),
 	              $('#filter-processed').prop('checked'),
 	              $('#filter-error').prop('checked')];
+
 	
 	$.getJSON(GLOBAL_APP_NAME + "/searchPredpis",
 		{
 			urad:$('#searchUradId').text(),
-			datumOd:$("#searchDatumOdInput").val(),
-			datumDo:$("#searchDatumDoInput").val(),
+			datumPredajaOd:$("#searchDatumOdInput").val(),
+			datumPredajaDo:$("#searchDatumDoInput").val(),
+			datumPridaniaOd:$("#searchDatumPridaniaOdInput").val(),
+			datumPridaniaDo:$("#searchDatumPridaniaDoInput").val(),
+			datumSyncOd:$("#searchDatumSyncOdInput").val(),
+			datumSyncDo:$("#searchDatumSyncDoInput").val(),
 			states:states,
 			sq:$("#searchPredpisInput").val(),
 			JSR:""
@@ -276,11 +281,9 @@ function refreshPredpis(){
 							idNoms += "; " + data.data[i].idnom[j];
 						}
 					}
-					var datum = new Date(data.data[i].datum);
-	
-					var date_day = datum.getDate();
-					var date_month = datum.getMonth();
-					var date_year = datum.getFullYear();
+					//data.data[i].datum
+					//datumPridania
+					//datumSync
 					
 					var errBlock = "";
 					if(data.data[i].errorMsg){
@@ -296,14 +299,19 @@ function refreshPredpis(){
 									<span class=\"data\">"+data.data[i].doklad+"</span> \
 									<span class=\"data-label\">Č. konania:</span> \
 									<span class=\"data\">"+data.data[i].konanie+"</span> \
-									<span class=\"data-label\">Dátum:</span> \
-									<span class=\"data\">"+date_day + "." + date_month + "." + date_year +"</span> \
 									<span class=\"data-label\">Pridal:</span> \
 									<span class=\"data\" style=\"width:150px\">"+data.data[i].fullName+"</span> \
 									<span class=\"data-label\">Stav:</span> \
 									<span class=\"data "+data.data[i].stav+"\" style=\"width:"+(data.data[i].stav == "PROCESSED" ? "60" : "100")+"px\">"+getStav(data.data[i].stav)+"</span> \
 									"+(data.data[i].stav == "PROCESSED" ? ("<span class=\"data-label\">"+(data.data[i].idPredpisu == null ? "" : ("(" + data.data[i].idPredpisu + ")"))+"</span>") : "") + " \
 									"+((data.data[i].stav == "ERROR" && isSuperUser(data)) ? "<a href=\"javascript:{}\" class=\"blue_button\" style=\"padding: 4px 10px 3px; margin-left: 10px; line-height: 1;\" onclick=\"resendPredpis('"+data.data[i].id+"')\">Znovu</a>" : "")+" \
+									<br/> \
+									<span class=\"data-label\">Dátum predaja:</span> \
+									<span class=\"data\">" + getD(data.data[i].datumPredaja) + "</span> \
+									<span class=\"data-label\">Dátum a čas pridania:</span> \
+									<span class=\"data\">" + getDC(data.data[i].datumPridania) + "</span> \
+									<span class=\"data-label\">Dátum a čas synchronizácie:</span> \
+									<span class=\"data\">" + getDC(data.data[i].datumSync) + "</span> \
 									<br/> \
 									<span class=\"data-label long-label\">Služba:</span> \
 									<span class=\"data long\">"+data.data[i].sluzbaName+"</span> \
@@ -325,6 +333,30 @@ function refreshPredpis(){
 	// Potrebujem znovu nastavit X a Y suradnice checkboxov so stavmi. 
 	// Mohlo sa to zmenit kvoli scrollbaru. 
 	// prepareStates();
+}
+
+function getS(s){
+	return s ? s : "[n/a]";
+}
+
+function getD(d){
+	if(!d){
+		return "[n/a]";
+	}
+	else{
+		var datum = new Date(d);
+		return datum.getDate() + "." + datum.getMonth() + "." + datum.getFullYear();
+	}
+}
+
+function getDC(d){
+	if(!d){
+		return "[n/a]";
+	}
+	else{
+		var datum = new Date(d);
+		return datum.getDate() + "." + datum.getMonth() + "." + datum.getFullYear() + " " + datum.getHours() + ":" + datum.getMinutes();
+	}
 }
 
 function getStav(stav){

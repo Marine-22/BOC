@@ -39,6 +39,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 
 
+
 import com.sun.xml.ws.wsdl.parser.InaccessibleWSDLException;
 
 import sk.gov.ekolky.estamp.fo10.Assessment;
@@ -120,6 +121,7 @@ public class TimedExport implements ExportPredpis{
 		try{
 			Sluzba s = sluzbaRepo.findByBusId(p.getSluzba());
 			p.setFeeTypeService(s.getFeeType());
+			p.setDatumSync(new Date().getTime());
 			checkPredpis(p);
 			String retVal = uploadPredpis(p, cisloPotvrdenia);
 			p.setIdPredpisu(retVal);
@@ -145,8 +147,6 @@ public class TimedExport implements ExportPredpis{
 		}
 		return false;
 	}
-	//com.sun.xml.ws.wsdl.parser.InaccessibleWSDLException: 2 counts of InaccessibleWSDLException.
-	//com.sun.xml.ws.wsdl.parser.InaccessibleWSDLException
 
 	
 	@SuppressWarnings("unused")
@@ -187,7 +187,6 @@ public class TimedExport implements ExportPredpis{
 	@Scheduled(fixedRate=PepConfig.fixedRateSluzbyUrady, initialDelay=PepConfig.initialDelaySluzbyUrady)
 	public void checkEnums()
     {
-		ConfigVersion cv;
 		DeviceStateCheckResponse check = null;
 		
 		try{
@@ -212,11 +211,11 @@ public class TimedExport implements ExportPredpis{
 		
 		try{
 			
-			cv = confRepo.findByName("" + ConfigVersion.ConfigType.SLUZBY);
-			stats.sluzbyOldVer = (cv == null ? "null" : cv.getVersion());
+			ConfigVersion confSluzby = confRepo.findByName("" + ConfigVersion.ConfigType.SLUZBY);
+			stats.sluzbyOldVer = (confSluzby == null ? "null" : confSluzby.getVersion());
 			
 			// sluzby treba poriesit
-			if(cv == null || !check.getServiceVersion().equals(cv.getVersion())){
+			if(confSluzby == null || !check.getServiceVersion().equals(confSluzby.getVersion())){
 
 				List<Service> lServis = callSluzby();
 				Set<String> keys = new HashSet<String>();
@@ -230,8 +229,7 @@ public class TimedExport implements ExportPredpis{
 							sBoc = new Sluzba(sPep.getOrder(), sPep.getName(), sPep.getFeeType());
 							sluzbaRepo.save(sBoc);
 						}
-						// zmenil sa nazov alebo typ poplatku
-						else if(!equalsSluzba(sPep, sBoc)){
+						else if(!equalsSluzba(sPep, sBoc)){// zmenil sa nazov alebo typ poplatku
 							logger.info("Zmena z " + sBoc.getName() + " na " + sPep.getName());
 							stats.incSU();
 							sBoc.setFeeType(sPep.getFeeType());
@@ -242,21 +240,21 @@ public class TimedExport implements ExportPredpis{
 				}
 				List<Sluzba> lSluzy = sluzbaRepo.findAll();
 				for(Sluzba sBoc : lSluzy){
-					if(!keys.contains(sBoc.getBusId())){
+					if(!keys.contains(sBoc.getBusId()) && sBoc.isActive()){
 						stats.incSD();
 						sBoc.setActive(true);
 						sluzbaRepo.save(sBoc);
 					}
 				}
 				
-				if(cv == null){
-					cv = new ConfigVersion("" + ConfigVersion.ConfigType.SLUZBY, check.getServiceVersion());
+				if(confSluzby == null){
+					confSluzby = new ConfigVersion("" + ConfigVersion.ConfigType.SLUZBY, check.getServiceVersion());
 				}
 				else{
-					cv.setVersion(check.getServiceVersion());
+					confSluzby.setVersion(check.getServiceVersion());
 				}
 				// ulozim novu verziu
-				confRepo.save(cv);
+				confRepo.save(confSluzby);
 			}
 		}
 		catch(DatatypeConfigurationException e){
@@ -273,9 +271,9 @@ public class TimedExport implements ExportPredpis{
 		
 		
 		try{
-			cv = confRepo.findByName("" + ConfigVersion.ConfigType.URADY);
-			stats.uradyOldVer = (cv == null ? "null" : cv.getVersion());
-			if(cv == null || !cv.getVersion().equals(check.getOfficeVersion())){
+			ConfigVersion confUrady = confRepo.findByName("" + ConfigVersion.ConfigType.URADY);
+			stats.uradyOldVer = (confUrady == null ? "null" : confUrady.getVersion());
+			if(confUrady == null || !confUrady.getVersion().equals(check.getOfficeVersion())){
 
 				List<Offices> lOff = callUrady();
 				Set<String> keys = new HashSet<String>();
@@ -296,21 +294,22 @@ public class TimedExport implements ExportPredpis{
 				
 				List<Urad> lUrady = uradRepo.findAll();
 				for(Urad u : lUrady){
-					if(!keys.contains(u.getBusId())){
+					if(!keys.contains(u.getBusId()) && u.isActive()){
 						stats.incUD();
 						u.setActive(false);
 						uradRepo.save(u);
 					}
 				}
 				
-				if(cv == null){
-					cv = new ConfigVersion("" + ConfigVersion.ConfigType.URADY, check.getOfficeVersion());
+				if(confUrady == null){
+					confUrady = new ConfigVersion("" + ConfigVersion.ConfigType.URADY, check.getOfficeVersion());
 				}
 				else{
-					cv.setVersion(check.getServiceVersion());
+					confUrady.setVersion(check.getOfficeVersion());
 				}
+				logger.info("Ukladam novu verziu uradov: " + confUrady.getName() + " - " + confUrady.getVersion());
 				// nova verzia conf uradov
-				confRepo.save(cv);
+				confRepo.save(confUrady);
 			}
 		} catch(DatatypeConfigurationException e){
 			logger.info("Chyba pri synchronizacii uradov.", e);
@@ -413,39 +412,43 @@ refundovany - predany a refundacia bola vyplatena
 fraudovany - do piatich dni po spotrebe neprisla informacia o predaji
 spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
  */
-			CheckStateResponse chsrs = nomPort.checkState(chsrq);
-			if("nezaevidovany".equals(chsrs.getState())){
-				errMsg = addError(errMsg, "Kolok " + idNom + " už bol spotrebovaný");
-			}
-			else if("nevalidny".equals(chsrs.getState())){
-				errMsg = addError(errMsg, "Kolok " + idNom + " nie je platný");
-			}
-			else if("spotrebovany".equals(chsrs.getState())){
-				errMsg = addError(errMsg, "Kolok " + idNom + " už bol spotrebovaný");
-			}
-			else if("refundReserve".equals(chsrs.getState())){
-				errMsg = addError(errMsg, "Kolok " + idNom + " je rezervovaný na refundáciu");
-			}
-			else if("zaslanyNaRefundaciu".equals(chsrs.getState())){
-				errMsg = addError(errMsg, "Kolok " + idNom + " bol zaslaný na refundáciu");
-			}
-			else if("nevyplateny".equals(chsrs.getState())){
-				errMsg = addError(errMsg, "Kolok " + idNom + " je nevyplatený");
-			}
-			else if("zaslanyNaRefundZnova".equals(chsrs.getState())){
-				errMsg = addError(errMsg, "Kolok " + idNom + " bol znova zaslaný na refundáciu");
-			}
-			else if("refundovany".equals(chsrs.getState())){
-				errMsg = addError(errMsg, "Kolok " + idNom + " bol refundovaný");
-			}
-			else if("fraudovany".equals(chsrs.getState())){
-				errMsg = addError(errMsg, "Kolok " + idNom + " je fraud");
-			}
-			else if("nepredany".equals(chsrs.getState())){
-				// OK
-			}
-			else if("vydany".equals(chsrs.getState())){
-				// OK
+			try{
+				CheckStateResponse chsrs = nomPort.checkState(chsrq);
+				if("nezaevidovany".equals(chsrs.getState())){
+					errMsg = addError(errMsg, "Kolok " + idNom + " už bol spotrebovaný");
+				}
+				else if("nevalidny".equals(chsrs.getState())){
+					errMsg = addError(errMsg, "Kolok " + idNom + " nie je platný");
+				}
+				else if("spotrebovany".equals(chsrs.getState())){
+					errMsg = addError(errMsg, "Kolok " + idNom + " už bol spotrebovaný");
+				}
+				else if("refundReserve".equals(chsrs.getState())){
+					errMsg = addError(errMsg, "Kolok " + idNom + " je rezervovaný na refundáciu");
+				}
+				else if("zaslanyNaRefundaciu".equals(chsrs.getState())){
+					errMsg = addError(errMsg, "Kolok " + idNom + " bol zaslaný na refundáciu");
+				}
+				else if("nevyplateny".equals(chsrs.getState())){
+					errMsg = addError(errMsg, "Kolok " + idNom + " je nevyplatený");
+				}
+				else if("zaslanyNaRefundZnova".equals(chsrs.getState())){
+					errMsg = addError(errMsg, "Kolok " + idNom + " bol znova zaslaný na refundáciu");
+				}
+				else if("refundovany".equals(chsrs.getState())){
+					errMsg = addError(errMsg, "Kolok " + idNom + " bol refundovaný");
+				}
+				else if("fraudovany".equals(chsrs.getState())){
+					errMsg = addError(errMsg, "Kolok " + idNom + " je fraud");
+				}
+				else if("nepredany".equals(chsrs.getState())){
+					// OK
+				}
+				else if("vydany".equals(chsrs.getState())){
+					// OK
+				}
+			}catch(BloxFaultMessage e){
+				errMsg = addError(errMsg, e.getMessage());
 			}
 		}
 		if(errMsg.length() > 0){
@@ -472,7 +475,7 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 		predpis.setFeeType(AssesmentType.fromValue(p.getFeeTypeService()));
 		predpis.setKey(new Key());
 		predpis.getKey().setConfirmID(idPotvrdenia);
-		predpis.getKey().setIssueDate(getDate(p.getDatum()));
+		predpis.getKey().setIssueDate(getDate(p.getDatumPredaja()));
 		//predpis.getKey().setVariableSymbol("0987654321");
 		
 		// pocitam vyslednu sumu = sucet vsetkych kolkov na predpise
@@ -487,7 +490,7 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 			OperPaymentNominal nominal = new OperPaymentNominal();
 			Key k = new Key();
 			
-			k.setIssueDate(getDate(p.getDatum()));
+			k.setIssueDate(getDate(p.getDatumPredaja()));
 			k.setNominalID(idNom);
 			
 			nominal.setKey(k);
@@ -499,17 +502,15 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 			oPay.setPayType(pType);
 			oType.setPayment(oPay);
 
-			operation.setOperationDate(getDate(p.getDatum()));
+			operation.setOperationDate(getDate(p.getDatumPredaja()));
 			operation.setType(oType);
 			
 			predpis.getOperations().add(operation);
 		}
 		requestCreate.setAssessment(predpis);
-		
-		
+		printPredpis(requestCreate);
 		Assessment ass = new Assessment();
 		AssessmentPortType apt = ass.getAssessmentPort();
-		
 		CreateResponse cres = apt.create(requestCreate);
 		logger.info("Dokoncenie uploadu. " + cres);
 		return idPotvrdenia;
@@ -528,28 +529,28 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 		float retVal = 0;
 		switch(idNom.charAt(0)){
 		case '1':
-			retVal += 0.5;
+			retVal = 0.5f;
 			break;
 		case '2':
-			retVal += 1;
+			retVal = 1;
 			break;
 		case '3':
-			retVal += 2;
+			retVal = 3;
 			break;
 		case '4':
-			retVal += 5;
+			retVal = 5;
 			break;
 		case '5':
-			retVal += 10;
+			retVal = 10;
 			break;
 		case '6':
-			retVal += 20;
+			retVal = 20;
 			break;
 		case '7':
-			retVal += 50;
+			retVal = 50;
 			break;
 		case '8':
-			retVal += 100;
+			retVal = 100;
 			break;
 		}
 		return retVal;
@@ -558,8 +559,8 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 	//XXX-YYMMDD-NNNN 
 	private String getConfirmId(int cisloPotvrdenia){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
-		logger.info("getConfirmId vracia: " + feDeviceId + "-" + sdf.format(new Date()) + "-" + String.format("%04d", cisloPotvrdenia));
-		return feDeviceId + "-" + sdf.format(new Date()) + "-" + String.format("%04d", cisloPotvrdenia);
+		logger.info(String.format("%s-%s-%04d",feDeviceId, sdf.format(new Date()), cisloPotvrdenia));
+		return   String.format("%s-%s-%04d",feDeviceId, sdf.format(new Date()), cisloPotvrdenia);
 	}
 	
 	
@@ -682,6 +683,24 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 				 "\n  - Zmazane: " + uradyD + 
 				 "\n  - Zmenene: " + uradyU;
 		}
+	}
+	
+	private void printPredpis(CreateRequest cr){
+    	String retVal = "CreateRequest:";
+    	retVal += "\ndate: " + cr.getDate();
+    	retVal += "\nfeDevideID: " + cr.getFeDeviceID();
+    	retVal += "\nAssessment.officeId: " + cr.getAssessment().getOfficeID();
+    	retVal += "\nAssessment.feeType: " + cr.getAssessment().getFeeType();
+    	retVal += "\nAssessment.key.confirmId: " + cr.getAssessment().getKey().getConfirmID();
+    	retVal += "\nAssessment.key.issueDate: " + cr.getAssessment().getKey().getIssueDate();
+    	for(int i = 0; i < cr.getAssessment().getOperations().size(); i++){
+    		retVal += "\nAssessment.operation["+i+"].type.payment.amount: " + cr.getAssessment().getOperations().get(i).getType().getPayment().getAmount();
+    		retVal += "\nAssessment.operation["+i+"].type.payment.payType.nominal.key.nominalId: " + cr.getAssessment().getOperations().get(i).getType().getPayment().getPayType().getNominal().getKey().getNominalID();
+    		retVal += "\nAssessment.operation["+i+"].type.payment.payType.nominal.key.issueDate: " + cr.getAssessment().getOperations().get(i).getType().getPayment().getPayType().getNominal().getKey().getIssueDate();
+    		retVal += "\nAssessment.operation["+i+"].operationDate: " + cr.getAssessment().getOperations().get(i).getOperationDate();
+    		
+    	}
+    	logger.info(retVal);
 	}
 }
 

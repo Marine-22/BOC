@@ -15,10 +15,10 @@ public class PepConfig {
 	public static final String TARGET_NAMESPACE = "http://www.ekolky.gov.sk/estamp/fo10";
 	public static final String QNAME_URI = "http://www.ekolky.gov.sk/estamp/fo10";
 
-	public static final int initialDelayPredpis = 1000;
-	public static final int fixedRatePredpis = (1000 * 60 * 60 * 24); // 1 den
-	//public static final int initialDelayPredpis = Integer.MAX_VALUE; // vypnuta auto sync
-	//public static final int fixedRatePredpis = Integer.MAX_VALUE; // vypnuta auto sync
+	//public static final int initialDelayPredpis = 1000;
+	//public static final int fixedRatePredpis = (1000 * 60 * 60 * 24); // 1 den
+	public static final int initialDelayPredpis = Integer.MAX_VALUE; // vypnuta auto sync
+	public static final int fixedRatePredpis = Integer.MAX_VALUE; // vypnuta auto sync
 	
 	
 	public static final int initialDelaySluzbyUrady = 1000;

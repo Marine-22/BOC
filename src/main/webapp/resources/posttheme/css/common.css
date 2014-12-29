@@ -241,10 +241,10 @@ input {border: 1px solid #d7d7d7; font-family: "Helvetica Neue", Arial, Helvetic
   .site-wrapper {width: 980px; display: block; margin-right: auto; margin-left: auto; margin-bottom: 36px; padding-top: 36px; text-align: left}
   .site-header {clear: left; float: left; width: 980px; height: 90px}
 .site-header img.logo {float: left; width: 100px; height: 90px}
-  .site-search {float: left; margin: 0px 0px 0px 10px; position: relative; z-index: 100; display: block; height: 32px; top: 55px}
+  .site-search {float: left; margin: 0px 0px 10px 10px; position: relative; z-index: 100; display: block; height: 32px; top: 25px}
   .site-search.right-site-search {float: right;}
-.site-search input {font-size: 12px; color: #666; padding: 8px 30px 8px 10px; width: 148px; background: white url(../img/search-input.png) no-repeat 165px; margin-top: 0; height: 15px; outline: none; border-radius: 5px}
-.site-search input.small {width: 118px; background-position: 135px;}
+.site-search input {font-size: 12px; color: #666; padding: 8px 30px 8px 10px; width: 240px; background: white url(../img/search-input.png) no-repeat 257px; margin-top: 0; height: 15px; outline: none; border-radius: 5px}
+.site-search input.small {width: 94px; background-position: 111px;}
 .site-search input.del_button {background-image: url(../img/delete.bmp)}
 .site-search-results {position: absolute; z-index: 99; width: 258px; border: 1px solid #dedede; background: white; top: 34px; left: 0; border-top: 1px solid #cbcbcb; border-radius: 5px; box-shadow: 0px 2px 8px rgba(0,0,0,0.2)}
 .site-search-results ul {margin: 0; padding: 5px 0px; list-style-type: none}
@@ -415,7 +415,7 @@ div.name-surname {float:left; width: 250px; }
 .main li>span.data:first-child {float: left; width: 100px; }
 .main span.data-label {color: #979797; float:left; padding-right: 5px;}
 .main span.long-label {width:45px;}
-.main li>span.data {float:left; width: 80px;}
+.main li>span.data {float:left; width: 120px;}
 .main ul#table-ul li span.long {width: 887px;}
 span.data.LOADED {}
 span.data.WAITING {color: #febf01}

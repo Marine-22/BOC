@@ -23,25 +23,43 @@
     <div class="site-wrapper">
       <div class="site-header" style="position: relative">
           <img alt="Slovenská pošta" class="logo" src="<c:url value="/resources/img/sl-posta-logo.png" />" title="Slovenská pošta" />  
-       <div class="site-search">
-          <input id="searchUradInput" type="text" value="" class="del_button" placeholder="-- Úrad --"/>
-          <span id="searchUradId" class="hide"></span>
-       </div>     
        
        <div class="site-search">
-          <input id="searchDatumOdInput" type="text" value="" class="del_button small" placeholder="-- Dátum od --" />
+          <input id="searchDatumOdInput" type="text" value="" class="del_button small" placeholder="-- Predaj od --" />
        </div>
               
        <div class="site-search">
-          <input id="searchDatumDoInput" type="text" value="" class="del_button small" placeholder="-- Dátum do --"/>
+          <input id="searchDatumDoInput" type="text" value="" class="del_button small" placeholder="-- Predaj do --"/>
        </div>
        
        <div class="site-search">
-          <input id="searchStavInput" type="text" value="" class="del_button small" placeholder="-- Stav --" maxlength="0" />
+          <input id="searchDatumPridaniaOdInput" type="text" value="" class="del_button small" placeholder="-- Pridané od --" />
        </div>
+              
+       <div class="site-search">
+          <input id="searchDatumPridaniaDoInput" type="text" value="" class="del_button small" placeholder="-- Pridané do --"/>
+       </div>
+       
+       <div class="site-search">
+          <input id="searchDatumSyncOdInput" type="text" value="" class="del_button small" placeholder="-- Synch od --" />
+       </div>
+              
+       <div class="site-search">
+          <input id="searchDatumSyncDoInput" type="text" value="" class="del_button small" placeholder="-- Synch do --"/>
+       </div>
+       
+       <div class="site-search">
+          <input id="searchUradInput" type="text" value="" class="del_button" placeholder="-- Úrad --"/>
+          <span id="searchUradId" class="hide"></span>
+       </div>    
+       
+       <div class="site-search">
+          <input id="searchStavInput" type="text" value="" class="del_button" placeholder="-- Stav --" maxlength="0" />
+       </div> 
+       
       
        <div class="site-search">
-          <input id="searchPredpisInput" class="small search_button" type="text" value=""  />
+          <input id="searchPredpisInput" class="search_button" type="text" value=""  />
        </div>
       
       

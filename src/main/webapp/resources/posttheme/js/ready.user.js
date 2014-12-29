@@ -68,6 +68,10 @@ $(document).ready(
     	$("#datepicker input"  ).datepicker();
     	$("#searchDatumDoInput").datepicker();
     	$("#searchDatumOdInput").datepicker();
+    	$("#searchDatumPridaniaOdInput").datepicker();
+    	$("#searchDatumPridaniaDoInput").datepicker();
+    	$("#searchDatumSyncOdInput").datepicker();
+    	$("#searchDatumSyncDoInput").datepicker();
     	
     	$('#uradpicker input').autocomplete({
     		source: window.GLOBAL_APP_NAME + '/searchUrad'
@@ -88,11 +92,7 @@ $(document).ready(
     		} 
     	});
     	
-    	$("#searchDatumDoInput").change(function(){
-			refreshPredpis();
-    	});
-    	
-    	$("#searchDatumOdInput").change(function(){
+    	$("#searchDatumDoInput, #searchDatumOdInput, #searchDatumPridaniaOdInput, #searchDatumPridaniaDoInput, #searchDatumSyncOdInput, #searchDatumSyncDoInput").change(function(){
 			refreshPredpis();
     	});
     	

@@ -3,6 +3,7 @@ package sk.posta.data;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -20,14 +21,19 @@ public class Predpis {
 	public Predpis(){}
 	
 	
-	public Predpis(MultiValueMap<String, String> data) throws ParseException{
+	public Predpis(MultiValueMap<String, String> data){
 		SimpleDateFormat sdf = new SimpleDateFormat(Predpis.SIMPLE_DATE);
 		this.doklad = data.get("doklad").get(0);
 		this.konanie = data.get("konanie").get(0);
 		this.sluzba = data.get("sluzba").get(0);
-		this.datum = sdf.parse(data.get("datum").get(0)).getTime();
+		try{
+			this.datumPredaja = sdf.parse(data.get("datum").get(0)).getTime();
+		}catch(ParseException e){
+			this.datumPredaja = null;// zle zadany datum, co uz
+		}
 		this.urad = data.get("urad").get(0);
 		this.poradove = data.get("poradove").get(0);
+		this.datumPridania = new Date().getTime();
 		idnom = new ArrayList<String>();
 		for(String idNom : data.get("idnom[]")){
 			this.idnom.add(idNom);
@@ -40,7 +46,9 @@ public class Predpis {
 	private String doklad;
 	private String konanie;
 	private String sluzba;
-	private Long datum;
+	private Long datumPredaja; // predaja, zadava pouzivatel v GUI
+	private Long datumPridania;
+	private Long datumSync;
 	private String urad;
 	private String poradove;
 	private List<String> idnom;
@@ -65,7 +73,7 @@ public class Predpis {
 	
 	
 	public String toString(){
-		return "Predpis: id="+id+" doklad=" + doklad + "; konanie=" + konanie + "; sluzba=" + sluzba + "; datum: "+datum + "; pocetId=" + (idnom == null ? 0 : (idnom.size()  + "; idnom: " + idnom));
+		return "Predpis: id="+id+" doklad=" + doklad + "; konanie=" + konanie + "; sluzba=" + sluzba + "; datum: "+datumPredaja + "; pocetId=" + (idnom == null ? 0 : (idnom.size()  + "; idnom: " + idnom));
 	}
 	
 	public String getDoklad() {
@@ -86,11 +94,11 @@ public class Predpis {
 	public void setSluzba(String sluzba) {
 		this.sluzba = sluzba;
 	}
-	public Long getDatum() {
-		return datum;
+	public Long getDatumPredaja() {
+		return datumPredaja;
 	}
-	public void setDatum(Long datum) {
-		this.datum = datum;
+	public void setDatumPredaja(Long datumPredaja) {
+		this.datumPredaja = datumPredaja;
 	}
 	public String getUradName() {
 		return uradName;
@@ -174,5 +182,25 @@ public class Predpis {
 		if(s != null){
 			this.sluzbaName = s.getName();
 		}
+	}
+
+
+	public Long getDatumPridania() {
+		return datumPridania;
+	}
+
+
+	public void setDatumPridania(Long datumPridania) {
+		this.datumPridania = datumPridania;
+	}
+
+
+	public Long getDatumSync() {
+		return datumSync;
+	}
+
+
+	public void setDatumSync(Long datumSync) {
+		this.datumSync = datumSync;
 	}
 }

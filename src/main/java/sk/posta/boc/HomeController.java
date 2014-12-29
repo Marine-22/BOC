@@ -2,6 +2,8 @@ package sk.posta.boc;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -99,24 +101,19 @@ public class HomeController {
 	public @ResponseBody String addPredpis(HttpSession session, Model model, @RequestParam MultiValueMap<String, String> params){
 		logger.info("Zavolana metoda addPredpis. Data: " + params);
 		ReturnData retVal = null;
-		try{
-			Predpis predpis = new Predpis(params);
-			predpis.setIdZamLogin(session.getAttribute(HomeController.LOGIN).toString());
-			logger.info("Zavolana metoda addPredpis. Data: " + predpis);
+		Predpis predpis = new Predpis(params);
+		predpis.setIdZamLogin(session.getAttribute(HomeController.LOGIN).toString());
+		logger.info("Zavolana metoda addPredpis. Data: " + predpis);
+		predpis = predpisRepo.save(predpis);
+		if(PepConfig.initialDelayPredpis == Integer.MAX_VALUE){ // vypnuta auto sync, musi sa spravit hned
+			predpis.setStav(PredpisStav.WAITING);
 			predpis = predpisRepo.save(predpis);
-			if(PepConfig.initialDelayPredpis == Integer.MAX_VALUE){ // vypnuta auto sync, musi sa spravit hned
-				predpis.setStav(PredpisStav.WAITING);
-				predpis = predpisRepo.save(predpis);
-				exportPredpis.exportPredpis(predpis);
-			}
-			else{
-				predpis = predpisRepo.save(predpis);
-			}
-			retVal = setRetVal();
-			return JacksonUtil.object2Json(retVal);
-		}catch(ParseException e){
-			retVal = setRetValError(retVal, "Uvedený dátum má nesprávny formát: '"+params.get("datum").get(0)+"'");
+			exportPredpis.exportPredpis(predpis);
 		}
+		else{
+			predpis = predpisRepo.save(predpis);
+		}
+		retVal = setRetVal();
 		return JacksonUtil.object2Json(retVal);
 	}
 	
@@ -213,14 +210,24 @@ public class HomeController {
 	@RequestMapping(value = "/searchPredpis", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
 	public @ResponseBody String searchPredpis(HttpSession session, 
 			@RequestParam(value="urad", required=false) String urad,
-			@RequestParam(value="datumOd", required=false) String datumOd,
-			@RequestParam(value="datumDo", required=false) String datumDo,
+			@RequestParam(value="datumPredajaOd", required=false) String datumPredajaOd,
+			@RequestParam(value="datumPredajaDo", required=false) String datumPredajaDo,
+			@RequestParam(value="datumPridaniaOd", required=false) String datumPridaniaOd,
+			@RequestParam(value="datumPridaniaDo", required=false) String datumPridaniaDo,
+			@RequestParam(value="datumSyncOd", required=false) String datumSyncOd,
+			@RequestParam(value="datumSyncDo", required=false) String datumSyncDo,
 			@RequestParam(value="states[]", required=false) Boolean[] states,
 			@RequestParam(value="sq", required=false) String sq) {
-		logger.info("Zavolana metoda searchPredpis. sq = " + sq + "; urad = " + urad + "; od = " + datumOd + "; do = " + datumDo + "States count: " + states.length);
+		logger.info("Zavolana metoda searchPredpis. sq = " + sq + "; urad = " + urad + "; datumPredajaOd = " + datumPredajaOd + "; datumPredajaDo = " + datumPredajaDo + "States count: " + states.length);
 		ReturnData retVal = null;
-		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-		
+		/*
+29.12.2014-14:02:02: Zavolana metoda searchPredpis. sq = ; urad = ; datumPredajaOd = ; datumPredajaDo = States count: 4
+29.12.2014-14:02:02: Bools: false true false true
+29.12.2014-14:02:02: Zapina filter: 0
+29.12.2014-14:02:02: Zapina filter: 2
+29.12.2014-14:02:02: filter: {stav:"UNDEFINED"}, {stav:"WAITING"}, {stav:"ERROR"}
+29.12.2014-14:02:02: Filter stavov: true: {$or:[{stav:"UNDEFINED"}, {stav:"WAITING"}, {stav:"ERROR"}]}
+		 */
 		
 		class StatesFilter{
 			private boolean isFiltering;
@@ -271,28 +278,19 @@ public class HomeController {
 		StatesFilter statesFilter = new StatesFilter(states);
 		
 		UserType uType = (UserType)session.getAttribute(USER_TYPE);
-		Long dateFrom = null;
-		Long dateTo = null;
-		try{
-			dateFrom = sdf.parse(datumOd).getTime();
-		}catch(ParseException ex){}
-		
-		try{
-			dateTo = sdf.parse(datumDo).getTime();
-		}catch(ParseException ex){}
-		
+		String datesFilter = getDatesFilter(datumPredajaOd, datumPredajaDo, datumPridaniaOd, datumPridaniaDo, datumSyncOd, datumSyncDo);
+	
 		logger.info("Filter stavov: " + statesFilter.isFiltering() + ": " + statesFilter.getFilter());
 		BasicQuery bq = null;
-		if((sq == null || "".equals(sq)) && (urad == null || "".equals(urad)) && (dateFrom == null) && (dateTo == null) && !statesFilter.isFiltering()){
+		if((sq == null || "".equals(sq)) && (urad == null || "".equals(urad)) && (datesFilter == null) && !statesFilter.isFiltering()){
 			bq = new BasicQuery(UserType.checkPermission(uType, Permissions.SEARCH_ALL_PREDPIS) ? "{}" : "{idZamLogin:\""+session.getAttribute(LOGIN)+"\"}");
 		}
 		else{
 			String sbq = "{$and:[" + 
-					((urad == null || "".equals(urad)) ? "" : 									"{urad: \""+urad+"\"},") +
-					(dateFrom == null ? "" : 													"{datum: { \"$gte\" : "+dateFrom+"}},") +
-					(dateTo == null ? "" : 														"{datum: { \"$lte\" : "+dateTo+"}},") +
-					(UserType.checkPermission(uType, Permissions.SEARCH_ALL_PREDPIS) ? "" : 	"{idZamLogin:\""+session.getAttribute(LOGIN)+"\"},") +
-					(!statesFilter.isFiltering() ? "" : 										statesFilter.getFilter() + ",") +
+					((urad == null || "".equals(urad)) ? "" : 									"{urad: \""+urad+"\"},") +	// filter uradu
+					(datesFilter == null ? "" : 												datesFilter) +				// filter vsetkych datumov (3x od do)
+					(UserType.checkPermission(uType, Permissions.SEARCH_ALL_PREDPIS) ? "" : 	"{idZamLogin:\""+session.getAttribute(LOGIN)+"\"},") + // filter na prihlaseneho zamestnanca
+					(!statesFilter.isFiltering() ? "" : 										statesFilter.getFilter() + ",") + // filter na stavy
 								"{$or:[" +
 											"{doklad:{$regex:\"^"+sq+"\\w*\", $options:\"i\"}}, " +
 											"{konanie:{$regex:\"^"+sq+"\\w*\", $options:\"i\"}}, " +
@@ -315,6 +313,34 @@ public class HomeController {
 		retVal = setRetVal(l);
 		retVal.setUserType(uType);
 		return JacksonUtil.object2Json(retVal);
+	}
+	
+	private String getDatesFilter(String... dates){
+		String retVal = "";
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+		int count = 0;
+		String[] fields = {"datumPredaja", "datumPredaja", "datumPridania", "datumPridania", "datumSync", "datumSync"};
+		String[] compars = {"gte", "lte", "gte", "lte","gte", "lte"};
+		boolean[] setMax = {false, true, false, true, false, true};
+		
+		for(int i = 0; i < 6; i++){
+			try{
+				if(setMax[i]){
+					Calendar c = Calendar.getInstance();
+					c.setTime(sdf.parse(dates[i]));
+					c.set(Calendar.HOUR_OF_DAY, 23);
+					c.set(Calendar.MINUTE, 59);
+					c.set(Calendar.SECOND, 59);
+					retVal += "{"+fields[i]+": { \"$"+compars[i]+"\" : "+c.getTimeInMillis()+"}},";
+				}
+				else{
+					retVal += "{"+fields[i]+": { \"$"+compars[i]+"\" : "+sdf.parse(dates[i]).getTime()+"}},";
+				}
+				count++;
+			}catch(ParseException ex){}
+		}
+		if(count == 0) return null; 
+		return retVal; // niektory datum je zadany
 	}
 	
 	
@@ -464,6 +490,7 @@ public class HomeController {
 		return retVal;
 	}
 	
+	@SuppressWarnings("unused")
 	private ReturnData setRetValError(ReturnData r, String errMsg){
 		if(r == null){
 			r = new ReturnData();
