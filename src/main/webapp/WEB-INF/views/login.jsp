@@ -33,7 +33,7 @@
 		</div>
 
 		<div class="site-nav-main">
-			<ul></ul>
+			<span class="version-info">Verzia: ${dbName} - ${appVersion}</span>
 		</div>
 
 		<div class="site-area-top"></div>

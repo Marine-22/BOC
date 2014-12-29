@@ -52,8 +52,14 @@ import sk.posta.data.repo.UserRepository;
  */
 @Controller
 public class HomeController {
+
+	@Value("#{dbsProps['mongo.name']}") 
+	private String dbName;
 	
 
+	@Value("#{appProps['app.version']}") 
+	private String appVersion;
+	
 	@Value("#{appProps['app.gui.maxSuggestItems']}") 
 	private int MAX_SUGGEST_ITEMS;
 	
@@ -173,6 +179,8 @@ public class HomeController {
 		logger.info("Zavolana metoda login.");
 		session.setAttribute(HomeController.AUTHENTICATED, null);
 		session.setAttribute(HomeController.USER_TYPE, null);
+		model.addAttribute("dbName", dbName);
+		model.addAttribute("appVersion", appVersion);
 		return "login";
 	}
 	

@@ -35,6 +35,11 @@
 	
 	<util:properties id="appProps" location="classpath:app.properties" />
 	
+	<util:properties id="dbsProps" location="classpath:database.properties" />
+	
+	
+	<!-- Import properties file -->
+	<context:property-placeholder location="classpath:database.properties" />
 	
 
 	<context:component-scan base-package="sk.posta.boc" />
@@ -65,10 +70,10 @@
 	</beans:bean>
 
 
-	<mongo:mongo id="boc_posta" host="127.0.0.1" port="27017" write-concern="majority" />
+	<mongo:mongo id="boc_posta" host="${mongo.host}" port="${mongo.port}" write-concern="majority" />
 	<beans:bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<beans:constructor-arg ref="boc_posta" />
-		<beans:constructor-arg value="develop" />
+		<beans:constructor-arg value="${mongo.name}" />
 	</beans:bean>
 
 	<beans:bean id="passwordEncoder"

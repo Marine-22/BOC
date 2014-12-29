@@ -288,6 +288,7 @@ input {border: 1px solid #d7d7d7; font-family: "Helvetica Neue", Arial, Helvetic
 .site-nav-bottom ul li {display: inline; padding-left: 20px}
 .copyright {text-align: center; color: #91979d; font-size: .9em}
  .site-nav-main {float: left; clear: both; border: 1px solid #e3ab04; margin-top: 20px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; text-align: left; background: #fec006 url(../img/main-navi-bcg.png) repeat-x; height: 40px; position: relative; width: 978px; overflow: hidden}
+.site-nav-main span.version-info {padding: 12px 30px 11px 59px; display: block; float: left; text-shadow: 0px 1px 0px rgba(255, 254, 255, 0.6); font-weight: bold;}
 .site-nav-main ul {padding: 0; margin: 0; list-style-type: none; width: 110%; float: left; display: inline-block}
 .site-nav-main ul li {display: block; float: left; overflow: hidden; width : 245px; } 
 .site-nav-main ul li.border-left {border-left: 1px solid #fed866; }
