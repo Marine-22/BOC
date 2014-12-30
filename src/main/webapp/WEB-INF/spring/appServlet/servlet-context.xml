@@ -68,6 +68,8 @@
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
+	
+	<beans:bean class="sk.posta.boc.ispep.ConnectionTest" />
 
 
 	<mongo:mongo id="boc_posta" host="${mongo.host}" port="${mongo.port}" write-concern="majority" />
@@ -81,9 +83,7 @@
 
 	<mongo:repositories base-package="sk.posta.data.repo" />
 
-	<!-- <mongo:repository id="imageRepository" mongo-template-ref="imageTemplate"/> 
-		<mongo:repository id="carRepository" mongo-template-ref="vehicleTemplate"/> 
-		<mongo:repository id="truckRepository" mongo-template-ref="vehicleTemplate"/> -->
+
 
 	<task:annotation-driven executor="myExecutor" scheduler="myScheduler"/>
 	<task:executor id="myExecutor" pool-size="5"/>

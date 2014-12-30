@@ -176,6 +176,28 @@ public class TimedExport implements ExportPredpis{
 		}
     }
 	
+	/**
+	 * Checks connection to is pep by calling deviceStateCheck
+	 */
+	public void checkConnection(){
+		try{
+			Infra infra = new Infra();
+			InfraPortType iPort = infra.getInfraPort();
+			DeviceStateCheckRequest dscrq = getRequest(DeviceStateCheckRequest.class);
+			iPort.deviceStateCheck(dscrq);
+			logger.info("Check connection OK");
+		}catch(IllegalAccessException e){
+			logger.info("Check connection FAIL " + e.getMessage());
+		}catch(InstantiationException e){
+			logger.info("Check connection FAIL " + e.getMessage());
+		}catch(DatatypeConfigurationException e){
+			logger.info("Check connection FAIL " + e.getMessage());
+		}catch(BloxFaultMessage e){
+			logger.info("Check connection FAIL " + e.getMessage());
+		}
+	}
+
+	
 	private void saveExceptioin(Predpis p, Exception e){
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy' 'HH:mm:ss:' '");
 		p.setStav(PredpisStav.ERROR);
