@@ -40,6 +40,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 
 
+
 import com.sun.xml.ws.wsdl.parser.InaccessibleWSDLException;
 
 import sk.gov.ekolky.estamp.fo10.Assessment;
@@ -66,6 +67,7 @@ import sk.gov.ekolky.estamp.xsd10.OperPaymentNominal;
 import sk.gov.ekolky.estamp.xsd10.Operation;
 import sk.gov.ekolky.estamp.xsd10.RequestFE;
 import sk.gov.ekolky.estamp.xsd10.Service;
+import sk.posta.boc.HomeController;
 import sk.posta.data.ConfigVersion;
 import sk.posta.data.Predpis;
 import sk.posta.data.Sluzba;
@@ -186,14 +188,19 @@ public class TimedExport implements ExportPredpis{
 			DeviceStateCheckRequest dscrq = getRequest(DeviceStateCheckRequest.class);
 			iPort.deviceStateCheck(dscrq);
 			logger.info("Check connection OK");
+			HomeController.PepConnectionStatus = "OK";
 		}catch(IllegalAccessException e){
 			logger.info("Check connection FAIL " + e.getMessage());
+			HomeController.PepConnectionStatus = "CHYBA";
 		}catch(InstantiationException e){
 			logger.info("Check connection FAIL " + e.getMessage());
+			HomeController.PepConnectionStatus = "CHYBA";
 		}catch(DatatypeConfigurationException e){
 			logger.info("Check connection FAIL " + e.getMessage());
+			HomeController.PepConnectionStatus = "CHYBA";
 		}catch(BloxFaultMessage e){
 			logger.info("Check connection FAIL " + e.getMessage());
+			HomeController.PepConnectionStatus = "CHYBA";
 		}
 	}
 

@@ -3,7 +3,6 @@ package sk.posta.boc;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -56,6 +55,8 @@ public class HomeController {
 	@Value("#{dbsProps['mongo.name']}") 
 	private String dbName;
 	
+	 // nastavuje sa z TimedExport po uspesnom/neuspesnom overeni konektivity
+	public static String PepConnectionStatus;
 
 	@Value("#{appProps['app.version']}") 
 	private String appVersion;
@@ -181,6 +182,7 @@ public class HomeController {
 		session.setAttribute(HomeController.USER_TYPE, null);
 		model.addAttribute("dbName", dbName);
 		model.addAttribute("appVersion", appVersion);
+		model.addAttribute("PepConnectionStatus", PepConnectionStatus);
 		return "login";
 	}
 	

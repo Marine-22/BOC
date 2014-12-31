@@ -34,6 +34,7 @@
 
 		<div class="site-nav-main">
 			<span class="version-info">Verzia: ${dbName} - ${appVersion}</span>
+			<span class="version-info">Kontrola pripojenia na IS PEP: ${PepConnectionStatus}</span>
 		</div>
 
 		<div class="site-area-top"></div>

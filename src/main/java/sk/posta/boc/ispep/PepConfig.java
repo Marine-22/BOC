@@ -10,8 +10,28 @@ package sk.posta.boc.ispep;
  */
 public class PepConfig {
 
+	/**
+FIX         – 10.172.10.50
+TEST      - 10.169.10.50
+PROD    - 10.171.10.50
+	 */
+//	////////////////////    DEV    ////////////////////
 	public static final String URL = "http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl";
 	public static final String WSDL_LOCATION = "http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl";
+//	
+//	////////////////////    TEST    ////////////////////
+//	public static final String URL = "http://10.169.10.50:9080/estamp/soa/server/r1_2.wsdl";
+//	public static final String WSDL_LOCATION = "http://10.169.10.50:9080/estamp/soa/server/r1_2.wsdl";
+//
+//	////////////////////    FIX    ////////////////////
+//	public static final String URL = "http://10.172.10.50:9080/estamp/soa/server/r1_2.wsdl";
+//	public static final String WSDL_LOCATION = "http://10.172.10.50:9080/estamp/soa/server/r1_2.wsdl";
+//
+//	////////////////////    PROD    ////////////////////
+//	public static final String URL = "http://10.171.10.50:9080/estamp/soa/server/r1_2.wsdl";
+//	public static final String WSDL_LOCATION = "http://10.171.10.50:9080/estamp/soa/server/r1_2.wsdl";
+
+	
 	public static final String TARGET_NAMESPACE = "http://www.ekolky.gov.sk/estamp/fo10";
 	public static final String QNAME_URI = "http://www.ekolky.gov.sk/estamp/fo10";
 
