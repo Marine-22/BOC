@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false"%>
 
 
@@ -34,7 +35,7 @@
 
 		<div class="site-nav-main">
 			<span class="version-info">Verzia: ${dbName} - ${appVersion}</span>
-			<span class="version-info">Kontrola pripojenia na IS PEP: ${PepConnectionStatus}</span>
+			<span class="version-info">Kontrola pripojenia na IS PEP: ${ConnectionTest.version} (<fmt:formatDate value="${ConnectionTest.dateDatum}" type="time" pattern="dd.MM.yy HH:mm" />)</span>
 		</div>
 
 		<div class="site-area-top"></div>

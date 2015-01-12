@@ -3,8 +3,11 @@ package sk.posta.boc;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -31,6 +34,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sk.posta.boc.ispep.ExportPredpis;
 import sk.posta.boc.ispep.PepConfig;
 import sk.posta.boc.util.JacksonUtil;
+import sk.posta.data.ConfigVersion;
 import sk.posta.data.LoginData;
 import sk.posta.data.Predpis;
 import sk.posta.data.ReturnData;
@@ -41,6 +45,7 @@ import sk.posta.data.User;
 import sk.posta.data.enumm.Permissions;
 import sk.posta.data.enumm.PredpisStav;
 import sk.posta.data.enumm.UserType;
+import sk.posta.data.repo.ConfigVersionRepository;
 import sk.posta.data.repo.PredpisRepository;
 import sk.posta.data.repo.SluzbaRepository;
 import sk.posta.data.repo.UradRepository;
@@ -54,9 +59,6 @@ public class HomeController {
 
 	@Value("#{dbsProps['mongo.name']}") 
 	private String dbName;
-	
-	 // nastavuje sa z TimedExport po uspesnom/neuspesnom overeni konektivity
-	public static String PepConnectionStatus;
 
 	@Value("#{appProps['app.version']}") 
 	private String appVersion;
@@ -96,6 +98,9 @@ public class HomeController {
 	
 	@Autowired
 	private ExportPredpis exportPredpis;
+	
+	@Autowired
+	private ConfigVersionRepository confRepo;
 	
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -178,11 +183,13 @@ public class HomeController {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(HttpSession session, Locale locale, Model model) {
 		logger.info("Zavolana metoda login.");
+		ConfigVersion cv = confRepo.findByName("" + ConfigVersion.ConfigType.CONN_TEST);
+		if(cv != null) cv.setDateDatum();
 		session.setAttribute(HomeController.AUTHENTICATED, null);
 		session.setAttribute(HomeController.USER_TYPE, null);
 		model.addAttribute("dbName", dbName);
 		model.addAttribute("appVersion", appVersion);
-		model.addAttribute("PepConnectionStatus", PepConnectionStatus);
+		model.addAttribute("ConnectionTest", cv);
 		return "login";
 	}
 	
@@ -349,6 +356,17 @@ public class HomeController {
 	@RequestMapping(value = "/superuser", method = RequestMethod.GET)
 	public String superuser(HttpSession session, Locale locale, Model model) {
 		logger.info("Zavolana metoda superuser.");
+		ConfigVersion conn = confRepo.findByName("" + ConfigVersion.ConfigType.CONN_TEST);
+		if(conn != null) conn.setDateDatum();
+		ConfigVersion sluzby = confRepo.findByName("" + ConfigVersion.ConfigType.SLUZBY);
+		if(sluzby != null) sluzby.setDateDatum();
+		ConfigVersion urady = confRepo.findByName("" + ConfigVersion.ConfigType.URADY);
+		if(urady != null) urady.setDateDatum();
+		model.addAttribute("dbName", dbName);
+		model.addAttribute("appVersion", appVersion);
+		model.addAttribute("conn", conn);
+		model.addAttribute("sluzby", sluzby);
+		model.addAttribute("urady", urady);
 		return "superuser";
 		
 	}
@@ -471,6 +489,48 @@ public class HomeController {
 		return JacksonUtil.object2Json(retVal);
 	}
 	
+	@RequestMapping(value = "/syncEnums", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+	public @ResponseBody String syncEnums(HttpSession session){
+		logger.info("Zavolana metoda syncEnums");
+		ReturnData retVal = null;
+		retVal = setRetVal();
+		new Thread(new Runnable() {
+			public void run() {
+				exportPredpis.checkEnums();
+			}
+		}).start();
+		
+		return JacksonUtil.object2Json(retVal);
+	}
+
+	@RequestMapping(value = "/testConn", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+	public @ResponseBody String testConn(HttpSession session){
+		logger.info("Zavolana metoda testConn: ");
+		ReturnData retVal = null;
+		retVal = setRetVal();
+		new Thread(new Runnable() {
+			public void run() {
+				exportPredpis.checkConnection();
+			}
+		}).start();
+		return JacksonUtil.object2Json(retVal);
+	}
+	
+
+	@RequestMapping(value = "/pepRefresh", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+	public @ResponseBody String pepRefresh(HttpSession session){
+		logger.info("Zavolana metoda resendPredpis: ");
+		ReturnData retVal = null;
+		ConfigVersion conn = confRepo.findByName("" + ConfigVersion.ConfigType.CONN_TEST);
+		ConfigVersion sluzby = confRepo.findByName("" + ConfigVersion.ConfigType.SLUZBY);
+		ConfigVersion urady = confRepo.findByName("" + ConfigVersion.ConfigType.URADY);
+		Map<String, ConfigVersion> m = new HashMap<String, ConfigVersion>();
+		m.put("" + ConfigVersion.ConfigType.CONN_TEST, conn);
+		m.put("" + ConfigVersion.ConfigType.SLUZBY, sluzby);
+		m.put("" + ConfigVersion.ConfigType.URADY, urady);
+		retVal = setRetVal(m);
+		return JacksonUtil.object2Json(retVal);
+	}
 	
 	
 	private String getHPass(String pass){

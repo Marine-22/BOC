@@ -30,75 +30,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ListSWPResponse.Offices }
+     * Create an instance of {@link ListFeDevicesRequest }
      * 
      */
-    public ListSWPResponse.Offices createListSWPResponseOffices() {
-        return new ListSWPResponse.Offices();
+    public ListFeDevicesRequest createListFeDevicesRequest() {
+        return new ListFeDevicesRequest();
     }
 
     /**
-     * Create an instance of {@link ListSWPRequest }
+     * Create an instance of {@link ListCountryResponse.Countries }
      * 
      */
-    public ListSWPRequest createListSWPRequest() {
-        return new ListSWPRequest();
-    }
-
-    /**
-     * Create an instance of {@link ListDeviceInfoResponse }
-     * 
-     */
-    public ListDeviceInfoResponse createListDeviceInfoResponse() {
-        return new ListDeviceInfoResponse();
-    }
-
-    /**
-     * Create an instance of {@link ListCountryResponse }
-     * 
-     */
-    public ListCountryResponse createListCountryResponse() {
-        return new ListCountryResponse();
-    }
-
-    /**
-     * Create an instance of {@link ListFeeRequest }
-     * 
-     */
-    public ListFeeRequest createListFeeRequest() {
-        return new ListFeeRequest();
-    }
-
-    /**
-     * Create an instance of {@link ListOfficeResponse.Offices.Devices }
-     * 
-     */
-    public ListOfficeResponse.Offices.Devices createListOfficeResponseOfficesDevices() {
-        return new ListOfficeResponse.Offices.Devices();
-    }
-
-    /**
-     * Create an instance of {@link ListFeeResponse }
-     * 
-     */
-    public ListFeeResponse createListFeeResponse() {
-        return new ListFeeResponse();
-    }
-
-    /**
-     * Create an instance of {@link IncidentRegisterRequest }
-     * 
-     */
-    public IncidentRegisterRequest createIncidentRegisterRequest() {
-        return new IncidentRegisterRequest();
-    }
-
-    /**
-     * Create an instance of {@link ListOfficeResponse.Offices }
-     * 
-     */
-    public ListOfficeResponse.Offices createListOfficeResponseOffices() {
-        return new ListOfficeResponse.Offices();
+    public ListCountryResponse.Countries createListCountryResponseCountries() {
+        return new ListCountryResponse.Countries();
     }
 
     /**
@@ -110,27 +54,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ListSWPResponse.Offices.Devices }
-     * 
-     */
-    public ListSWPResponse.Offices.Devices createListSWPResponseOfficesDevices() {
-        return new ListSWPResponse.Offices.Devices();
-    }
-
-    /**
-     * Create an instance of {@link DeviceStateCheckResponse }
-     * 
-     */
-    public DeviceStateCheckResponse createDeviceStateCheckResponse() {
-        return new DeviceStateCheckResponse();
-    }
-
-    /**
      * Create an instance of {@link ListServiceRequest }
      * 
      */
     public ListServiceRequest createListServiceRequest() {
         return new ListServiceRequest();
+    }
+
+    /**
+     * Create an instance of {@link ListCountryResponse }
+     * 
+     */
+    public ListCountryResponse createListCountryResponse() {
+        return new ListCountryResponse();
+    }
+
+    /**
+     * Create an instance of {@link ListParameterResponse }
+     * 
+     */
+    public ListParameterResponse createListParameterResponse() {
+        return new ListParameterResponse();
+    }
+
+    /**
+     * Create an instance of {@link ListOfficeResponse.Offices }
+     * 
+     */
+    public ListOfficeResponse.Offices createListOfficeResponseOffices() {
+        return new ListOfficeResponse.Offices();
     }
 
     /**
@@ -142,11 +94,59 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ListFeDevicesRequest }
+     * Create an instance of {@link ListDeviceInfoResponse.State }
      * 
      */
-    public ListFeDevicesRequest createListFeDevicesRequest() {
-        return new ListFeDevicesRequest();
+    public ListDeviceInfoResponse.State createListDeviceInfoResponseState() {
+        return new ListDeviceInfoResponse.State();
+    }
+
+    /**
+     * Create an instance of {@link IncidentRegisterResponse }
+     * 
+     */
+    public IncidentRegisterResponse createIncidentRegisterResponse() {
+        return new IncidentRegisterResponse();
+    }
+
+    /**
+     * Create an instance of {@link IncidentRegisterRequest }
+     * 
+     */
+    public IncidentRegisterRequest createIncidentRegisterRequest() {
+        return new IncidentRegisterRequest();
+    }
+
+    /**
+     * Create an instance of {@link ListSWPResponse }
+     * 
+     */
+    public ListSWPResponse createListSWPResponse() {
+        return new ListSWPResponse();
+    }
+
+    /**
+     * Create an instance of {@link ListDeviceInfoResponse }
+     * 
+     */
+    public ListDeviceInfoResponse createListDeviceInfoResponse() {
+        return new ListDeviceInfoResponse();
+    }
+
+    /**
+     * Create an instance of {@link ListFeeResponse }
+     * 
+     */
+    public ListFeeResponse createListFeeResponse() {
+        return new ListFeeResponse();
+    }
+
+    /**
+     * Create an instance of {@link ListFeeRequest }
+     * 
+     */
+    public ListFeeRequest createListFeeRequest() {
+        return new ListFeeRequest();
     }
 
     /**
@@ -166,35 +166,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ListSWPResponse }
+     * Create an instance of {@link ListCountryRequest }
      * 
      */
-    public ListSWPResponse createListSWPResponse() {
-        return new ListSWPResponse();
-    }
-
-    /**
-     * Create an instance of {@link ListServiceResponse }
-     * 
-     */
-    public ListServiceResponse createListServiceResponse() {
-        return new ListServiceResponse();
-    }
-
-    /**
-     * Create an instance of {@link DeviceStateCheckRequest }
-     * 
-     */
-    public DeviceStateCheckRequest createDeviceStateCheckRequest() {
-        return new DeviceStateCheckRequest();
-    }
-
-    /**
-     * Create an instance of {@link ListSWPResponse.Offices.Agendas }
-     * 
-     */
-    public ListSWPResponse.Offices.Agendas createListSWPResponseOfficesAgendas() {
-        return new ListSWPResponse.Offices.Agendas();
+    public ListCountryRequest createListCountryRequest() {
+        return new ListCountryRequest();
     }
 
     /**
@@ -206,11 +182,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ListParameterResponse }
+     * Create an instance of {@link ListServiceResponse }
      * 
      */
-    public ListParameterResponse createListParameterResponse() {
-        return new ListParameterResponse();
+    public ListServiceResponse createListServiceResponse() {
+        return new ListServiceResponse();
+    }
+
+    /**
+     * Create an instance of {@link ListSWPRequest }
+     * 
+     */
+    public ListSWPRequest createListSWPRequest() {
+        return new ListSWPRequest();
+    }
+
+    /**
+     * Create an instance of {@link ListSWPResponse.Offices.Devices }
+     * 
+     */
+    public ListSWPResponse.Offices.Devices createListSWPResponseOfficesDevices() {
+        return new ListSWPResponse.Offices.Devices();
+    }
+
+    /**
+     * Create an instance of {@link DeviceStateCheckRequest }
+     * 
+     */
+    public DeviceStateCheckRequest createDeviceStateCheckRequest() {
+        return new DeviceStateCheckRequest();
     }
 
     /**
@@ -238,35 +238,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ListDeviceInfoResponse.State }
+     * Create an instance of {@link DeviceStateCheckResponse }
      * 
      */
-    public ListDeviceInfoResponse.State createListDeviceInfoResponseState() {
-        return new ListDeviceInfoResponse.State();
+    public DeviceStateCheckResponse createDeviceStateCheckResponse() {
+        return new DeviceStateCheckResponse();
     }
 
     /**
-     * Create an instance of {@link IncidentRegisterResponse }
+     * Create an instance of {@link ListOfficeResponse.Offices.Devices }
      * 
      */
-    public IncidentRegisterResponse createIncidentRegisterResponse() {
-        return new IncidentRegisterResponse();
+    public ListOfficeResponse.Offices.Devices createListOfficeResponseOfficesDevices() {
+        return new ListOfficeResponse.Offices.Devices();
     }
 
     /**
-     * Create an instance of {@link ListCountryRequest }
+     * Create an instance of {@link ListSWPResponse.Offices.Agendas }
      * 
      */
-    public ListCountryRequest createListCountryRequest() {
-        return new ListCountryRequest();
+    public ListSWPResponse.Offices.Agendas createListSWPResponseOfficesAgendas() {
+        return new ListSWPResponse.Offices.Agendas();
     }
 
     /**
-     * Create an instance of {@link ListCountryResponse.Countries }
+     * Create an instance of {@link ListSWPResponse.Offices }
      * 
      */
-    public ListCountryResponse.Countries createListCountryResponseCountries() {
-        return new ListCountryResponse.Countries();
+    public ListSWPResponse.Offices createListSWPResponseOffices() {
+        return new ListSWPResponse.Offices();
     }
 
 }

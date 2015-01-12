@@ -21,6 +21,14 @@ $(document).ready(
 	    	$(".site-nav-main ul li:not(:last-child, :first-child)").css("background", "#fec006 url(resources/img/main-navi-bcg.png) repeat-x");
 	    });
 	    
+    	$('.site-nav-main li.change_pass a').click(function(){
+    		if($('.ispep').is(":visible")){
+        		$('.ispep').hide();
+    		}else{
+        		$('.ispep').show();
+    		}    		
+    	});
+    	
 	    refreshUsers();
     }
 )

@@ -20,7 +20,10 @@ public enum Permissions {
 	SEARCH_URAD("searchUrad"),
 	GET_SLUZBA("getSluzba"),
 	SEARCH_SLUZBA("searchSluzba"),
-	RESEND_PREDPIS("resendPredpis");
+	RESEND_PREDPIS("resendPredpis"),
+	SYNC_ENUMS("syncEnums"),
+	TEST_CONN("testConn"),
+	PEP_REFRESH("pepRefresh");
 	
 	private String methodName;
 	

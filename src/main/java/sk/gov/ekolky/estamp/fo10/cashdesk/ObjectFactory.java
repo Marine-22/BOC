@@ -30,59 +30,19 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ListResponse }
+     * 
+     */
+    public ListResponse createListResponse() {
+        return new ListResponse();
+    }
+
+    /**
      * Create an instance of {@link CloseRequest }
      * 
      */
     public CloseRequest createCloseRequest() {
         return new CloseRequest();
-    }
-
-    /**
-     * Create an instance of {@link GetInfoResponse }
-     * 
-     */
-    public GetInfoResponse createGetInfoResponse() {
-        return new GetInfoResponse();
-    }
-
-    /**
-     * Create an instance of {@link TakeoverResponse }
-     * 
-     */
-    public TakeoverResponse createTakeoverResponse() {
-        return new TakeoverResponse();
-    }
-
-    /**
-     * Create an instance of {@link ListRequest }
-     * 
-     */
-    public ListRequest createListRequest() {
-        return new ListRequest();
-    }
-
-    /**
-     * Create an instance of {@link MoneySendSPResponse }
-     * 
-     */
-    public MoneySendSPResponse createMoneySendSPResponse() {
-        return new MoneySendSPResponse();
-    }
-
-    /**
-     * Create an instance of {@link GetInfoRequest }
-     * 
-     */
-    public GetInfoRequest createGetInfoRequest() {
-        return new GetInfoRequest();
-    }
-
-    /**
-     * Create an instance of {@link ListRequest.Range }
-     * 
-     */
-    public ListRequest.Range createListRequestRange() {
-        return new ListRequest.Range();
     }
 
     /**
@@ -94,11 +54,27 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link MoneyTransferRequest }
+     * Create an instance of {@link MoneySendSPResponse }
      * 
      */
-    public MoneyTransferRequest createMoneyTransferRequest() {
-        return new MoneyTransferRequest();
+    public MoneySendSPResponse createMoneySendSPResponse() {
+        return new MoneySendSPResponse();
+    }
+
+    /**
+     * Create an instance of {@link OpenResponse }
+     * 
+     */
+    public OpenResponse createOpenResponse() {
+        return new OpenResponse();
+    }
+
+    /**
+     * Create an instance of {@link TakeoverResponse }
+     * 
+     */
+    public TakeoverResponse createTakeoverResponse() {
+        return new TakeoverResponse();
     }
 
     /**
@@ -110,27 +86,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ListRequest.Order }
-     * 
-     */
-    public ListRequest.Order createListRequestOrder() {
-        return new ListRequest.Order();
-    }
-
-    /**
      * Create an instance of {@link CloseResponse }
      * 
      */
     public CloseResponse createCloseResponse() {
         return new CloseResponse();
-    }
-
-    /**
-     * Create an instance of {@link OpenRequest }
-     * 
-     */
-    public OpenRequest createOpenRequest() {
-        return new OpenRequest();
     }
 
     /**
@@ -142,11 +102,51 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ListResponse }
+     * Create an instance of {@link ListRequest.Order }
      * 
      */
-    public ListResponse createListResponse() {
-        return new ListResponse();
+    public ListRequest.Order createListRequestOrder() {
+        return new ListRequest.Order();
+    }
+
+    /**
+     * Create an instance of {@link GetInfoResponse }
+     * 
+     */
+    public GetInfoResponse createGetInfoResponse() {
+        return new GetInfoResponse();
+    }
+
+    /**
+     * Create an instance of {@link OpenRequest }
+     * 
+     */
+    public OpenRequest createOpenRequest() {
+        return new OpenRequest();
+    }
+
+    /**
+     * Create an instance of {@link MoneyTransferRequest }
+     * 
+     */
+    public MoneyTransferRequest createMoneyTransferRequest() {
+        return new MoneyTransferRequest();
+    }
+
+    /**
+     * Create an instance of {@link GetInfoRequest }
+     * 
+     */
+    public GetInfoRequest createGetInfoRequest() {
+        return new GetInfoRequest();
+    }
+
+    /**
+     * Create an instance of {@link ListRequest }
+     * 
+     */
+    public ListRequest createListRequest() {
+        return new ListRequest();
     }
 
     /**
@@ -158,11 +158,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link OpenResponse }
+     * Create an instance of {@link ListRequest.Range }
      * 
      */
-    public OpenResponse createOpenResponse() {
-        return new OpenResponse();
+    public ListRequest.Range createListRequestRange() {
+        return new ListRequest.Range();
     }
 
 }

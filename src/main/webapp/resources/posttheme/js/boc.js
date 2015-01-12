@@ -216,16 +216,16 @@ function refreshUsers(){
 							"<li class=\"dynamic-li\"> \
 								<span class=\"data\">("+data.data[i].idZamLogin+")</span> \
 								<div class=\"name-surname\"> \
-										<span class=\"data table-surname\" data-selector=\".new-surname\" data-zamid=\""+data.data[i].idZamLogin+"\">"+data.data[i].priezvisko+"</span> \
+										<span class=\"data data-admin table-surname\" data-selector=\".new-surname\" data-zamid=\""+data.data[i].idZamLogin+"\">"+data.data[i].priezvisko+"</span> \
 										<input class=\"dynamic-data-update new-surname\" data-selector=\".table-surname\" type=\"text\" style=\"width: 80px; display:none\" value=\""+data.data[i].priezvisko+"\" /> \
-										<span class=\"data table-name\" data-selector=\".new-name\" data-zamid=\""+data.data[i].idZamLogin+"\">"+data.data[i].meno+"</span> \
+										<span class=\"data data-admin table-name\" data-selector=\".new-name\" data-zamid=\""+data.data[i].idZamLogin+"\">"+data.data[i].meno+"</span> \
 										<input class=\"dynamic-data-update new-name\" data-selector=\".table-name\" type=\"text\" style=\"width: 80px; display:none\" value=\""+data.data[i].meno+"\" /> \
 								</div> \
-								<span class=\"data table-active "+(data.data[i].active ? "ACTIVE" : "UNACTIVE")+"\" data-active-bool-value=\""+data.data[i].active+"\" data-zamid=\""+data.data[i].idZamLogin+"\">"+(data.data[i].active ? "Aktívny" : "Neaktívny") +"</span> \
-								<span class=\"data\">Heslo:</span> \
-								<span class=\"data table-password\" data-zamid=\""+data.data[i].idZamLogin+"\">****</span> \
+								<span class=\"data data-admin table-active "+(data.data[i].active ? "ACTIVE" : "UNACTIVE")+"\" data-active-bool-value=\""+data.data[i].active+"\" data-zamid=\""+data.data[i].idZamLogin+"\">"+(data.data[i].active ? "Aktívny" : "Neaktívny") +"</span> \
+								<span class=\"data data-admin\">Heslo:</span> \
+								<span class=\"data data-admin table-password\" data-zamid=\""+data.data[i].idZamLogin+"\">****</span> \
 								<input class=\"update-table-password new-pass\" data-zamid=\""+data.data[i].idZamLogin+"\" type=\"password\" style=\"width: 80px; float:left; display:none\" /> \
-								<span class=\"update-table-password data\" style=\"width: 100px; padding:0px 10px; display:none\">Zopakovať heslo:</span> \
+								<span class=\"update-table-password data data-admin\" style=\"width: 100px; padding:0px 10px; display:none\">Zopakovať heslo:</span> \
 								<input class=\"update-table-password repeat-pass\" type=\"password\" style=\"width: 80px; float:left; display:none\" /> \
 								<a class=\"update-table-password red_button\" href=\"javascript:{}\" onclick=\"updatePassword(true)\" style=\"padding:4px 10px 3px; margin-left: 10px; line-height: 1; display:none\">X</a> \
 								<a class=\"update-table-password blue_button\" href=\"javascript:{}\" onclick=\"updatePassword()\" style=\"padding:4px 10px 3px; margin-left: 10px; line-height: 1; display:none\">Uložiť</a> \
@@ -345,7 +345,7 @@ function getD(d){
 	}
 	else{
 		var datum = new Date(d);
-		return datum.getDate() + "." + datum.getMonth() + "." + datum.getFullYear();
+		return (datum.getDate() < 10 ? "0" + datum.getDate() : datum.getDate()) + "." + (datum.getMonth() < 9 ? ("0" + (datum.getMonth() + 1)) : (datum.getMonth() + 1)) + "." + datum.getFullYear();
 	}
 }
 
@@ -355,7 +355,8 @@ function getDC(d){
 	}
 	else{
 		var datum = new Date(d);
-		return datum.getDate() + "." + datum.getMonth() + "." + datum.getFullYear() + " " + datum.getHours() + ":" + datum.getMinutes();
+		
+		return (datum.getDate() < 10 ? "0" + datum.getDate() : datum.getDate()) + "." + (datum.getMonth() < 9 ? ("0" + (datum.getMonth() + 1)) : (datum.getMonth() + 1)) + "." + datum.getFullYear() + " " + (datum.getHours() < 10 ? ("0" + datum.getHours()) : datum.getHours()) + ":" + (datum.getMinutes() < 10 ? ("0" + datum.getMinutes()) : datum.getMinutes());
 	}
 }
 
@@ -607,6 +608,79 @@ function prepareStates(){
 	$('#state-filter').offset({top:posy, left:posx});
 	//$('#state-filter').hide();
 }
+
+function syncEnums(){
+	$.getJSON(GLOBAL_APP_NAME + "/syncEnums",
+			{},
+			function(data){
+				if(checkRedirect(data) && checkErrs(data)){
+					
+				}
+			}
+	);
+	
+}
+
+function testConn(){
+	$.getJSON(GLOBAL_APP_NAME + "/testConn",
+			{},
+			function(data){
+				if(checkRedirect(data) && checkErrs(data)){
+					
+				}
+			}
+	);
+}
+
+function pepRefresh(){
+	$.getJSON(GLOBAL_APP_NAME + "/pepRefresh",
+			{},
+			function(data){
+				if(checkRedirect(data) && checkErrs(data)){
+					
+					$('#pepsluzby').text(data.data.SLUZBY.version + " ("+getDC(data.data.SLUZBY.datum)+")");
+					$('#pepurady').text(data.data.URADY.version + " ("+getDC(data.data.URADY.datum)+")");
+					$('#pepconn').text(data.data.CONN_TEST.version + " ("+getDC(data.data.CONN_TEST.datum)+")");
+				}
+			}
+	);
+}
+
+/*
+ getDC - na datum z longu
+  
+pepsluzby
+pepurady
+pepconn
+
+{"status":"OK",
+ "redirect":null,
+ "reason":null,
+ "errors":null,
+ "fieldErrors":null,
+ "userType":null,
+ "data":
+    {"SLUZBY":
+        {"id":"54aff2e5c4b7426ef3fd8cdb",
+        "name":"SLUZBY",
+        "version":"23605473",
+        "datum":1420817936019,
+        "dateDatum":1420817936019},
+     "URADY":
+        {"id":"54aff2e5c4b7426ef3fd8cdc",
+        "name":"URADY",
+        "version":"23674449",
+        "datum":1420817936019,
+        "dateDatum":1420817936019},
+     "CONN_TEST":
+        {"id":"54aff2e1c4b7426ef3fd8cda",
+        "name":"CONN_TEST",
+        "version":"CHYBA",
+        "datum":1420818046922,
+        "dateDatum":1420818046922}
+    }
+}
+ */
 
 function isSuperUser(retVal){
 	return retVal.userType == "SUPER_USER";

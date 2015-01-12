@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page session="true"%>
 
 
@@ -30,27 +31,78 @@
 				src="<c:url value="/resources/img/sl-posta-logo.png" />"
 				title="Slovenská pošta" />
 			<div class="site-nav-top"></div>
-			<div class="site-search right-site-search">
-				<input id="searchUsersInput" type="text" value="" class="noautocomplete" />
+			<div class="site-search right-site-search" style="top: 55px;">
+				<input id="searchUsersInput" type="text" value=""
+					class="noautocomplete" />
 				<div class="site-search-results hide"></div>
 			</div>
 		</div>
 
 		<div class="site-nav-main">
 			<ul>
-	          <li class="logout border-left border-right">
-	            <a href="${pageContext.request.contextPath}/login"><span class="ico"></span>Logout</a>
-	          </li>
-				<li class="add_user"><a href="javascript:{}"><span
-						class="ico"></span>Pridaj používateľa</a>
-				</li>
+				<li class="logout border-left border-right"><a
+					href="${pageContext.request.contextPath}/login"><span
+						class="ico"></span>Logout</a></li>
+				<li class="add_user border-right"><a href="javascript:{}"><span
+						class="ico"></span>Pridaj používateľa</a></li>
+				<li class="change_pass border-left"><a href="javascript:{}"><span
+						class="ico"></span>IS PEP</a></li>
 			</ul>
 		</div>
+		<div class="site-area-top ispep inithide"></div>
+		<div class="site-area-main ispep inithide">
+			<p>
+				<label>Verzia aplikácie:</label> 
+				<label>${dbName} ${appVersion}</label>
+				<a href="javascript:{}" onclick="pepRefresh();">Obnoviť údaje</a>
+			</p>
+			<p>
+				<label>Verzia číselníka služieb:</label> 
+				<c:if test="${not empty sluzby}">
+					<label id="pepsluzby">${sluzby.version} 
+						<c:if test="${not empty sluzby.dateDatum}">
+							(<fmt:formatDate value="${sluzby.dateDatum}" type="time" pattern="dd.MM.yyyy HH:mm" />)
+						</c:if>
+					</label>
+				</c:if>
+				<c:if test="${empty sluzby}">
+					<label>Bez synchronizácie</label>
+				</c:if>
+			</p>
+			<p>
+				<label>Verzia číselníka úradov:</label> 
+				<c:if test="${not empty urady}">
+					<label id="pepurady">${urady.version} 
+						<c:if test="${not empty urady.dateDatum}">
+							(<fmt:formatDate value="${urady.dateDatum}" type="time" pattern="dd.MM.yyyy HH:mm" />)
+						</c:if>
+					</label>
+				</c:if>
+				<c:if test="${empty urady}">
+					<label>Bez synchronizácie</label>
+				</c:if>
+				<a href="javascript:{}" onclick="syncEnums();">Synchronizuj</a>
+			</p>
+			<p>
+				<label>Pripojenie na PEP:</label> 
+				<label id="pepconn">${conn.version} 
+					<c:if test="${not empty conn.dateDatum}">
+						(<fmt:formatDate value="${conn.dateDatum}" type="time" pattern="dd.MM.yyyy HH:mm" />)
+					</c:if>
+				</label>
+				<a href="javascript:{}" onclick="testConn();">Test spojenia</a>
+			</p>
+		</div>
+		<div class="site-area-bottom ispep inithide"></div>
+
+
 		<div class="site-area-top newuser inithide"></div>
 		<div class="site-area-main newuser inithide">
 
 			<div class="area-post">
-				<form id="new_user" action="${pageContext.request.contextPath}/addUser" method="post" accept-charset="utf-8">
+				<form id="new_user"
+					action="${pageContext.request.contextPath}/addUser" method="post"
+					accept-charset="utf-8">
 					<div id="nominal_div">
 						<!--  <div style="margin:0;padding:0"><input name="authenticity_token" type="hidden" value="bvd3EDmGDVNADtADy1pQW/EI76g3NZkBilWt3uahuCs=" /></div>  -->
 						<p class="form-text">
@@ -77,8 +129,7 @@
 								<option value="USER">Používateľ</option>
 								<option value="SUPER_USER">Super Používateľ</option>
 								<option value="ADMIN">Správca</option>
-								</select> <span
-								id="userType_err" class="inithide errmsg"></span>
+							</select> <span id="userType_err" class="inithide errmsg"></span>
 						</p>
 
 						<p class="form-text">
@@ -121,5 +172,6 @@
 			</div>
 		</div>
 		<div class="site-area-bottom listdata"></div>
+	</div>
 </body>
 </html>

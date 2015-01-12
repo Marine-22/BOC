@@ -6,6 +6,22 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
+import com.jump_soft.estamp.fo10.common.BindingManagementRequest;
+import com.jump_soft.estamp.fo10.common.DeviceEditRequest;
+import com.jump_soft.estamp.fo10.common.EStampConsumedStornoRequest;
+import com.jump_soft.estamp.fo10.common.EStampCreateNegativeRequest;
+import com.jump_soft.estamp.fo10.common.EStampMonthlyReportRequest;
+import com.jump_soft.estamp.fo10.common.EStampSearchRequest;
+import com.jump_soft.estamp.fo10.common.EnumItemRequest;
+import com.jump_soft.estamp.fo10.common.EnumListRequest;
+import com.jump_soft.estamp.fo10.common.EnumNoteRequest;
+import com.jump_soft.estamp.fo10.common.ErrorListRequest;
+import com.jump_soft.estamp.fo10.common.ExportSAPRequest;
+import com.jump_soft.estamp.fo10.common.PaymentPairingRequest;
+import com.jump_soft.estamp.fo10.common.ServiceInfoRequest;
+import com.jump_soft.estamp.fo10.common.ServiceTerminationRequest;
+import com.jump_soft.estamp.fo10.common.UserProfileCreateRequest;
+import com.jump_soft.estamp.fo10.common.UserProfileEditRequest;
 import sk.gov.ekolky.estamp.fo10.estamp.CreateRequest;
 import sk.gov.ekolky.estamp.fo10.estamp.ExchangeRequest;
 import sk.gov.ekolky.estamp.fo10.estamp.GetRequest;
@@ -49,11 +65,22 @@ import sk.gov.ekolky.estamp.fo10.infra.ListServiceRequest;
     "offline"
 })
 @XmlSeeAlso({
-    GetRequest.class,
-    CreateRequest.class,
-    LockRequest.class,
-    ExchangeRequest.class,
-    UnlockRequest.class,
+    EStampCreateNegativeRequest.class,
+    EnumListRequest.class,
+    EStampConsumedStornoRequest.class,
+    EStampMonthlyReportRequest.class,
+    DeviceEditRequest.class,
+    EnumItemRequest.class,
+    EnumNoteRequest.class,
+    ServiceTerminationRequest.class,
+    UserProfileEditRequest.class,
+    BindingManagementRequest.class,
+    UserProfileCreateRequest.class,
+    ExportSAPRequest.class,
+    ServiceInfoRequest.class,
+    ErrorListRequest.class,
+    PaymentPairingRequest.class,
+    EStampSearchRequest.class,
     ListFeDevicesRequest.class,
     ListServiceRequest.class,
     ListOfficeRequest.class,
@@ -64,6 +91,11 @@ import sk.gov.ekolky.estamp.fo10.infra.ListServiceRequest;
     ListDeviceInfoRequest.class,
     DeviceStateCheckRequest.class,
     IncidentRegisterRequest.class,
+    GetRequest.class,
+    CreateRequest.class,
+    LockRequest.class,
+    ExchangeRequest.class,
+    UnlockRequest.class,
     RequestOEK.class
 })
 public class RequestFE

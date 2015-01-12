@@ -35,12 +35,6 @@ import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.scheduling.annotation.Scheduled;
 
-
-
-
-
-
-
 import com.sun.xml.ws.wsdl.parser.InaccessibleWSDLException;
 
 import sk.gov.ekolky.estamp.fo10.Assessment;
@@ -67,7 +61,6 @@ import sk.gov.ekolky.estamp.xsd10.OperPaymentNominal;
 import sk.gov.ekolky.estamp.xsd10.Operation;
 import sk.gov.ekolky.estamp.xsd10.RequestFE;
 import sk.gov.ekolky.estamp.xsd10.Service;
-import sk.posta.boc.HomeController;
 import sk.posta.data.ConfigVersion;
 import sk.posta.data.Predpis;
 import sk.posta.data.Sluzba;
@@ -85,7 +78,7 @@ public class TimedExport implements ExportPredpis{
 	@Value("#{appProps['app.export.feDeviceId']}") 
 	private String feDeviceId;
 	
-	private String SUFFIX_POTVRDENIA = "suffixPotvrdenia";
+	private static final String CHECKING = "Kontroluje sa"; 
 	
 	@Autowired
 	private ConfigVersionRepository confRepo;
@@ -182,28 +175,35 @@ public class TimedExport implements ExportPredpis{
 	 * Checks connection to is pep by calling deviceStateCheck
 	 */
 	public void checkConnection(){
+		ConfigVersion cv = confRepo.findByName("" + ConfigVersion.ConfigType.CONN_TEST);
+		if(cv == null){
+			cv = new ConfigVersion();
+			cv.setName("" + ConfigVersion.ConfigType.CONN_TEST);
+		}
+		cv.setDatum(new Date().getTime());
+		cv.setVersion(CHECKING);
+		confRepo.save(cv);
 		try{
+			cv.setVersion("CHYBA");
 			Infra infra = new Infra();
 			InfraPortType iPort = infra.getInfraPort();
 			DeviceStateCheckRequest dscrq = getRequest(DeviceStateCheckRequest.class);
 			iPort.deviceStateCheck(dscrq);
-			logger.info("Check connection OK");
-			HomeController.PepConnectionStatus = "OK";
+			cv.setVersion("OK");
 		}catch(IllegalAccessException e){
 			logger.info("Check connection FAIL " + e.getMessage());
-			HomeController.PepConnectionStatus = "CHYBA";
 		}catch(InstantiationException e){
 			logger.info("Check connection FAIL " + e.getMessage());
-			HomeController.PepConnectionStatus = "CHYBA";
 		}catch(DatatypeConfigurationException e){
 			logger.info("Check connection FAIL " + e.getMessage());
-			HomeController.PepConnectionStatus = "CHYBA";
 		}catch(BloxFaultMessage e){
 			logger.info("Check connection FAIL " + e.getMessage());
-			HomeController.PepConnectionStatus = "CHYBA";
+		}catch(Exception e){
+			logger.info("Check connection FAIL " + e.getMessage());
 		}
+		confRepo.save(cv);
 	}
-
+	
 	
 	private void saveExceptioin(Predpis p, Exception e){
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy' 'HH:mm:ss:' '");
@@ -217,40 +217,66 @@ public class TimedExport implements ExportPredpis{
 	public void checkEnums()
     {
 		DeviceStateCheckResponse check = null;
+		// do funkcie
+		ConfigVersion confSluzby = confRepo.findByName("" + ConfigVersion.ConfigType.SLUZBY);
+		ConfigVersion confUrady = confRepo.findByName("" + ConfigVersion.ConfigType.URADY);
+		if(confSluzby == null){
+			confSluzby = new ConfigVersion("" + ConfigVersion.ConfigType.SLUZBY, "N/A");
+		}
+		if(confUrady == null){
+			confUrady = new ConfigVersion("" + ConfigVersion.ConfigType.URADY, "N/A");
+		}
+		confSluzby.setDatum(new Date().getTime());
+		confUrady.setDatum(new Date().getTime());
+		String sluzbyVersion = confSluzby.getVersion();
+		String uradyVersion = confUrady.getVersion();
+		confSluzby.setVersion(CHECKING);
+		confUrady.setVersion(CHECKING);
+		confRepo.save(confSluzby);
+		confRepo.save(confUrady);
+		confSluzby.setVersion(sluzbyVersion);
+		confUrady.setVersion(uradyVersion);
 		
+		boolean checkFail = true;
 		try{
 			check = callCheck();
+			checkFail = false;
 		} catch(BloxFaultMessage e){
 			logger.info("Chyba pri synchronizacii sluzieb a uradov.", e);
-			return;
 		} catch (DatatypeConfigurationException e) {
 			logger.info("Chyba pri synchronizacii sluzieb a uradov.", e);
-			return;
 		} catch (InstantiationException e) {
 			logger.info("Chyba pri synchronizacii sluzieb a uradov.", e);
-			return;
 		} catch (IllegalAccessException e) {
 			logger.info("Chyba pri synchronizacii sluzieb a uradov.", e);
+		} catch(InaccessibleWSDLException e){
+			logger.info("Chyba pri synchronizacii sluzieb a uradov.", e);
+		}
+
+		if(checkFail){
+			logger.info("Ukladam hodnoty: confSluzby" + confSluzby.getVersion() + "; confUrady" + confUrady.getVersion());
+			confRepo.save(confSluzby);
+			confRepo.save(confUrady);
 			return;
 		}
 		
-		
 		SyncStats stats = new SyncStats(check);
 		
-		
+		// sluzby
 		try{
-			
-			ConfigVersion confSluzby = confRepo.findByName("" + ConfigVersion.ConfigType.SLUZBY);
-			stats.sluzbyOldVer = (confSluzby == null ? "null" : confSluzby.getVersion());
-			
+			stats.sluzbyOldVer = confSluzby.getVersion();
 			// sluzby treba poriesit
-			if(confSluzby == null || !check.getServiceVersion().equals(confSluzby.getVersion())){
+			if(!check.getServiceVersion().equals(confSluzby.getVersion())){
 
 				List<Service> lServis = callSluzby();
 				Set<String> keys = new HashSet<String>();
-				
+				logger.info("lServis.size: " + lServis.size());
 				for(Service sPep : lServis){
+					logger.info("sPep: '" + sPep.getId() + "' - '" + sPep.getOrder() + "' - '" + 
+								sPep.getAgendaID() + "' - '" + sPep.getFeeType() + "' - '" + sPep.getName() + 
+								"' - '" + sPep.getType());
 					if(sPep.getId() != null){
+						logger.info("Pridavam: '" + sPep.getOrder() + "'");
 						keys.add(sPep.getOrder());
 						Sluzba sBoc = sluzbaRepo.findByBusId(sPep.getOrder());
 						if(sBoc == null){
@@ -259,7 +285,7 @@ public class TimedExport implements ExportPredpis{
 							sluzbaRepo.save(sBoc);
 						}
 						else if(!equalsSluzba(sPep, sBoc)){// zmenil sa nazov alebo typ poplatku
-							logger.info("Zmena z " + sBoc.getName() + " na " + sPep.getName());
+							//logger.info("Zmena z " + sBoc.getName() + " na " + sPep.getName());
 							stats.incSU();
 							sBoc.setFeeType(sPep.getFeeType());
 							sBoc.setName(sPep.getName());
@@ -270,39 +296,29 @@ public class TimedExport implements ExportPredpis{
 				List<Sluzba> lSluzy = sluzbaRepo.findAll();
 				for(Sluzba sBoc : lSluzy){
 					if(!keys.contains(sBoc.getBusId()) && sBoc.isActive()){
+						logger.info("keys neobsahuju '" + sBoc.getBusId() + "'");
 						stats.incSD();
-						sBoc.setActive(true);
+						sBoc.setActive(false);
 						sluzbaRepo.save(sBoc);
 					}
 				}
-				
-				if(confSluzby == null){
-					confSluzby = new ConfigVersion("" + ConfigVersion.ConfigType.SLUZBY, check.getServiceVersion());
-				}
-				else{
-					confSluzby.setVersion(check.getServiceVersion());
-				}
-				// ulozim novu verziu
-				confRepo.save(confSluzby);
 			}
+			confSluzby.setVersion(check.getServiceVersion());
+			// sluzby end
 		}
 		catch(DatatypeConfigurationException e){
 			logger.info("Chyba pri synchronizacii sluzieb.", e);
-		}
-		catch(BloxFaultMessage e){
+		} catch(BloxFaultMessage e){
 			logger.info("Chyba pri synchronizacii sluzieb.", e);
 		} catch (InstantiationException e) {
 			logger.info("Chyba pri synchronizacii sluzieb.", e);
 		} catch (IllegalAccessException e) {
 			logger.info("Chyba pri synchronizacii sluzieb.", e);
 		}
-
-		
-		
+// urady
 		try{
-			ConfigVersion confUrady = confRepo.findByName("" + ConfigVersion.ConfigType.URADY);
-			stats.uradyOldVer = (confUrady == null ? "null" : confUrady.getVersion());
-			if(confUrady == null || !confUrady.getVersion().equals(check.getOfficeVersion())){
+			stats.uradyOldVer = confUrady.getVersion();
+			if(!check.getOfficeVersion().equals(confUrady.getVersion())){
 
 				List<Offices> lOff = callUrady();
 				Set<String> keys = new HashSet<String>();
@@ -329,17 +345,13 @@ public class TimedExport implements ExportPredpis{
 						uradRepo.save(u);
 					}
 				}
-				
-				if(confUrady == null){
-					confUrady = new ConfigVersion("" + ConfigVersion.ConfigType.URADY, check.getOfficeVersion());
-				}
-				else{
-					confUrady.setVersion(check.getOfficeVersion());
-				}
 				logger.info("Ukladam novu verziu uradov: " + confUrady.getName() + " - " + confUrady.getVersion());
 				// nova verzia conf uradov
+				confUrady.setDatum(new Date().getTime());
 				confRepo.save(confUrady);
 			}
+			// urady end
+			confUrady.setVersion(check.getOfficeVersion());
 		} catch(DatatypeConfigurationException e){
 			logger.info("Chyba pri synchronizacii uradov.", e);
 		} catch(BloxFaultMessage e){
@@ -350,6 +362,10 @@ public class TimedExport implements ExportPredpis{
 			logger.info("Chyba pri synchronizacii uradov.", e);
 		}
 		logger.info(stats.getReport());
+		// ulozim novu verziu
+		confRepo.save(confUrady);
+		// ulozim novu verziu
+		confRepo.save(confSluzby);
     }
 	
 	private <T extends RequestFE> T getRequest(Class<T> clazz) throws DatatypeConfigurationException, InstantiationException, IllegalAccessException {
@@ -595,7 +611,7 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 	
 	private int getCisloPotvrdenia(){
 		int retVal = 0;
-		ConfigVersion conf = confRepo.findByName(SUFFIX_POTVRDENIA);
+		ConfigVersion conf = confRepo.findByName("" + ConfigVersion.ConfigType.SUFFIX_POTVRDENIA);
 		if(conf == null){
 			retVal = 1;
 		}
@@ -614,10 +630,10 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 	}
 	
 	private void saveIdPotvrdenia(int idPotvrdenia){
-		ConfigVersion conf = confRepo.findByName(SUFFIX_POTVRDENIA);
+		ConfigVersion conf = confRepo.findByName("" + ConfigVersion.ConfigType.SUFFIX_POTVRDENIA);
 		if(conf == null){
 			conf = new ConfigVersion();
-			conf.setName(SUFFIX_POTVRDENIA);
+			conf.setName("" + ConfigVersion.ConfigType.SUFFIX_POTVRDENIA);
 			confRepo.save(conf);
 		}
 		conf.setVersion("" + new Date().getTime() + idPotvrdenia);

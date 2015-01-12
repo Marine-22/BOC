@@ -21,6 +21,9 @@ public enum UserType {
 		s.add(Permissions.ADMIN_VIEW);
 		s.add(Permissions.SEARCH_USERS);
 		s.add(Permissions.UPDATE_USER);
+		s.add(Permissions.SYNC_ENUMS);
+		s.add(Permissions.TEST_CONN);
+		s.add(Permissions.PEP_REFRESH);
 		permap.put(ADMIN, s);
 		// USER PERMISSIONS
 		s = new HashSet<Permissions>();

@@ -1,6 +1,10 @@
 package sk.posta.data;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
 public class ConfigVersion {
 
@@ -15,6 +19,9 @@ public class ConfigVersion {
 	private String id;
 	private String name;
 	private String version;
+	private Long datum;
+	@Transient
+	private Date dateDatum;
 	
 	public String toString(){
 		return "ConfigVersion["+name+":"+version+"]";
@@ -38,10 +45,30 @@ public class ConfigVersion {
 	public void setVersion(String version) {
 		this.version = version;
 	}
+	public Long getDatum() {
+		return datum;
+	}
+	public void setDatum(Long datum) {
+		this.datum = datum;
+	}
+	public Date getDateDatum() {
+		return dateDatum;
+	}
+	public void setDateDatum(Date dateDatum) {
+		this.dateDatum = dateDatum;
+	}
 	
+	public void setDateDatum(){
+		if(this.datum != null)
+			this.dateDatum = new Date(this.datum);
+	}
+
+
 	public enum ConfigType{
 		SLUZBY,
-		URADY
+		URADY,
+		SUFFIX_POTVRDENIA,
+		CONN_TEST
 	}
 	
 }

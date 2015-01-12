@@ -214,7 +214,8 @@
 				<configuration>  
 					<path>/${project.build.finalName}</path>  
 					<update>true</update>  
-					<url>http://localhost/manager/text</url>  
+<!--					<url>http://10.6.54.21:8080/manager/text</url> -->   
+ 				<url>http://localhost/manager/text</url>   
 					<username>admin</username>  
 					<password>wemn8jsu</password>  
 				</configuration>  

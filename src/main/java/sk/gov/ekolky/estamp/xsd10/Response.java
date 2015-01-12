@@ -5,6 +5,22 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
+import com.jump_soft.estamp.fo10.common.BindingManagementResponse;
+import com.jump_soft.estamp.fo10.common.DeviceEditResponse;
+import com.jump_soft.estamp.fo10.common.EStampConsumedStornoResponse;
+import com.jump_soft.estamp.fo10.common.EStampCreateNegativeResponse;
+import com.jump_soft.estamp.fo10.common.EStampMonthlyReportResponse;
+import com.jump_soft.estamp.fo10.common.EStampSearchResponse;
+import com.jump_soft.estamp.fo10.common.EnumItemResponse;
+import com.jump_soft.estamp.fo10.common.EnumListResponse;
+import com.jump_soft.estamp.fo10.common.EnumNoteResponse;
+import com.jump_soft.estamp.fo10.common.ErrorListResponse;
+import com.jump_soft.estamp.fo10.common.ExportSAPResponse;
+import com.jump_soft.estamp.fo10.common.PaymentPairingResponse;
+import com.jump_soft.estamp.fo10.common.ServiceInfoResponse;
+import com.jump_soft.estamp.fo10.common.ServiceTerminationResponse;
+import com.jump_soft.estamp.fo10.common.UserProfileCreateResponse;
+import com.jump_soft.estamp.fo10.common.UserProfileEditResponse;
 import sk.gov.ekolky.estamp.fo10.assessment.CancelResponse;
 import sk.gov.ekolky.estamp.fo10.assessment.OperationDeclareResponse;
 import sk.gov.ekolky.estamp.fo10.assessment.OperationExecutionDELTEDResponse;
@@ -57,21 +73,22 @@ import sk.gov.ekolky.estamp.fo10.nominal.CheckStateResponse;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "response")
 @XmlSeeAlso({
-    sk.gov.ekolky.estamp.fo10.estamp.ListResponse.class,
-    sk.gov.ekolky.estamp.fo10.estamp.CreateResponse.class,
-    UnlockResponse.class,
-    sk.gov.ekolky.estamp.fo10.estamp.OperationConsumeResponse.class,
-    sk.gov.ekolky.estamp.fo10.estamp.ListOperationsResponse.class,
-    sk.gov.ekolky.estamp.fo10.estamp.GetResponse.class,
-    LockResponse.class,
-    ExchangeResponse.class,
-    GetInfoResponse.class,
-    sk.gov.ekolky.estamp.fo10.cashdesk.ListResponse.class,
-    CloseResponse.class,
-    MoneySendSPResponse.class,
-    MoneyTransferResponse.class,
-    TakeoverResponse.class,
-    OpenResponse.class,
+    DeviceEditResponse.class,
+    EStampMonthlyReportResponse.class,
+    EStampCreateNegativeResponse.class,
+    EStampConsumedStornoResponse.class,
+    ServiceInfoResponse.class,
+    ServiceTerminationResponse.class,
+    UserProfileCreateResponse.class,
+    UserProfileEditResponse.class,
+    EnumNoteResponse.class,
+    EnumListResponse.class,
+    BindingManagementResponse.class,
+    EnumItemResponse.class,
+    ErrorListResponse.class,
+    EStampSearchResponse.class,
+    ExportSAPResponse.class,
+    PaymentPairingResponse.class,
     IncidentRegisterResponse.class,
     ListServiceResponse.class,
     ListCountryResponse.class,
@@ -82,6 +99,22 @@ import sk.gov.ekolky.estamp.fo10.nominal.CheckStateResponse;
     DeviceStateCheckResponse.class,
     ListDeviceInfoResponse.class,
     ListFeeResponse.class,
+    CheckStateResponse.class,
+    GetInfoResponse.class,
+    sk.gov.ekolky.estamp.fo10.cashdesk.ListResponse.class,
+    CloseResponse.class,
+    MoneySendSPResponse.class,
+    MoneyTransferResponse.class,
+    TakeoverResponse.class,
+    OpenResponse.class,
+    sk.gov.ekolky.estamp.fo10.estamp.ListResponse.class,
+    sk.gov.ekolky.estamp.fo10.estamp.CreateResponse.class,
+    UnlockResponse.class,
+    sk.gov.ekolky.estamp.fo10.estamp.OperationConsumeResponse.class,
+    sk.gov.ekolky.estamp.fo10.estamp.ListOperationsResponse.class,
+    sk.gov.ekolky.estamp.fo10.estamp.GetResponse.class,
+    LockResponse.class,
+    ExchangeResponse.class,
     OperationDeclareResponse.class,
     PrintDELETEDResponse.class,
     OperationReserveResponse.class,
@@ -95,8 +128,7 @@ import sk.gov.ekolky.estamp.fo10.nominal.CheckStateResponse;
     UpdateResponse.class,
     CancelResponse.class,
     OperationRefundResponse.class,
-    sk.gov.ekolky.estamp.fo10.assessment.ListOperationsResponse.class,
-    CheckStateResponse.class
+    sk.gov.ekolky.estamp.fo10.assessment.ListOperationsResponse.class
 })
 public class Response {
 

@@ -10,6 +10,7 @@ public class ConnectionTest implements InitializingBean{
 	
 	public void afterPropertiesSet() throws Exception {
 		exportPredpis.checkConnection();
+
 	}
 	
 }

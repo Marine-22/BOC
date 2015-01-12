@@ -30,6 +30,7 @@ import sk.gov.ekolky.estamp.xsd10.Response;
  *                   &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="uri" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *                   &lt;element name="resortID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *                   &lt;element name="devices" maxOccurs="unbounded" minOccurs="0">
  *                     &lt;complexType>
  *                       &lt;complexContent>
@@ -150,6 +151,7 @@ public class ListOfficeResponse
      *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="uri" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+     *         &lt;element name="resortID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
      *         &lt;element name="devices" maxOccurs="unbounded" minOccurs="0">
      *           &lt;complexType>
      *             &lt;complexContent>
@@ -187,6 +189,7 @@ public class ListOfficeResponse
         "code",
         "name",
         "uri",
+        "resortID",
         "devices",
         "agendas"
     })
@@ -197,6 +200,7 @@ public class ListOfficeResponse
         @XmlElement(required = true)
         protected String name;
         protected String uri;
+        protected String resortID;
         protected List<ListOfficeResponse.Offices.Devices> devices;
         protected List<ListOfficeResponse.Offices.Agendas> agendas;
 
@@ -270,6 +274,30 @@ public class ListOfficeResponse
          */
         public void setUri(String value) {
             this.uri = value;
+        }
+
+        /**
+         * Gets the value of the resortID property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getResortID() {
+            return resortID;
+        }
+
+        /**
+         * Sets the value of the resortID property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setResortID(String value) {
+            this.resortID = value;
         }
 
         /**
