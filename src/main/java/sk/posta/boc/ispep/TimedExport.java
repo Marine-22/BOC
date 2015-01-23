@@ -78,6 +78,21 @@ public class TimedExport implements ExportPredpis{
 	@Value("#{appProps['app.export.feDeviceId']}") 
 	private String feDeviceId;
 	
+	@Value("#{appProps['app.sluzba.sprava.default']}") 
+	private String defaultSluzbaSpravna;
+	@Value("#{appProps['app.sluzba.sud.default']}") 
+	private String defaultSluzbaSudna;
+
+	@Value("#{appProps['app.sluzba.sprava.default.text']}") 
+	private String defaultSluzbaSpravnaText;
+	@Value("#{appProps['app.sluzba.sud.default.text']}") 
+	private String defaultSluzbaSudnaText;
+
+	@Value("#{appProps['app.sluzba.sprava.default.feeType']}") 
+	private String defaultSluzbaSpravnaFeeType;
+	@Value("#{appProps['app.sluzba.sud.default.feeType']}") 
+	private String defaultSluzbaSudnaFeeType;
+	
 	private static final String CHECKING = "Kontroluje sa"; 
 	
 	@Autowired
@@ -114,7 +129,16 @@ public class TimedExport implements ExportPredpis{
 	 */
 	public boolean exportPredpis(Predpis p, int cisloPotvrdenia){
 		try{
-			Sluzba s = sluzbaRepo.findByBusId(p.getSluzba());
+			Sluzba s = null;
+			if(defaultSluzbaSpravna.equals(p.getSluzba())){
+				s = new Sluzba(defaultSluzbaSpravna, defaultSluzbaSpravnaText, defaultSluzbaSpravnaFeeType);
+			}
+			else if(defaultSluzbaSudna.equals(p.getSluzba())){
+				s = new Sluzba(defaultSluzbaSudna, defaultSluzbaSudnaText, defaultSluzbaSudnaFeeType);
+			}
+			else{
+				s = sluzbaRepo.findByBusId(p.getSluzba());
+			}
 			p.setFeeTypeService(s.getFeeType());
 			p.setDatumSync(new Date().getTime());
 			checkPredpis(p);
@@ -139,6 +163,9 @@ public class TimedExport implements ExportPredpis{
 			Exception wrapItBaby = new Exception("Chyba pri nadviazaní spojenia s PEP.", e);
 			saveExceptioin(p, wrapItBaby);
 			logger.info("Chyba pri synchronizacii predpisov.", wrapItBaby);
+		} catch(Exception e){
+			saveExceptioin(p, e);
+			logger.info("Chyba pri synchronizacii predpisov.", e);
 		}
 		return false;
 	}

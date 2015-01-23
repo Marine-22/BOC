@@ -1,3 +1,8 @@
+var defSudnaSluzba = null;
+var defSpravnaSluzba = null;
+var defSudnaSluzbaText = null;
+var defSpravnaSluzbaText = null;
+
 $(document).ready(
     function()
     {
@@ -13,7 +18,6 @@ $(document).ready(
     			if($('#urad').val().length == 0){
     				$('#uradpicker input').focusout();
     			}
-    			//$("#urad")		.val($("li#uradpicker input").val());
     		}
     	});
     	
@@ -117,6 +121,13 @@ $(document).ready(
 			    					$("#urad").val(data.data.busId);
 			    					$("#urad_name").show();
 			    					$("#urad_name").text(data.data.name);
+			    					if(data.data.spSu == 0){ //SPRAVNY
+			    						$("#sluzba").val(defSpravnaSluzba);
+			    					}
+			    					else{ // SUDNY
+			    						$("#sluzba").val(defSudnaSluzba);
+			    					}
+			    					$('#sluzba').focusout();
 		    					}
 		    					else{
 			    					$("#urad_name").val("");
@@ -134,7 +145,21 @@ $(document).ready(
 	    
 	    $('#sluzba').focusout(function(){
 	    	var thiz = $(this);
-	    	if(thiz.val().length > 0){
+	    	if(thiz.val() == defSudnaSluzba){
+				thiz.css("border","");
+				$("#sluzba_err").text("");
+				$("#sluzba_err").hide();
+				$("#sluzba_name").text(defSudnaSluzbaText);
+				$("#sluzba_name").show();
+	    	}
+	    	else if(thiz.val() == defSpravnaSluzba){
+				thiz.css("border","");
+				$("#sluzba_err").text("");
+				$("#sluzba_err").hide();
+				$("#sluzba_name").text(defSpravnaSluzbaText);
+				$("#sluzba_name").show();
+	    	}
+	    	else if(thiz.val().length > 0){
 		    	$.getJSON(window.GLOBAL_APP_NAME + "/getSluzba",
 		    			{id:$(this).val(),JSR:""},
 		    			function(data){
@@ -240,6 +265,21 @@ $(document).ready(
 	    	});
 	    	
 	    });
+	    
+	    if(defSudnaSluzba == null || defSpravnaSluzba == null){
+	    	$.getJSON(window.GLOBAL_APP_NAME + "/getDefaultSluzby",
+	    			{JSR:""},
+	    			function(data){
+	    				if(checkRedirect(data) && checkErrs(data)){
+	    					defSudnaSluzba = data.data.SUDNA;
+	    					defSpravnaSluzba = data.data.SPRAVNA;
+	    					defSudnaSluzbaText = data.data.SUDNA_TEXT; 
+	    					defSpravnaSluzbaText = data.data.SPRAVNA_TEXT;
+	    				}
+	    			}
+	    	)
+	    };
+	    
 	    refreshPredpis();
     }
 )

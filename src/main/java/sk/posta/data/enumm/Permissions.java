@@ -23,7 +23,8 @@ public enum Permissions {
 	RESEND_PREDPIS("resendPredpis"),
 	SYNC_ENUMS("syncEnums"),
 	TEST_CONN("testConn"),
-	PEP_REFRESH("pepRefresh");
+	PEP_REFRESH("pepRefresh"),
+	GET_DEFAULT_SLUZBY("getDefaultSluzby");
 	
 	private String methodName;
 	

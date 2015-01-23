@@ -66,7 +66,7 @@
 					</label>
 				</c:if>
 				<c:if test="${empty sluzby}">
-					<label>Bez synchronizácie</label>
+					<label id="pepsluzby">Bez synchronizácie</label>
 				</c:if>
 			</p>
 			<p>
@@ -79,7 +79,7 @@
 					</label>
 				</c:if>
 				<c:if test="${empty urady}">
-					<label>Bez synchronizácie</label>
+					<label id="pepurady">Bez synchronizácie</label>
 				</c:if>
 				<a href="javascript:{}" onclick="syncEnums();">Synchronizuj</a>
 			</p>

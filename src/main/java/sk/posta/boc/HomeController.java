@@ -65,8 +65,24 @@ public class HomeController {
 	
 	@Value("#{appProps['app.gui.maxSuggestItems']}") 
 	private int MAX_SUGGEST_ITEMS;
+
+	@Value("#{appProps['app.sluzba.sprava.default']}") 
+	private String defaultSluzbaSpravna;
+	@Value("#{appProps['app.sluzba.sud.default']}") 
+	private String defaultSluzbaSudna;
+
+	@Value("#{appProps['app.sluzba.sprava.default.text']}") 
+	private String defaultSluzbaSpravnaText;
+	@Value("#{appProps['app.sluzba.sud.default.text']}") 
+	private String defaultSluzbaSudnaText;
+
+	@Value("#{appProps['app.sluzba.sprava.default.feeType']}") 
+	private String defaultSluzbaSpravnaFeeType;
+	@Value("#{appProps['app.sluzba.sud.default.feeType']}") 
+	private String defaultSluzbaSudnaFeeType;
 	
 	public static final String APPLICATION_PREFIX = "/BOC";
+//	public static final String APPLICATION_PREFIX = "";
 	public static final String AUTHENTICATED = "authenticated";
 	public static final String LOGIN = "userLogin";
 	public static final String USER_TYPE = "userType";
@@ -126,6 +142,18 @@ public class HomeController {
 			predpis = predpisRepo.save(predpis);
 		}
 		retVal = setRetVal();
+		return JacksonUtil.object2Json(retVal);
+	}
+	
+	@RequestMapping(value="/getDefaultSluzby", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+	public @ResponseBody String getDefaultSluzby(){
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("SPRAVNA", defaultSluzbaSpravna);
+		map.put("SUDNA", defaultSluzbaSudna);
+		map.put("SPRAVNA_TEXT", defaultSluzbaSpravnaText);
+		map.put("SUDNA_TEXT", defaultSluzbaSudnaText);
+		ReturnData retVal = null;
+		retVal = setRetVal(map);
 		return JacksonUtil.object2Json(retVal);
 	}
 	
@@ -316,7 +344,16 @@ public class HomeController {
 			// pouzivatelov, uradov a sluzieb nebude velmi vela, toto vyhladanie by malo byt rychle
 			User u = userRepo.findByIdZamLogin(p.getIdZamLogin());
 			Urad ur = uradRepo.findByBusId(p.getUrad());
-			Sluzba s = sluzbaRepo.findByBusId(p.getSluzba());
+			Sluzba s = null;
+			if(defaultSluzbaSpravna.equals(p.getSluzba())){
+				s = new Sluzba(defaultSluzbaSpravna, defaultSluzbaSpravnaText, defaultSluzbaSpravnaFeeType);
+			}
+			else if(defaultSluzbaSudna.equals(p.getSluzba())){
+				s = new Sluzba(defaultSluzbaSudna, defaultSluzbaSudnaText, defaultSluzbaSudnaFeeType);
+			}
+			else{
+				s = sluzbaRepo.findByBusId(p.getSluzba());
+			}
 			p.setGUIStaff(u, ur, s);
 		}
 		retVal = setRetVal(l);

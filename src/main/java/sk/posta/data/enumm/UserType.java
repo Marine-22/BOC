@@ -35,6 +35,7 @@ public enum UserType {
 		s.add(Permissions.SEARCH_URAD);
 		s.add(Permissions.UPDATE_PASS);
 		s.add(Permissions.USER_VIEW);
+		s.add(Permissions.GET_DEFAULT_SLUZBY);
 		permap.put(USER, s);
 		// SUPER_USER PERMISSIONS		
 		s = new HashSet<Permissions>();
@@ -47,6 +48,7 @@ public enum UserType {
 		s.add(Permissions.UPDATE_PASS);
 		s.add(Permissions.USER_VIEW);
 		s.add(Permissions.RESEND_PREDPIS);
+		s.add(Permissions.GET_DEFAULT_SLUZBY);
 		permap.put(SUPER_USER, s);
 	}
 	
