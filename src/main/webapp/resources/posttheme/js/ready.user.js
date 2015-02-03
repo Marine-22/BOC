@@ -6,6 +6,10 @@ var defSpravnaSluzbaText = null;
 $(document).ready(
     function()
     {
+	    $.ajaxSetup({
+	        cache: false
+	    });
+	    
     	$('.inithide').hide();
     	
     	$('.site-nav-main li.add_predpis a').click(function(){
@@ -58,7 +62,21 @@ $(document).ready(
     	
     	$(".nominal input.text").keyup(function(e) {
     		if($(this).val().length == 10){
-    			addNewPredpisElement();
+    			// kontrola, ci uz takyto kreditny kolok nie je v zozname
+    			var list = $(".nominal input.text");
+    			var exists = false;
+    			for(var i = 0; i < list.length-1; i++){
+    				if(list[i].value == $(this).val()){
+    					exists = true;
+    					break;
+    				}
+    			}
+    			if(!exists){
+	    			addNewPredpisElement();
+    			}
+    			else{
+    				$(this).val("");
+    			}
     			$('.nominal:last input').focus();
     		}
     	});
@@ -104,6 +122,7 @@ $(document).ready(
     		source: window.GLOBAL_APP_NAME + '/searchSluzba',
     		focus: function(e, ui){
     			$('#sluzba_name').text(ui.item.name);
+    			$('#sluzbaSuma').val(ui.item.price + "€");
     		}
     	});
     	
@@ -121,13 +140,15 @@ $(document).ready(
 			    					$("#urad").val(data.data.busId);
 			    					$("#urad_name").show();
 			    					$("#urad_name").text(data.data.name);
-			    					if(data.data.spSu == 0){ //SPRAVNY
-			    						$("#sluzba").val(defSpravnaSluzba);
+			    					if($("#sluzba").val().length == 0){
+				    					if(data.data.spSu == 0){ //SPRAVNY
+				    						$("#sluzba").val(defSpravnaSluzba);
+				    					}
+				    					else{ // SUDNY
+				    						$("#sluzba").val(defSudnaSluzba);
+				    					}
+				    					$('#sluzba').focusout();
 			    					}
-			    					else{ // SUDNY
-			    						$("#sluzba").val(defSudnaSluzba);
-			    					}
-			    					$('#sluzba').focusout();
 		    					}
 		    					else{
 			    					$("#urad_name").val("");
@@ -151,6 +172,7 @@ $(document).ready(
 				$("#sluzba_err").hide();
 				$("#sluzba_name").text(defSudnaSluzbaText);
 				$("#sluzba_name").show();
+				$("#sluzbaSuma").val("Neurčitá");
 	    	}
 	    	else if(thiz.val() == defSpravnaSluzba){
 				thiz.css("border","");
@@ -158,6 +180,7 @@ $(document).ready(
 				$("#sluzba_err").hide();
 				$("#sluzba_name").text(defSpravnaSluzbaText);
 				$("#sluzba_name").show();
+				$("#sluzbaSuma").val("Neurčitá");
 	    	}
 	    	else if(thiz.val().length > 0){
 		    	$.getJSON(window.GLOBAL_APP_NAME + "/getSluzba",
@@ -170,16 +193,23 @@ $(document).ready(
 			    					$("#sluzba_err").hide();
 			    					$("#sluzba_name").text(data.data.name);
 			    					$("#sluzba_name").show();
+			    					$("#sluzbaSuma").val(data.data.suma + "€");
 		    					}
 		    					else{
 			    					thiz.val("");
 			    					thiz.css("border","2px solid #F00");
 			    					$("#sluzba_name").text("");
 			    					$("#sluzba_name").hide();
+			    					$("#sluzbaSuma").val("€");
 		    					}
 		    				}
 		    			}
 		    	)
+	    	}
+	    	else{ // sluzba nie je zadana, musim vynulovat sluzba name
+				$("#sluzba_name").text("");
+				$("#sluzba_name").hide();
+				$("#sluzbaSuma").val("€");
 	    	}
 	    });
 	    
@@ -280,7 +310,10 @@ $(document).ready(
 	    	)
 	    };
 	    
+	    
 	    refreshPredpis();
+	    
+
     }
 )
 

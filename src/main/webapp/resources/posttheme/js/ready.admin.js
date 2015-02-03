@@ -1,6 +1,10 @@
 $(document).ready(
     function()
     {
+	    $.ajaxSetup({
+	        cache: false
+	    });
+	    
     	$('.inithide').hide();
     	
     	$('.site-nav-main li.add_user a').click(function(){

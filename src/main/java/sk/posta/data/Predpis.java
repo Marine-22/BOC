@@ -24,7 +24,7 @@ public class Predpis {
 	public Predpis(MultiValueMap<String, String> data){
 		SimpleDateFormat sdf = new SimpleDateFormat(Predpis.SIMPLE_DATE);
 		this.doklad = data.get("doklad").get(0);
-		this.konanie = data.get("konanie").get(0);
+		//this.konanie = data.get("konanie").get(0);
 		this.sluzba = data.get("sluzba").get(0);
 		try{
 			this.datumPredaja = sdf.parse(data.get("datum").get(0)).getTime();
@@ -44,7 +44,7 @@ public class Predpis {
 	@Id
 	private String id;
 	private String doklad;
-	private String konanie;
+	//private String konanie;
 	private String sluzba;
 	private Long datumPredaja; // predaja, zadava pouzivatel v GUI
 	private Long datumPridania;
@@ -73,7 +73,7 @@ public class Predpis {
 	
 	
 	public String toString(){
-		return "Predpis: id="+id+" doklad=" + doklad + "; konanie=" + konanie + "; sluzba=" + sluzba + "; datum: "+datumPredaja + "; pocetId=" + (idnom == null ? 0 : (idnom.size()  + "; idnom: " + idnom));
+		return "Predpis: id="+id+" doklad=" + doklad + "; sluzba=" + sluzba + "; datum: "+datumPredaja + "; pocetId=" + (idnom == null ? 0 : (idnom.size()  + "; idnom: " + idnom));
 	}
 	
 	public String getDoklad() {
@@ -82,12 +82,12 @@ public class Predpis {
 	public void setDoklad(String doklad) {
 		this.doklad = doklad;
 	}
-	public String getKonanie() {
-		return konanie;
-	}
-	public void setKonanie(String konanie) {
-		this.konanie = konanie;
-	}
+//	public String getKonanie() {
+//		return konanie;
+//	}
+//	public void setKonanie(String konanie) {
+//		this.konanie = konanie;
+//	}
 	public String getSluzba() {
 		return sluzba;
 	}

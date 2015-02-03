@@ -25,11 +25,11 @@
           <img alt="Slovenská pošta" class="logo" src="<c:url value="/resources/img/sl-posta-logo.png" />" title="Slovenská pošta" />  
        
        <div class="site-search">
-          <input id="searchDatumOdInput" type="text" value="" class="del_button small" placeholder="-- Predaj od --" />
+          <input id="searchDatumOdInput" type="text" value="" class="del_button small" placeholder="-- Spotreba od --" />
        </div>
               
        <div class="site-search">
-          <input id="searchDatumDoInput" type="text" value="" class="del_button small" placeholder="-- Predaj do --"/>
+          <input id="searchDatumDoInput" type="text" value="" class="del_button small" placeholder="-- Spotreba do --"/>
        </div>
        
        <div class="site-search">
@@ -146,23 +146,34 @@
             </p>
             
             <p class="form-text">
-              <label>Číslo dokladu</label>
+              <label>Číslo dokladu/konania</label>
                 <input class="text" id="doklad" inline="true" name="doklad" type="text" />
                 <span id="doklad_err" class="inithide errmsg"></span>
             </p>
-        
+        <!-- 
             <p class="form-text">
               <label>Číslo konania</label>
               <input class="text" id="konanie" inline="true" name="konanie" type="text" />
                 <span id="konanie_err" class="inithide errmsg"></span>
             </p>
-        
+         -->
+            <p class="form-text" style="overflow:auto;">
+              <label>ID služby</label>
+              <input style="width: 120px; float: left;" class="text ui-autocomplete-input" id="sluzba"  inline="true" name="sluzba" type="text" />
+              <label style="width:38px;">Suma</label>
+              <input style="width: 120px; float: left;" class="text ui-autocomplete-input" id="sluzbaSuma"  inline="true" name="sluzbaSuma" type="text" readonly />
+                <span style="display: none;" id="sluzba_err" class="inithide errmsg"></span>
+                <span style="display: none;" id="sluzba_name" class="sub-data"></span>
+            </p>
+            
+            <!-- 
             <p class="form-text">
               <label>ID služby</label>
               <input class="text" id="sluzba" inline="true" name="sluzba" type="text" />
                 <span id="sluzba_err" class="inithide errmsg"></span>
                 <span id="sluzba_name" class="sub-data"></span>
             </p>
+            -->
             
             <p class="form-text nominal">
               <label>ID nominálnych kolkov</label>

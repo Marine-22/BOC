@@ -330,7 +330,7 @@ public class HomeController {
 					(!statesFilter.isFiltering() ? "" : 										statesFilter.getFilter() + ",") + // filter na stavy
 								"{$or:[" +
 											"{doklad:{$regex:\"^"+sq+"\\w*\", $options:\"i\"}}, " +
-											"{konanie:{$regex:\"^"+sq+"\\w*\", $options:\"i\"}}, " +
+									//		"{konanie:{$regex:\"^"+sq+"\\w*\", $options:\"i\"}}, " +
 											"{idnom:{$regex:\"^"+sq+"\\w*\"}} " +
 										"]}" +
 								"]}";
@@ -346,10 +346,10 @@ public class HomeController {
 			Urad ur = uradRepo.findByBusId(p.getUrad());
 			Sluzba s = null;
 			if(defaultSluzbaSpravna.equals(p.getSluzba())){
-				s = new Sluzba(defaultSluzbaSpravna, defaultSluzbaSpravnaText, defaultSluzbaSpravnaFeeType);
+				s = new Sluzba(defaultSluzbaSpravna, defaultSluzbaSpravnaText, defaultSluzbaSpravnaFeeType, 0d);
 			}
 			else if(defaultSluzbaSudna.equals(p.getSluzba())){
-				s = new Sluzba(defaultSluzbaSudna, defaultSluzbaSudnaText, defaultSluzbaSudnaFeeType);
+				s = new Sluzba(defaultSluzbaSudna, defaultSluzbaSudnaText, defaultSluzbaSudnaFeeType, 0d);
 			}
 			else{
 				s = sluzbaRepo.findByBusId(p.getSluzba());

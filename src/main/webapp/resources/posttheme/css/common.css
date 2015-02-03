@@ -431,7 +431,7 @@ div.box-940.tabs div.ui-tabs-panel div.main br {margin-bottom: 5px; }
 #state-filter li {cursor: default; width: 141px; height: auto}
     
 
-.ispep p {overflow:auto; border-top: 1px solid #EEE;}
+.ispep p {border-top: 1px solid #EEE; float:left; width:929px;}
 .ispep p:first-child {border-top: none;}
 .ispep p label:first-child {width: 160px; display: block; float: left ;margin-top: 7px;}
 .ispep p label {width: 190px; display: block; float: left ;margin-top: 7px;}

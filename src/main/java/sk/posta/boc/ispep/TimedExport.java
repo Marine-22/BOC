@@ -56,11 +56,13 @@ import sk.gov.ekolky.estamp.fo10.nominal.CheckStateRequest;
 import sk.gov.ekolky.estamp.fo10.nominal.CheckStateResponse;
 import sk.gov.ekolky.estamp.xsd10.AssesmentType;
 import sk.gov.ekolky.estamp.xsd10.Key;
+import sk.gov.ekolky.estamp.xsd10.OperDeclare;
 import sk.gov.ekolky.estamp.xsd10.OperPayment;
 import sk.gov.ekolky.estamp.xsd10.OperPaymentNominal;
 import sk.gov.ekolky.estamp.xsd10.Operation;
 import sk.gov.ekolky.estamp.xsd10.RequestFE;
 import sk.gov.ekolky.estamp.xsd10.Service;
+import sk.gov.ekolky.estamp.xsd10.ServiceUse;
 import sk.posta.data.ConfigVersion;
 import sk.posta.data.Predpis;
 import sk.posta.data.Sluzba;
@@ -131,10 +133,10 @@ public class TimedExport implements ExportPredpis{
 		try{
 			Sluzba s = null;
 			if(defaultSluzbaSpravna.equals(p.getSluzba())){
-				s = new Sluzba(defaultSluzbaSpravna, defaultSluzbaSpravnaText, defaultSluzbaSpravnaFeeType);
+				s = new Sluzba(defaultSluzbaSpravna, defaultSluzbaSpravnaText, defaultSluzbaSpravnaFeeType, 0d);
 			}
 			else if(defaultSluzbaSudna.equals(p.getSluzba())){
-				s = new Sluzba(defaultSluzbaSudna, defaultSluzbaSudnaText, defaultSluzbaSudnaFeeType);
+				s = new Sluzba(defaultSluzbaSudna, defaultSluzbaSudnaText, defaultSluzbaSudnaFeeType, 0d);
 			}
 			else{
 				s = sluzbaRepo.findByBusId(p.getSluzba());
@@ -142,7 +144,7 @@ public class TimedExport implements ExportPredpis{
 			p.setFeeTypeService(s.getFeeType());
 			p.setDatumSync(new Date().getTime());
 			checkPredpis(p);
-			String retVal = uploadPredpis(p, cisloPotvrdenia);
+			String retVal = uploadPredpis(p, cisloPotvrdenia, s);
 			p.setIdPredpisu(retVal);
 			p.setStav(PredpisStav.PROCESSED);
 			predpisRepo.save(p);
@@ -303,12 +305,12 @@ public class TimedExport implements ExportPredpis{
 								sPep.getAgendaID() + "' - '" + sPep.getFeeType() + "' - '" + sPep.getName() + 
 								"' - '" + sPep.getType());
 					if(sPep.getId() != null){
-						logger.info("Pridavam: '" + sPep.getOrder() + "'");
-						keys.add(sPep.getOrder());
-						Sluzba sBoc = sluzbaRepo.findByBusId(sPep.getOrder());
+						logger.info("Pridavam: '" + sPep.getId() + "'");
+						keys.add(sPep.getId());
+						Sluzba sBoc = sluzbaRepo.findByBusId(sPep.getId());
 						if(sBoc == null){
 							stats.incSI();
-							sBoc = new Sluzba(sPep.getOrder(), sPep.getName(), sPep.getFeeType());
+							sBoc = new Sluzba(sPep.getId(), sPep.getName(), sPep.getFeeType(), sPep.getAmount().doubleValue());
 							sluzbaRepo.save(sBoc);
 						}
 						else if(!equalsSluzba(sPep, sBoc)){// zmenil sa nazov alebo typ poplatku
@@ -436,11 +438,15 @@ public class TimedExport implements ExportPredpis{
 	
 	private boolean equalsSluzba(Service sPep, Sluzba sBoc){
 		if(!sBoc.getName().equals(sPep.getName())){
-			logger.info("ZMENA:\n" + sBoc.getName() + "\n" + sPep.getName() + "\n");
+			logger.info("ZMENA:\n" + sBoc.getName() + "\t" + sPep.getName() + "\n");
 			return false;
 		}
 		if(!sBoc.getFeeType().equals(sPep.getFeeType())){
-			logger.info("ZMENA:\n" + sBoc.getFeeType() + "\n" + sPep.getFeeType() + "\n");
+			logger.info("ZMENA:\n" + sBoc.getFeeType() + "\t" + sPep.getFeeType() + "\n");
+			return false;
+		}
+		if(!sBoc.getSuma().equals(sPep.getAmount().doubleValue())){
+			logger.info("ZMENA:\n" + sBoc.getSuma() + "\t" + sPep.getAmount() + "\n");
 			return false;
 		}
 		return true;
@@ -534,7 +540,7 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 		return "".equals(actual) ? adding : (actual + "; " + adding);
 	}
 	
-	private String uploadPredpis(Predpis p, int cisloPotvrdenia) throws 
+	private String uploadPredpis(Predpis p, int cisloPotvrdenia, Sluzba s) throws 
 										DatatypeConfigurationException, 
 										InstantiationException, 
 										IllegalAccessException, 
@@ -545,39 +551,17 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 		String idPotvrdenia = getConfirmId(cisloPotvrdenia);
 		predpis.setOfficeID(p.getUrad());
 		predpis.setFeeType(AssesmentType.fromValue(p.getFeeTypeService()));
+		predpis.setProcessNumber(p.getDoklad());// doklad je cislo dokladu/cislo konania (spajalo sa to do jedneho pola)
 		predpis.setKey(new Key());
 		predpis.getKey().setConfirmID(idPotvrdenia);
 		predpis.getKey().setIssueDate(getDate(p.getDatumPredaja()));
-		//predpis.getKey().setVariableSymbol("0987654321");
 		
 		// pocitam vyslednu sumu = sucet vsetkych kolkov na predpise
 		//float cashAmount = getCashAmount(p);
 		
+		predpis.getOperations().add(getOperationDeclare(p, s));
 		for(String idNom : p.getIdnom()){
-			
-			Operation operation = new Operation();
-			Operation.Type oType = new Operation.Type();
-			OperPayment oPay = new OperPayment();
-			OperPayment.PayType pType = new OperPayment.PayType();
-			OperPaymentNominal nominal = new OperPaymentNominal();
-			Key k = new Key();
-			
-			k.setIssueDate(getDate(p.getDatumPredaja()));
-			k.setNominalID(idNom);
-			
-			nominal.setKey(k);
-			pType.setNominal(nominal);
-			
-			// amount vypocitany ako suma nominalov
-			oPay.setAmount(getCashAmount(idNom));
-			
-			oPay.setPayType(pType);
-			oType.setPayment(oPay);
-
-			operation.setOperationDate(getDate(p.getDatumPredaja()));
-			operation.setType(oType);
-			
-			predpis.getOperations().add(operation);
+			predpis.getOperations().add(getOperationPayment(idNom, p.getDatumPredaja()));
 		}
 		requestCreate.setAssessment(predpis);
 		printPredpis(requestCreate);
@@ -588,7 +572,33 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 		return idPotvrdenia;
 	}
 	
-	@SuppressWarnings("unused")
+	private Operation getOperationDeclare(Predpis p, Sluzba s) throws DatatypeConfigurationException{
+		Operation operation = new Operation();
+		operation.setOperationDate(getDate(p.getDatumPredaja()));
+		operation.setType(new Operation.Type());
+		operation.getType().setDeclare(new OperDeclare());
+		//operation.getType().getDeclare().setAmount(getCashAmount(p));
+		operation.getType().getDeclare().setAmount(s.getSuma().floatValue());
+		operation.getType().getDeclare().setUse(new ServiceUse());
+		operation.getType().getDeclare().getUse().setOfficeID(p.getUrad());
+		operation.getType().getDeclare().getUse().setServiceID(p.getSluzba());
+		return operation;
+	}
+	
+	private Operation getOperationPayment(String idNom, Long datumSpotreby) throws DatatypeConfigurationException{
+		Operation operation = new Operation();
+		operation.setOperationDate(getDate(datumSpotreby));
+		operation.setType(new Operation.Type());
+		operation.getType().setPayment(new OperPayment());
+		operation.getType().getPayment().setAmount(getCashAmount(idNom));
+		operation.getType().getPayment().setPayType(new OperPayment.PayType());
+		operation.getType().getPayment().getPayType().setNominal(new OperPaymentNominal());
+		operation.getType().getPayment().getPayType().getNominal().setKey(new Key());
+		operation.getType().getPayment().getPayType().getNominal().getKey().setIssueDate(getDate(datumSpotreby));
+		operation.getType().getPayment().getPayType().getNominal().getKey().setNominalID(idNom);
+		return operation;
+	}
+	
 	private float getCashAmount(Predpis p){
 		float retVal = 0;
 		for(String idNom : p.getIdnom()){
@@ -766,11 +776,17 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
     	retVal += "\nAssessment.key.confirmId: " + cr.getAssessment().getKey().getConfirmID();
     	retVal += "\nAssessment.key.issueDate: " + cr.getAssessment().getKey().getIssueDate();
     	for(int i = 0; i < cr.getAssessment().getOperations().size(); i++){
-    		retVal += "\nAssessment.operation["+i+"].type.payment.amount: " + cr.getAssessment().getOperations().get(i).getType().getPayment().getAmount();
-    		retVal += "\nAssessment.operation["+i+"].type.payment.payType.nominal.key.nominalId: " + cr.getAssessment().getOperations().get(i).getType().getPayment().getPayType().getNominal().getKey().getNominalID();
-    		retVal += "\nAssessment.operation["+i+"].type.payment.payType.nominal.key.issueDate: " + cr.getAssessment().getOperations().get(i).getType().getPayment().getPayType().getNominal().getKey().getIssueDate();
-    		retVal += "\nAssessment.operation["+i+"].operationDate: " + cr.getAssessment().getOperations().get(i).getOperationDate();
-    		
+    		if(cr.getAssessment().getOperations().get(i).getType().getPayment() != null){
+	    		retVal += "\nAssessment.operation["+i+"].type.payment.amount: " + cr.getAssessment().getOperations().get(i).getType().getPayment().getAmount();
+	    		retVal += "\nAssessment.operation["+i+"].type.payment.payType.nominal.key.nominalId: " + cr.getAssessment().getOperations().get(i).getType().getPayment().getPayType().getNominal().getKey().getNominalID();
+	    		retVal += "\nAssessment.operation["+i+"].type.payment.payType.nominal.key.issueDate: " + cr.getAssessment().getOperations().get(i).getType().getPayment().getPayType().getNominal().getKey().getIssueDate();
+	    		retVal += "\nAssessment.operation["+i+"].operationDate: " + cr.getAssessment().getOperations().get(i).getOperationDate();
+    		}
+    		if(cr.getAssessment().getOperations().get(i).getType().getDeclare() != null){
+    			retVal += "\nAssessment.operation["+i+"].type.declare.amount:" + cr.getAssessment().getOperations().get(i).getType().getDeclare().getAmount();
+    			retVal += "\nAssessment.operation["+i+"].type.declare.use.officeId:" + cr.getAssessment().getOperations().get(i).getType().getDeclare().getUse().getOfficeID();
+    			retVal += "\nAssessment.operation["+i+"].type.declare.use.serviceId:" + cr.getAssessment().getOperations().get(i).getType().getDeclare().getUse().getServiceID();
+    		}
     	}
     	logger.info(retVal);
 	}

@@ -7,11 +7,12 @@ public class Sluzba {
 	
 	public Sluzba(){}
 	
-	public Sluzba(String busId, String name, String feeType){
+	public Sluzba(String busId, String name, String feeType, Double suma){
 		this.busId = busId;
 		this.name = name;
 		this.feeType = feeType;
 		this.active = true;
+		this.suma = suma;
 	}
 	
 	@Id
@@ -20,6 +21,7 @@ public class Sluzba {
 	private String busId;
 	private String name;
 	private String feeType;
+	private Double suma;
 	private boolean active;
 	
 	public String getId() {
@@ -48,13 +50,21 @@ public class Sluzba {
 	}
 
 	public String toString(){
-		return "Sluzba[busId="+busId+"; name="+name+"]";
+		return "Sluzba[busId="+busId+"; name="+name+"; suma="+suma+"]";
 	}
 	public boolean isActive() {
 		return active;
 	}
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public Double getSuma() {
+		return suma;
+	}
+
+	public void setSuma(Double suma) {
+		this.suma = suma;
 	}
 	
 	
