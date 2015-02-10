@@ -30,7 +30,7 @@ public class Suggestion {
 	private Suggestion(Sluzba s, int field){
 		this.id = s.getBusId();
 		this.name = s.getName();
-		this.price = s.getSuma();
+		this.suma = s.getSuma();
 		switch(field){
 		case BUS_ID:
 			this.label = s.getBusId();
@@ -57,7 +57,7 @@ public class Suggestion {
 	private String label; // hodnota, ktora sa zobrazil v suggestion liste
 	private String id;
 	private String name;
-	private Double price;
+	private Double suma;
 	public String getLabel() {
 		return label;
 	}
@@ -79,11 +79,12 @@ public class Suggestion {
 		this.name = name;
 	}
 
-	public Double getPrice() {
-		return price;
+	public Double getSuma() {
+		return suma;
 	}
 
-	public void setPrice(Double price) {
-		this.price = price;
+	public void setSuma(Double suma) {
+		this.suma = suma;
 	}
+
 }

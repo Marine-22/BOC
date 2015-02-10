@@ -95,6 +95,9 @@ public class TimedExport implements ExportPredpis{
 	@Value("#{appProps['app.sluzba.sud.default.feeType']}") 
 	private String defaultSluzbaSudnaFeeType;
 	
+	@Value("#{appProps['app.predpis.confirmID.dateFormat']}") 
+	private String confirmIdDateFormat; 
+	
 	private static final String CHECKING = "Kontroluje sa"; 
 	
 	@Autowired
@@ -255,6 +258,9 @@ public class TimedExport implements ExportPredpis{
 		if(confUrady == null){
 			confUrady = new ConfigVersion("" + ConfigVersion.ConfigType.URADY, "N/A");
 		}
+		if(confSluzby.getVersion().equals(CHECKING) || confUrady.getVersion().equals(CHECKING)){
+			return;
+		}
 		confSluzby.setDatum(new Date().getTime());
 		confUrady.setDatum(new Date().getTime());
 		String sluzbyVersion = confSluzby.getVersion();
@@ -293,6 +299,7 @@ public class TimedExport implements ExportPredpis{
 		
 		// sluzby
 		try{
+			checkFail = true;
 			stats.sluzbyOldVer = confSluzby.getVersion();
 			// sluzby treba poriesit
 			if(!check.getServiceVersion().equals(confSluzby.getVersion())){
@@ -303,14 +310,14 @@ public class TimedExport implements ExportPredpis{
 				for(Service sPep : lServis){
 					logger.info("sPep: '" + sPep.getId() + "' - '" + sPep.getOrder() + "' - '" + 
 								sPep.getAgendaID() + "' - '" + sPep.getFeeType() + "' - '" + sPep.getName() + 
-								"' - '" + sPep.getType());
+								"' - '" + sPep.getType() + "' - '" + sPep.getAmount());
 					if(sPep.getId() != null){
 						logger.info("Pridavam: '" + sPep.getId() + "'");
 						keys.add(sPep.getId());
 						Sluzba sBoc = sluzbaRepo.findByBusId(sPep.getId());
 						if(sBoc == null){
 							stats.incSI();
-							sBoc = new Sluzba(sPep.getId(), sPep.getName(), sPep.getFeeType(), sPep.getAmount().doubleValue());
+							sBoc = new Sluzba(sPep.getId(), sPep.getName(), sPep.getFeeType(), (sPep.getAmount() == null ? null : sPep.getAmount().doubleValue()));
 							sluzbaRepo.save(sBoc);
 						}
 						else if(!equalsSluzba(sPep, sBoc)){// zmenil sa nazov alebo typ poplatku
@@ -333,6 +340,7 @@ public class TimedExport implements ExportPredpis{
 				}
 			}
 			confSluzby.setVersion(check.getServiceVersion());
+			checkFail = false;
 			// sluzby end
 		}
 		catch(DatatypeConfigurationException e){
@@ -343,9 +351,15 @@ public class TimedExport implements ExportPredpis{
 			logger.info("Chyba pri synchronizacii sluzieb.", e);
 		} catch (IllegalAccessException e) {
 			logger.info("Chyba pri synchronizacii sluzieb.", e);
+		} catch (Exception e) {
+			logger.info("Chyba pri synchronizacii sluzieb.", e);
+		}
+		if(checkFail){
+			confSluzby.setVersion("N/A");
 		}
 // urady
 		try{
+			checkFail = true;
 			stats.uradyOldVer = confUrady.getVersion();
 			if(!check.getOfficeVersion().equals(confUrady.getVersion())){
 
@@ -381,6 +395,7 @@ public class TimedExport implements ExportPredpis{
 			}
 			// urady end
 			confUrady.setVersion(check.getOfficeVersion());
+			checkFail = false;
 		} catch(DatatypeConfigurationException e){
 			logger.info("Chyba pri synchronizacii uradov.", e);
 		} catch(BloxFaultMessage e){
@@ -389,7 +404,13 @@ public class TimedExport implements ExportPredpis{
 			logger.info("Chyba pri synchronizacii uradov.", e);
 		} catch (IllegalAccessException e) {
 			logger.info("Chyba pri synchronizacii uradov.", e);
+		} catch (Exception e) {
+			logger.info("Chyba pri synchronizacii uradov.", e);
 		}
+		if(checkFail){
+			confUrady.setVersion("N/A");
+		}
+		
 		logger.info(stats.getReport());
 		// ulozim novu verziu
 		confRepo.save(confUrady);
@@ -638,13 +659,11 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 		return retVal;
 	}
 	
-	//XXX-YYMMDD-NNNN 
 	private String getConfirmId(int cisloPotvrdenia){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
+		SimpleDateFormat sdf = new SimpleDateFormat(confirmIdDateFormat);
 		logger.info(String.format("%s-%s-%04d",feDeviceId, sdf.format(new Date()), cisloPotvrdenia));
 		return   String.format("%s-%s-%04d",feDeviceId, sdf.format(new Date()), cisloPotvrdenia);
 	}
-	
 	
 	private int getCisloPotvrdenia(){
 		int retVal = 0;

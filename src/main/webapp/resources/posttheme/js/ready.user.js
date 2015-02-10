@@ -122,7 +122,7 @@ $(document).ready(
     		source: window.GLOBAL_APP_NAME + '/searchSluzba',
     		focus: function(e, ui){
     			$('#sluzba_name').text(ui.item.name);
-    			$('#sluzbaSuma').val(ui.item.price + "€");
+    			$('#sluzbaSuma').val(ui.item.suma == null ? "Neurčitá" : (ui.item.suma + "€"));
     		}
     	});
     	
@@ -193,7 +193,7 @@ $(document).ready(
 			    					$("#sluzba_err").hide();
 			    					$("#sluzba_name").text(data.data.name);
 			    					$("#sluzba_name").show();
-			    					$("#sluzbaSuma").val(data.data.suma + "€");
+			    					$("#sluzbaSuma").val(data.data.suma == null ? "Neurčitá" : (ui.item.suma + "€"));
 		    					}
 		    					else{
 			    					thiz.val("");
