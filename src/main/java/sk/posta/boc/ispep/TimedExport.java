@@ -598,8 +598,8 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 		operation.setOperationDate(getDate(p.getDatumPredaja()));
 		operation.setType(new Operation.Type());
 		operation.getType().setDeclare(new OperDeclare());
-		//operation.getType().getDeclare().setAmount(getCashAmount(p));
-		operation.getType().getDeclare().setAmount(s.getSuma().floatValue());
+		operation.getType().getDeclare().setAmount(getCashAmount(p));
+		//operation.getType().getDeclare().setAmount(s.getSuma().floatValue());
 		operation.getType().getDeclare().setUse(new ServiceUse());
 		operation.getType().getDeclare().getUse().setOfficeID(p.getUrad());
 		operation.getType().getDeclare().getUse().setServiceID(p.getSluzba());
