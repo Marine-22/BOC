@@ -65,11 +65,13 @@ import sk.gov.ekolky.estamp.xsd10.Service;
 import sk.gov.ekolky.estamp.xsd10.ServiceUse;
 import sk.posta.data.ConfigVersion;
 import sk.posta.data.Predpis;
+import sk.posta.data.Sequencer;
 import sk.posta.data.Sluzba;
 import sk.posta.data.Urad;
 import sk.posta.data.enumm.PredpisStav;
 import sk.posta.data.repo.ConfigVersionRepository;
 import sk.posta.data.repo.PredpisRepository;
+import sk.posta.data.repo.SequencerRepository;
 import sk.posta.data.repo.SluzbaRepository;
 import sk.posta.data.repo.UradRepository;
 
@@ -110,6 +112,8 @@ public class TimedExport implements ExportPredpis{
 	private PredpisRepository predpisRepo;
 	@Autowired
 	private MongoOperations customOps;
+	@Autowired
+	private SequencerRepository seqRepo;
 	
 	private static final Logger logger = LoggerFactory.getLogger(TimedExport.class.getName());
 	
@@ -117,9 +121,9 @@ public class TimedExport implements ExportPredpis{
 		Runnable r = new Runnable() {
 			@Override
 			public void run() {
-				int cisloPotvrdenia = getCisloPotvrdenia();
+				int cisloPotvrdenia = getNewCisloPotvrdenia(p.getDatumPredaja());
 				if(exportPredpis(p, cisloPotvrdenia)){
-					saveIdPotvrdenia(cisloPotvrdenia);
+					saveIdPotvrdenia(cisloPotvrdenia, p.getDatumPredaja());
 				}
 			}
 		};
@@ -188,18 +192,13 @@ public class TimedExport implements ExportPredpis{
 			upd.set("stav", "WAITING");
 			customOps.updateMulti(bq, upd, Predpis.class);
 			
-			int cisloPotvrdenia = getCisloPotvrdenia();
-			boolean wasSuccess = false;
 			for(Predpis p : lP){
+					int cisloPotvrdenia = getNewCisloPotvrdenia(p.getDatumPredaja());
 					if(exportPredpis(p, cisloPotvrdenia)){
-						cisloPotvrdenia++;
-						wasSuccess = true;
+						saveIdPotvrdenia(cisloPotvrdenia, p.getDatumPredaja());
 					}
 			}
-			// ak bol aspon 1 uspesne uploadovany, 
-			// musim ulozit cislo potvrdenia o 1 mensie ako mam pripravene pre dalsi predpis
-			if(wasSuccess) cisloPotvrdenia--;  
-			saveIdPotvrdenia(cisloPotvrdenia);
+
 		}
     }
 	
@@ -244,20 +243,27 @@ public class TimedExport implements ExportPredpis{
 		predpisRepo.save(p);
 	}
 	
+	private synchronized ConfigVersion getVersion(ConfigVersion.ConfigType type){
+		ConfigVersion conf = confRepo.findByName("" + type);
+		if(conf == null){
+			conf = new ConfigVersion("" + type, "N/A");
+		}
+		return conf;
+	}
+	
 	//fixedRate = 1 den v milisekundach
 	@Scheduled(fixedRate=PepConfig.fixedRateSluzbyUrady, initialDelay=PepConfig.initialDelaySluzbyUrady)
 	public void checkEnums()
     {
+		checkEnums(false);
+    }
+	
+	public void checkEnums(boolean force)
+    {
 		DeviceStateCheckResponse check = null;
 		// do funkcie
-		ConfigVersion confSluzby = confRepo.findByName("" + ConfigVersion.ConfigType.SLUZBY);
-		ConfigVersion confUrady = confRepo.findByName("" + ConfigVersion.ConfigType.URADY);
-		if(confSluzby == null){
-			confSluzby = new ConfigVersion("" + ConfigVersion.ConfigType.SLUZBY, "N/A");
-		}
-		if(confUrady == null){
-			confUrady = new ConfigVersion("" + ConfigVersion.ConfigType.URADY, "N/A");
-		}
+		ConfigVersion confSluzby = getVersion(ConfigVersion.ConfigType.SLUZBY);
+		ConfigVersion confUrady = getVersion(ConfigVersion.ConfigType.URADY);
 		if(confSluzby.getVersion().equals(CHECKING) || confUrady.getVersion().equals(CHECKING)){
 			return;
 		}
@@ -302,7 +308,7 @@ public class TimedExport implements ExportPredpis{
 			checkFail = true;
 			stats.sluzbyOldVer = confSluzby.getVersion();
 			// sluzby treba poriesit
-			if(!check.getServiceVersion().equals(confSluzby.getVersion())){
+			if(force || !check.getServiceVersion().equals(confSluzby.getVersion())){
 
 				List<Service> lServis = callSluzby();
 				Set<String> keys = new HashSet<String>();
@@ -312,7 +318,7 @@ public class TimedExport implements ExportPredpis{
 								sPep.getAgendaID() + "' - '" + sPep.getFeeType() + "' - '" + sPep.getName() + 
 								"' - '" + sPep.getType() + "' - '" + sPep.getAmount());
 					if(sPep.getId() != null){
-						logger.info("Pridavam: '" + sPep.getId() + "'");
+						logger.info("Riesim: '" + sPep.getId() + "'");
 						keys.add(sPep.getId());
 						Sluzba sBoc = sluzbaRepo.findByBusId(sPep.getId());
 						if(sBoc == null){
@@ -361,7 +367,7 @@ public class TimedExport implements ExportPredpis{
 		try{
 			checkFail = true;
 			stats.uradyOldVer = confUrady.getVersion();
-			if(!check.getOfficeVersion().equals(confUrady.getVersion())){
+			if(force || !check.getOfficeVersion().equals(confUrady.getVersion())){
 
 				List<Offices> lOff = callUrady();
 				Set<String> keys = new HashSet<String>();
@@ -466,11 +472,18 @@ public class TimedExport implements ExportPredpis{
 			logger.info("ZMENA:\n" + sBoc.getFeeType() + "\t" + sPep.getFeeType() + "\n");
 			return false;
 		}
-		if(!sBoc.getSuma().equals(sPep.getAmount().doubleValue())){
+		if(!equals(sPep, sBoc)){
 			logger.info("ZMENA:\n" + sBoc.getSuma() + "\t" + sPep.getAmount() + "\n");
 			return false;
 		}
 		return true;
+	}
+	
+	private boolean equals(Service sPep, Sluzba sBoc){
+		if(sBoc.getSuma() == null && sPep.getAmount() != null) return false;
+		if(sBoc.getSuma() != null && sPep.getAmount() == null) return false;
+		if(sBoc.getSuma() == null && sPep.getAmount() == null) return true;
+		return sBoc.getSuma().doubleValue() == sPep.getAmount().doubleValue();
 	}
 	
 	private boolean equalsUrad(Offices oPep, Urad uBoc){
@@ -569,7 +582,7 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 		
 		CreateRequest requestCreate = getRequest(CreateRequest.class);
 		sk.gov.ekolky.estamp.xsd10.Assessment predpis = new sk.gov.ekolky.estamp.xsd10.Assessment();
-		String idPotvrdenia = getConfirmId(cisloPotvrdenia);
+		String idPotvrdenia = getConfirmId(cisloPotvrdenia, p.getDatumPredaja());
 		predpis.setOfficeID(p.getUrad());
 		predpis.setFeeType(AssesmentType.fromValue(p.getFeeTypeService()));
 		predpis.setProcessNumber(p.getDoklad());// doklad je cislo dokladu/cislo konania (spajalo sa to do jedneho pola)
@@ -659,53 +672,39 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 		return retVal;
 	}
 	
-	private String getConfirmId(int cisloPotvrdenia){
+	private String getConfirmId(int cisloPotvrdenia, Long datum){
 		SimpleDateFormat sdf = new SimpleDateFormat(confirmIdDateFormat);
-		logger.info(String.format("%s-%s-%04d",feDeviceId, sdf.format(new Date()), cisloPotvrdenia));
-		return   String.format("%s-%s-%04d",feDeviceId, sdf.format(new Date()), cisloPotvrdenia);
+		logger.info(String.format("%s-%s-%04d",feDeviceId, sdf.format(new Date(datum)), cisloPotvrdenia));
+		return   String.format("%s-%s-%04d",feDeviceId, sdf.format(new Date(datum)), cisloPotvrdenia);
 	}
 	
-	private int getCisloPotvrdenia(){
-		int retVal = 0;
-		ConfigVersion conf = confRepo.findByName("" + ConfigVersion.ConfigType.SUFFIX_POTVRDENIA);
-		if(conf == null){
-			retVal = 1;
+	private int getNewCisloPotvrdenia(Long datum){
+		Long vynulovany = getVynulovanyDatum(datum);
+		Sequencer s = seqRepo.findByDatum(vynulovany);
+		if(s == null){
+			s = new Sequencer(vynulovany);
+			seqRepo.save(s);
 		}
-		else{
-			String info = conf.getVersion();
-			if(isLastFromToday(info)){ // musim zvysit index
-				int last = Integer.parseInt(info.substring(13));
-				retVal = last + 1;
-			}
-			else{ // novy den, index ide od 1
-				retVal = 1;
-			}
-		}
-		logger.info("getCisloPotvrdenia: " + retVal);
-		return retVal;
+		return s.getSequence() + 1;
 	}
 	
-	private void saveIdPotvrdenia(int idPotvrdenia){
-		ConfigVersion conf = confRepo.findByName("" + ConfigVersion.ConfigType.SUFFIX_POTVRDENIA);
-		if(conf == null){
-			conf = new ConfigVersion();
-			conf.setName("" + ConfigVersion.ConfigType.SUFFIX_POTVRDENIA);
-			confRepo.save(conf);
-		}
-		conf.setVersion("" + new Date().getTime() + idPotvrdenia);
-		confRepo.save(conf);
+	private void saveIdPotvrdenia(int cisloPotvrdenia, Long datum){
+		Long vynulovany = getVynulovanyDatum(datum);
+		Sequencer s = seqRepo.findByDatum(vynulovany);
+		s.setSequence(cisloPotvrdenia);
+		seqRepo.save(s);
 	}
 	
-	private boolean isLastFromToday(String info){
-		Calendar cNow = Calendar.getInstance();
-		// prvych 13 znakov su milisekundy date
-		Calendar cLast = Calendar.getInstance();
-		cLast.setTimeInMillis(Long.parseLong(info.substring(0, 13)));
-		logger.info("isLastFromToday: cNow = " + cNow.getTimeInMillis() + " cLast = " + cLast.getTimeInMillis() + " " + ((cNow.get(Calendar.YEAR) == cLast.get(Calendar.YEAR)) && cNow.get(Calendar.DAY_OF_YEAR) == cLast.get(Calendar.DAY_OF_YEAR)));
-		return ((cNow.get(Calendar.YEAR) == cLast.get(Calendar.YEAR)) &&
-				cNow.get(Calendar.DAY_OF_YEAR) == cLast.get(Calendar.DAY_OF_YEAR));
+	private Long getVynulovanyDatum(Long datum){
+		Calendar c = Calendar.getInstance();
+		c.setTimeInMillis(datum);
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+		return c.getTimeInMillis();
 	}
-
+	
 	private class SyncStats{
 		SyncStats(DeviceStateCheckResponse check){
 			this.sluzbyI = 0;

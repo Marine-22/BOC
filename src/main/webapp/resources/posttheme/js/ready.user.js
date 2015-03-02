@@ -54,9 +54,20 @@ $(document).ready(
     				j.parent().remove();
     			}
     			else{
-    				j.siblings("input.text").val("");
+    				var last = $(".nominal .red_button_small:last");
+    				if(last == j){
+    					j.siblings("input.text").val("");
+    				}
+    				else{
+    					j.parent().remove();
+    				}
     			}
-    			//e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+    		}
+    		else{ // len == 0, mozno musim vymazat element
+    			var last = $(".nominal .red_button_small:last");
+    			if(last[0] != j[0]){
+    				j.parent().remove();
+    			}
     		}
     	});
     	
@@ -65,8 +76,8 @@ $(document).ready(
     			// kontrola, ci uz takyto kreditny kolok nie je v zozname
     			var list = $(".nominal input.text");
     			var exists = false;
-    			for(var i = 0; i < list.length-1; i++){
-    				if(list[i].value == $(this).val()){
+    			for(var i = 0; i < list.length; i++){
+    				if($(this)[0] != list[i] && list[i].value == $(this).val()){
     					exists = true;
     					break;
     				}
@@ -80,6 +91,32 @@ $(document).ready(
     			$('.nominal:last input').focus();
     		}
     	});
+    	
+    	$(".nominal input.text").on('paste', function(e) {
+    		var thiz = $(this);
+    		setTimeout(function(){
+    			if(thiz.val().length == 10){
+        			// kontrola, ci uz takyto kreditny kolok nie je v zozname
+        			var list = $(".nominal input.text");
+        			var exists = false;
+        			for(var i = 0; i < list.length; i++){
+        				if(thiz[0] != list[i] && list[i].value == thiz.val()){
+        					exists = true;
+        					break;
+        				}
+        			}
+        			if(!exists){
+    	    			addNewPredpisElement();
+        			}
+        			else{
+        				thiz.val("");
+        			}
+        			$('.nominal:last input').focus();
+        		}
+    		}, 100);
+    	});
+    	
+    	
     	
     	$("#change-password input#reppass").keypress(function (e) {
 	        if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {

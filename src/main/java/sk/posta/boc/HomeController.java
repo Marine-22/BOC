@@ -533,7 +533,7 @@ public class HomeController {
 		retVal = setRetVal();
 		new Thread(new Runnable() {
 			public void run() {
-				exportPredpis.checkEnums();
+				exportPredpis.checkEnums(true);
 			}
 		}).start();
 		

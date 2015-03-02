@@ -17,12 +17,12 @@ PROD    - 10.171.10.50
 	 */
 	
 //	////////////////////    DEV    ////////////////////
-	public static final String URL = "http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl";
-	public static final String WSDL_LOCATION = "http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl";
+//	public static final String URL = "http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl";
+//	public static final String WSDL_LOCATION = "http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl";
 //	
 //	////////////////////    TEST    ////////////////////
-//	public static final String URL = "http://10.169.10.50:9080/estamp/soa/server/r1_2.wsdl";
-//	public static final String WSDL_LOCATION = "http://10.169.10.50:9080/estamp/soa/server/r1_2.wsdl";
+	public static final String URL = "http://10.169.10.50:9080/estamp/soa/server/r1_2.wsdl";
+	public static final String WSDL_LOCATION = "http://10.169.10.50:9080/estamp/soa/server/r1_2.wsdl";
 //
 //	////////////////////    FIX    ////////////////////
 //	public static final String URL = "http://10.172.10.50:9080/estamp/soa/server/r1_2.wsdl";

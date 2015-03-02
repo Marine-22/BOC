@@ -298,9 +298,9 @@ function refreshPredpis(){
 					
 					htmlBlock += "<li class=\"dynamic-li\"> \
 									<span class=\"data-label\">P.č.:</span> \
-									<span class=\"data\">"+data.data[i].poradove+"</span> \
+									<span class=\"data\" style=\"width: 35px;\">"+data.data[i].poradove+"</span> \
 									<span class=\"data-label\">Č. dokladu/konania:</span> \
-									<span class=\"data\">"+data.data[i].doklad+"</span> \
+									<span class=\"data\" style=\"width: 220px;\">"+data.data[i].doklad+"</span> \
 									<span class=\"data-label\">Pridal:</span> \
 									<span class=\"data\" style=\"width:150px\">"+data.data[i].fullName+"</span> \
 									<span class=\"data-label\">Stav:</span> \
