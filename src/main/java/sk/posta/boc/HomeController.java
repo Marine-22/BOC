@@ -81,8 +81,8 @@ public class HomeController {
 	@Value("#{appProps['app.sluzba.sud.default.feeType']}") 
 	private String defaultSluzbaSudnaFeeType;
 	
-	public static final String APPLICATION_PREFIX = "/BOC";
-//	public static final String APPLICATION_PREFIX = "";
+//	public static final String APPLICATION_PREFIX = "/BOC-test";
+//	public static final String APPLICATION_PREFIX = "/BOC";
 	public static final String AUTHENTICATED = "authenticated";
 	public static final String LOGIN = "userLogin";
 	public static final String USER_TYPE = "userType";
@@ -556,7 +556,7 @@ public class HomeController {
 
 	@RequestMapping(value = "/pepRefresh", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
 	public @ResponseBody String pepRefresh(HttpSession session){
-		logger.info("Zavolana metoda resendPredpis: ");
+		logger.info("Zavolana metoda pepRefresh: ");
 		ReturnData retVal = null;
 		ConfigVersion conn = confRepo.findByName("" + ConfigVersion.ConfigType.CONN_TEST);
 		ConfigVersion sluzby = confRepo.findByName("" + ConfigVersion.ConfigType.SLUZBY);

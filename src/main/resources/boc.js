@@ -1,5 +1,4 @@
-//var GLOBAL_APP_NAME = '';
-var GLOBAL_APP_NAME = '/BOC';
+var GLOBAL_APP_NAME = '/${build.finalName}';
 
 function addNewPredpisElement(){
 	
@@ -136,7 +135,7 @@ function checkRedirect(d){
 		if(d.reason){
 			alert(d.reason);
 		}
-		window.location.replace(d.redirect);
+		window.location.replace(GLOBAL_APP_NAME + d.redirect);
 		return false;
 	}
 	return true;
@@ -213,6 +212,7 @@ function refreshUsers(){
 				$("li.dynamic-li").remove();
 				var htmlBlock = "";
 				for(var i = 0; i < data.data.length; i++){
+					var isAdmin = (data.data[i].idZamLogin == "admin");
 					htmlBlock += 
 							"<li class=\"dynamic-li\"> \
 									<span class=\"data\">("+data.data[i].idZamLogin+")</span> \
@@ -222,7 +222,7 @@ function refreshUsers(){
 											<span class=\"data data-admin table-name\" data-selector=\".new-name\" data-zamid=\""+data.data[i].idZamLogin+"\">"+data.data[i].meno+"</span> \
 											<input class=\"dynamic-data-update new-name\" data-selector=\".table-name\" type=\"text\" style=\"width: 80px; display:none\" value=\""+data.data[i].meno+"\" /> \
 									</div> \
-									<span class=\"data data-admin table-active "+(data.data[i].active ? "ACTIVE" : "UNACTIVE")+"\" data-active-bool-value=\""+data.data[i].active+"\" data-zamid=\""+data.data[i].idZamLogin+"\">"+(data.data[i].active ? "Aktívny" : "Neaktívny") +"</span> \
+									<span class=\"data data-admin "+(isAdmin? "" : "table-active")+" "+(data.data[i].active ? "ACTIVE" : "UNACTIVE")+"\" data-active-bool-value=\""+data.data[i].active+"\" data-zamid=\""+data.data[i].idZamLogin+"\">"+(data.data[i].active ? "Aktívny" : "Neaktívny") +"</span> \
 									<span class=\"data data-admin\">Heslo:</span> \
 									<span class=\"data data-admin table-password\" data-zamid=\""+data.data[i].idZamLogin+"\">****</span> \
 									<input class=\"update-table-password new-pass\" data-zamid=\""+data.data[i].idZamLogin+"\" type=\"password\" style=\"width: 80px; float:left; display:none\" /> \
@@ -231,7 +231,7 @@ function refreshUsers(){
 									<a class=\"update-table-password red_button\" href=\"javascript:{}\" onclick=\"updatePassword(true)\" style=\"padding:4px 8px 3px; margin-left: 8px; line-height: 1; display:none\">X</a> \
 									<a class=\"update-table-password blue_button\" href=\"javascript:{}\" onclick=\"updatePassword()\" style=\"padding:4px 8px 3px; margin-left: 8px; line-height: 1; display:none\">Uložiť</a>\
 									<br/>"+(ismsie() ? "<br/>" : "")+" \
-								<span class=\"sub-data table-user-type\" data-enum-val=\"" + data.data[i].userType + "\" data-zamid=\""+data.data[i].idZamLogin+"\">" + getUserType(data.data[i].userType) + "</span> \
+								<span class=\"sub-data "+(isAdmin ? "" : "table-user-type")+"\" data-enum-val=\"" + data.data[i].userType + "\" data-zamid=\""+data.data[i].idZamLogin+"\">" + getUserType(data.data[i].userType) + "</span> \
 								<select class = \"dynamic-data-update new-user-type\" style=\"display:none;\"> \
 									<option value=\"USER\">Používateľ</option> \
 									<option value=\"SUPER_USER\">Super Používateľ</option> \

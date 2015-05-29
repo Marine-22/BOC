@@ -15,6 +15,63 @@
 		<jackson.version>1.9.13</jackson.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+	
+	
+	<profiles>
+		<profile>
+			<id>DEV</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<deploy.url>http://localhost/manager/text</deploy.url>
+				<deploy.username>admin</deploy.username>
+				<deploy.password>wemn8jsu</deploy.password>
+				<build.finalName>BOC-test</build.finalName>
+				<logFilePath>C:\\log_apache_boc.out</logFilePath>
+				<database.name>develop</database.name>
+				<webAppRootKey>webapp.root.boc_test</webAppRootKey>
+				<pepConfig.url>http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl</pepConfig.url>
+				<pepConfig.wsdlLocation>http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl</pepConfig.wsdlLocation>
+				<pepConfig.targetNamespace>http://www.ekolky.gov.sk/estamp/fo10</pepConfig.targetNamespace>
+				<pepConfig.qNameUri>http://www.ekolky.gov.sk/estamp/fo10</pepConfig.qNameUri>
+			</properties>
+		</profile>
+		
+		<profile>
+			<id>TEST</id>
+			<properties>
+				<deploy.url>http://10.6.54.21:8080/manager/text</deploy.url>
+				<deploy.username>admin</deploy.username>
+				<deploy.password>wemn8jsu</deploy.password>
+				<build.finalName>BOC-test</build.finalName>
+				<logFilePath>/var/www/log/apache_test</logFilePath>
+				<database.name>test</database.name>
+				<webAppRootKey>webapp.root.boc_test</webAppRootKey>
+				<pepConfig.url>http://10.169.10.50:9080/estamp/soa/server/r1_2.wsdl</pepConfig.url>
+				<pepConfig.wsdlLocation>http://10.169.10.50:9080/estamp/soa/server/r1_2.wsdl</pepConfig.wsdlLocation>
+				<pepConfig.targetNamespace>http://www.ekolky.gov.sk/estamp/fo10</pepConfig.targetNamespace>
+				<pepConfig.qNameUri>http://www.ekolky.gov.sk/estamp/fo10</pepConfig.qNameUri>				
+			</properties>
+		</profile>
+		<profile>
+			<id>PROD</id>
+			<properties>
+				<deploy.url>http://10.6.54.21:8080/manager/text</deploy.url>
+				<deploy.username>admin</deploy.username>
+				<deploy.password>wemn8jsu</deploy.password>
+				<build.finalName>BOC</build.finalName>
+				<logFilePath>/var/www/log/apache_prod</logFilePath>
+				<database.name>prod</database.name>
+				<webAppRootKey>webapp.root.boc</webAppRootKey>
+				<pepConfig.url>http://10.171.10.50:9080/estamp/soa/server/r1_2.wsdl</pepConfig.url>
+				<pepConfig.wsdlLocation>http://10.171.10.50:9080/estamp/soa/server/r1_2.wsdl</pepConfig.wsdlLocation>
+				<pepConfig.targetNamespace>http://www.ekolky.gov.sk/estamp/fo10</pepConfig.targetNamespace>
+				<pepConfig.qNameUri>http://www.ekolky.gov.sk/estamp/fo10</pepConfig.qNameUri>				
+			</properties>
+		</profile>
+	</profiles>
+	
 	<dependencies>
 		<!-- Spring -->
 		<dependency>
@@ -171,6 +228,34 @@
 		
 	</dependencies>
     <build>
+    	<resources>
+    		<resource>
+    			<filtering>true</filtering>
+    			<directory>src/main/resources</directory>
+    			<includes>
+    				<include>*.properties</include>
+    				<include>*.xml</include>
+    			</includes>
+    		</resource>
+    		
+    		<resource>
+    			<filtering>true</filtering>
+    			<directory>src/main/resources</directory>
+    			<includes>
+    				<include>boc.js</include>
+    			</includes>
+    			<targetPath>${basedir}/src/main/webapp/resources/posttheme/js</targetPath>
+    		</resource>
+    		
+    		<resource>
+    			<filtering>true</filtering>
+    			<directory>src/main/resources</directory>
+    			<includes>
+    				<include>PepConfig.java</include>
+    			</includes>
+    			<targetPath>${basedir}/src/main/java/sk/posta/boc/ispep</targetPath>
+    		</resource>
+    	</resources>
         <plugins>
             <plugin>
                 <artifactId>maven-eclipse-plugin</artifactId>
@@ -214,14 +299,13 @@
 				<configuration>  
 					<path>/${project.build.finalName}</path>  
 					<update>true</update>  
-					<url>http://10.6.54.21:8080/manager/text</url>      
- <!--					<url>http://localhost/manager/text</url>  -->
-					<username>admin</username>  
-					<password>wemn8jsu</password>  
+	 				<url>${deploy.url}</url>   
+					<username>${deploy.username}</username>  
+					<password>${deploy.password}</password>  
 				</configuration>  
 			</plugin>  
         </plugins>
-		<finalName>BOC</finalName>
+		<finalName>${build.finalName}</finalName>
     </build>
 </project>
 

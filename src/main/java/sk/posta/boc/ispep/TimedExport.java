@@ -292,6 +292,8 @@ public class TimedExport implements ExportPredpis{
 			logger.info("Chyba pri synchronizacii sluzieb a uradov.", e);
 		} catch(InaccessibleWSDLException e){
 			logger.info("Chyba pri synchronizacii sluzieb a uradov.", e);
+		} catch(Exception e){
+			logger.info("Chyba pri synchronizacii sluzieb a uradov.", e);
 		}
 
 		if(checkFail){

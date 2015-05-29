@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -19,6 +20,10 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CheckUserInterceptor.class.getName());
 	
+	
+	@Value("#{appProps['application.prefix']}") 
+	private String applicationPrefix;
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
@@ -28,13 +33,13 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter {
 			return true;
 		}
 		if(request.getParameter("JSR") == null){
-			response.sendRedirect(HomeController.APPLICATION_PREFIX + "/login");
+			response.sendRedirect(applicationPrefix + "/login");
 		}
 		else{
 			ReturnData retVal = new ReturnData();
 			retVal.setStatus("REDIRECT");
 			retVal.setReason("Platnosť Vášho pripojenia vypršala. Prosím prihláste sa znovu.");
-			retVal.setRedirect(HomeController.APPLICATION_PREFIX + "/login");
+			retVal.setRedirect("/login");
 			response.getWriter().append(JacksonUtil.object2Json(retVal));
 		}
 		return false;
