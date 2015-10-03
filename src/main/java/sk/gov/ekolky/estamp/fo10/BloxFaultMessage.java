@@ -18,11 +18,6 @@ public class BloxFaultMessage
 {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -8577278102194568959L;
-	
-	/**
      * Java type that goes as soapenv:Fault detail element.
      * 
      */

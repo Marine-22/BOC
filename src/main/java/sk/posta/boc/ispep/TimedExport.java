@@ -583,6 +583,7 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 										BloxFaultMessage{
 		
 		CreateRequest requestCreate = getRequest(CreateRequest.class);
+		requestCreate.setOfficeID(p.getUrad());
 		sk.gov.ekolky.estamp.xsd10.Assessment predpis = new sk.gov.ekolky.estamp.xsd10.Assessment();
 		String idPotvrdenia = getConfirmId(cisloPotvrdenia, p.getDatumPredaja());
 		predpis.setOfficeID(p.getUrad());

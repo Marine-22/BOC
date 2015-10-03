@@ -50,8 +50,8 @@ public class DeviceEditRequest
      * <p>
      * You are getting this "catch-all" property because of the following reason: 
      * The field name "Date" is used by two different parts of a schema. See: 
-     * line 1196 of http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl
-     * line 35 of http://10.168.10.50:9080/estamp/soa/server/r1_2.wsdl
+     * line 1369 of file:/C:/Develop/IQuap/eKolky/BO%20Consumer/wsdl/ver%203/r1_3.wsdl
+     * line 37 of file:/C:/Develop/IQuap/eKolky/BO%20Consumer/wsdl/ver%203/r1_3.wsdl
      * <p>
      * To get rid of this property, apply a property customization to one 
      * of both of the following declarations to change their names: 

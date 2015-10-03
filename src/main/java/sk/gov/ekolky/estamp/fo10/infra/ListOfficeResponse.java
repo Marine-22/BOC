@@ -30,7 +30,7 @@ import sk.gov.ekolky.estamp.xsd10.Response;
  *                   &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="uri" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                   &lt;element name="resortID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *                   &lt;element name="accessZone" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *                   &lt;element name="devices" maxOccurs="unbounded" minOccurs="0">
  *                     &lt;complexType>
  *                       &lt;complexContent>
@@ -151,7 +151,7 @@ public class ListOfficeResponse
      *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="uri" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *         &lt;element name="resortID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+     *         &lt;element name="accessZone" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
      *         &lt;element name="devices" maxOccurs="unbounded" minOccurs="0">
      *           &lt;complexType>
      *             &lt;complexContent>
@@ -189,7 +189,7 @@ public class ListOfficeResponse
         "code",
         "name",
         "uri",
-        "resortID",
+        "accessZone",
         "devices",
         "agendas"
     })
@@ -200,7 +200,7 @@ public class ListOfficeResponse
         @XmlElement(required = true)
         protected String name;
         protected String uri;
-        protected String resortID;
+        protected String accessZone;
         protected List<ListOfficeResponse.Offices.Devices> devices;
         protected List<ListOfficeResponse.Offices.Agendas> agendas;
 
@@ -277,27 +277,27 @@ public class ListOfficeResponse
         }
 
         /**
-         * Gets the value of the resortID property.
+         * Gets the value of the accessZone property.
          * 
          * @return
          *     possible object is
          *     {@link String }
          *     
          */
-        public String getResortID() {
-            return resortID;
+        public String getAccessZone() {
+            return accessZone;
         }
 
         /**
-         * Sets the value of the resortID property.
+         * Sets the value of the accessZone property.
          * 
          * @param value
          *     allowed object is
          *     {@link String }
          *     
          */
-        public void setResortID(String value) {
-            this.resortID = value;
+        public void setAccessZone(String value) {
+            this.accessZone = value;
         }
 
         /**

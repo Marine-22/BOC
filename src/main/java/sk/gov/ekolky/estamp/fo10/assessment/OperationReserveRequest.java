@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 import sk.gov.ekolky.estamp.xsd10.Key;
 import sk.gov.ekolky.estamp.xsd10.OperReserve;
 import sk.gov.ekolky.estamp.xsd10.Operation;
-import sk.gov.ekolky.estamp.xsd10.RequestOEK;
+import sk.gov.ekolky.estamp.xsd10.RequestMSP;
 
 
 /**
@@ -22,7 +22,7 @@ import sk.gov.ekolky.estamp.xsd10.RequestOEK;
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.ekolky.gov.sk/estamp/xsd10}requestOEK">
+ *     &lt;extension base="{http://www.ekolky.gov.sk/estamp/xsd10}requestMSP">
  *       &lt;sequence>
  *         &lt;element name="key" type="{http://www.ekolky.gov.sk/estamp/xsd10}key"/>
  *         &lt;element name="operReserve" type="{http://www.ekolky.gov.sk/estamp/xsd10}operReserve" maxOccurs="unbounded" minOccurs="0"/>
@@ -45,7 +45,7 @@ import sk.gov.ekolky.estamp.xsd10.RequestOEK;
 })
 @XmlRootElement(name = "operationReserveRequest")
 public class OperationReserveRequest
-    extends RequestOEK
+    extends RequestMSP
 {
 
     @XmlElement(required = true)

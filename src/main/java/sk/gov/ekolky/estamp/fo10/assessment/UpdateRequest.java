@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 import sk.gov.ekolky.estamp.xsd10.Key;
-import sk.gov.ekolky.estamp.xsd10.RequestOEK;
+import sk.gov.ekolky.estamp.xsd10.RequestMSP;
 
 
 /**
@@ -20,10 +20,10 @@ import sk.gov.ekolky.estamp.xsd10.RequestOEK;
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.ekolky.gov.sk/estamp/xsd10}requestOEK">
+ *     &lt;extension base="{http://www.ekolky.gov.sk/estamp/xsd10}requestMSP">
  *       &lt;sequence>
  *         &lt;element name="key" type="{http://www.ekolky.gov.sk/estamp/xsd10}key"/>
- *         &lt;element name="officeID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="officeCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="processNumber" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="expirationDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
  *         &lt;element name="note" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
@@ -38,19 +38,19 @@ import sk.gov.ekolky.estamp.xsd10.RequestOEK;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
     "key",
-    "officeID",
+    "officeCode",
     "processNumber",
     "expirationDate",
     "note"
 })
 @XmlRootElement(name = "updateRequest")
 public class UpdateRequest
-    extends RequestOEK
+    extends RequestMSP
 {
 
     @XmlElement(required = true)
     protected Key key;
-    protected String officeID;
+    protected String officeCode;
     protected String processNumber;
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar expirationDate;
@@ -81,27 +81,27 @@ public class UpdateRequest
     }
 
     /**
-     * Gets the value of the officeID property.
+     * Gets the value of the officeCode property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getOfficeID() {
-        return officeID;
+    public String getOfficeCode() {
+        return officeCode;
     }
 
     /**
-     * Sets the value of the officeID property.
+     * Sets the value of the officeCode property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setOfficeID(String value) {
-        this.officeID = value;
+    public void setOfficeCode(String value) {
+        this.officeCode = value;
     }
 
     /**

@@ -34,7 +34,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="specificSymbol" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="processNumber" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="operations" type="{http://www.ekolky.gov.sk/estamp/xsd10}operation" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="participants" type="{http://www.ekolky.gov.sk/estamp/xsd10}person" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="participants" type="{http://www.ekolky.gov.sk/estamp/xsd10}participant" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="note" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -79,7 +79,7 @@ public class Assessment {
     protected String specificSymbol;
     protected String processNumber;
     protected List<Operation> operations;
-    protected List<Person> participants;
+    protected List<Participant> participants;
     protected String note;
 
     /**
@@ -393,13 +393,13 @@ public class Assessment {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link Person }
+     * {@link Participant }
      * 
      * 
      */
-    public List<Person> getParticipants() {
+    public List<Participant> getParticipants() {
         if (participants == null) {
-            participants = new ArrayList<Person>();
+            participants = new ArrayList<Participant>();
         }
         return this.participants;
     }

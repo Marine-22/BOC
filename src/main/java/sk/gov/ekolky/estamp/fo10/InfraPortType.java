@@ -40,12 +40,14 @@ import sk.posta.boc.ispep.PepConfig;
 @WebService(name = "infra_PortType", targetNamespace = PepConfig.TARGET_NAMESPACE)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @XmlSeeAlso({
-    sk.gov.ekolky.estamp.fo10.infra.ObjectFactory.class,
-    sk.gov.ekolky.estamp.fo10.ObjectFactory.class,
-    sk.gov.ekolky.estamp.fo10.assessment.ObjectFactory.class,
     sk.gov.ekolky.estamp.fo10.nominal.ObjectFactory.class,
-    sk.gov.ekolky.estamp.xsd10.ObjectFactory.class,
+    sk.gov.ekolky.estamp.fo10.aponet.ObjectFactory.class,
+    sk.gov.ekolky.estamp.fo10.assessment.ObjectFactory.class,
+    sk.gov.ekolky.estamp.fo10.ObjectFactory.class,
     sk.gov.ekolky.estamp.fo10.cashdesk.ObjectFactory.class,
+    sk.gov.ekolky.estamp.fo10.infra.ObjectFactory.class,
+    sk.gov.ekolky.estamp.xsd10.ObjectFactory.class,
+    com.jump_soft.estamp.fo10.common.ObjectFactory.class,
     sk.gov.ekolky.estamp.fo10.estamp.ObjectFactory.class
 })
 public interface InfraPortType {
@@ -59,9 +61,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "incidentRegisterResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+    @WebResult(name = "incidentRegisterResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public IncidentRegisterResponse incidentRegister(
-        @WebParam(name = "incidentRegisterRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+        @WebParam(name = "incidentRegisterRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         IncidentRegisterRequest parameters)
         throws BloxFaultMessage
     ;
@@ -74,9 +76,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "deviceStateCheckResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+    @WebResult(name = "deviceStateCheckResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public DeviceStateCheckResponse deviceStateCheck(
-        @WebParam(name = "deviceStateCheckRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+        @WebParam(name = "deviceStateCheckRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         DeviceStateCheckRequest parameters)
         throws BloxFaultMessage
     ;
@@ -89,9 +91,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listParameterResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+    @WebResult(name = "listParameterResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public ListParameterResponse listParameter(
-        @WebParam(name = "listParameterRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+        @WebParam(name = "listParameterRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         ListParameterRequest parameters)
         throws BloxFaultMessage
     ;
@@ -104,9 +106,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listServiceResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+    @WebResult(name = "listServiceResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public ListServiceResponse listService(
-        @WebParam(name = "listServiceRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+        @WebParam(name = "listServiceRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         ListServiceRequest parameters)
         throws BloxFaultMessage
     ;
@@ -119,9 +121,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listFeeResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+    @WebResult(name = "listFeeResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public ListFeeResponse listFee(
-        @WebParam(name = "listFeeRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+        @WebParam(name = "listFeeRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         ListFeeRequest parameters)
         throws BloxFaultMessage
     ;
@@ -134,9 +136,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listOfficeResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+    @WebResult(name = "listOfficeResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public ListOfficeResponse listOffice(
-        @WebParam(name = "listOfficeRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+        @WebParam(name = "listOfficeRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         ListOfficeRequest parameters)
         throws BloxFaultMessage
     ;
@@ -149,9 +151,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listSWPResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+    @WebResult(name = "listSWPResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public ListSWPResponse listSWP(
-        @WebParam(name = "listSWPRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+        @WebParam(name = "listSWPRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         ListSWPRequest parameters)
         throws BloxFaultMessage
     ;
@@ -164,9 +166,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listCountryResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+    @WebResult(name = "listCountryResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public ListCountryResponse listCountry(
-        @WebParam(name = "listCountryRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+        @WebParam(name = "listCountryRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         ListCountryRequest parameters)
         throws BloxFaultMessage
     ;
@@ -179,9 +181,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listDeviceInfoResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+    @WebResult(name = "listDeviceInfoResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public ListDeviceInfoResponse listDeviceInfo(
-        @WebParam(name = "listDeviceInfoRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+        @WebParam(name = "listDeviceInfoRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         ListDeviceInfoRequest parameters)
         throws BloxFaultMessage
     ;
@@ -194,9 +196,9 @@ public interface InfraPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listFeDevicesResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+    @WebResult(name = "listFeDevicesResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public ListFeDevicesResponse listFeDevices(
-        @WebParam(name = "listFeDevicesRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/infra", partName = "parameters")
+        @WebParam(name = "listFeDevicesRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         ListFeDevicesRequest parameters)
         throws BloxFaultMessage
     ;

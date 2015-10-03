@@ -253,7 +253,6 @@ function refreshPredpis(){
 	              $('#filter-waiting').prop('checked'),
 	              $('#filter-processed').prop('checked'),
 	              $('#filter-error').prop('checked')];
-
 	
 	$.getJSON(GLOBAL_APP_NAME + "/searchPredpis",
 		{
@@ -266,6 +265,7 @@ function refreshPredpis(){
 			datumSyncDo:$("#searchDatumSyncDoInput").val(),
 			states:states,
 			sq:$("#searchPredpisInput").val(),
+			page:$("div#paginDiv").pagination('getCurrentPage'),
 			JSR:""
 		},
 		function(data){
@@ -273,13 +273,14 @@ function refreshPredpis(){
 				$("li.dynamic-li").remove();
 				var htmlBlock = "";
 				var idNoms = "";
-				for(var i = 0; i < data.data.length; i++){
-					for(var j = 0; j < data.data[i].idnom.length; j++){
+				var listPredpis = data.data.l;
+				for(var i = 0; i < listPredpis.length; i++){
+					for(var j = 0; j < listPredpis[i].idnom.length; j++){
 						if(j == 0){
-							idNoms = data.data[i].idnom[j];
+							idNoms = listPredpis[i].idnom[j];
 						}
 						else{
-							idNoms += "; " + data.data[i].idnom[j];
+							idNoms += "; " + listPredpis[i].idnom[j];
 						}
 					}
 					//data.data[i].datum
@@ -287,10 +288,10 @@ function refreshPredpis(){
 					//datumSync
 					
 					var errBlock = "";
-					if(data.data[i].errorMsg){
+					if(listPredpis[i].errorMsg){
 						errBlock = "<br/> \
 							<span class=\"data-label long-label error_predpis\">Chyba:</span> \
-							<span class=\"data long error_predpis\">" + data.data[i].errorMsg + "</span>";
+							<span class=\"data long error_predpis\">" + listPredpis[i].errorMsg + "</span>";
 					}
 //					<span class=\"data-label\">Č. konania:</span> \  Vyhodene zo stringu dole
 //					<span class=\"data\">"+data.data[i].konanie+"</span> \
@@ -298,28 +299,28 @@ function refreshPredpis(){
 					
 					htmlBlock += "<li class=\"dynamic-li\"> \
 									<span class=\"data-label\">P.č.:</span> \
-									<span class=\"data\" style=\"width: 35px;\">"+data.data[i].poradove+"</span> \
+									<span class=\"data\" style=\"width: 35px;\">"+listPredpis[i].poradove+"</span> \
 									<span class=\"data-label\">Č. dokladu/konania:</span> \
-									<span class=\"data\" style=\"width: 220px;\">"+data.data[i].doklad+"</span> \
+									<span class=\"data\" style=\"width: 220px;\">"+listPredpis[i].doklad+"</span> \
 									<span class=\"data-label\">Pridal:</span> \
-									<span class=\"data\" style=\"width:150px\">"+data.data[i].fullName+"</span> \
+									<span class=\"data\" style=\"width:150px\">"+listPredpis[i].fullName+"</span> \
 									<span class=\"data-label\">Stav:</span> \
-									<span class=\"data "+data.data[i].stav+"\" style=\"width:"+(data.data[i].stav == "PROCESSED" ? "60" : "100")+"px\">"+getStav(data.data[i].stav)+"</span> \
-									"+(data.data[i].stav == "PROCESSED" ? ("<span class=\"data-label\">"+(data.data[i].idPredpisu == null ? "" : ("(" + data.data[i].idPredpisu + ")"))+"</span>") : "") + " \
-									"+((data.data[i].stav == "ERROR" && isSuperUser(data)) ? "<a href=\"javascript:{}\" class=\"blue_button\" style=\"padding: 4px 10px 3px; margin-left: 10px; line-height: 1;\" onclick=\"resendPredpis('"+data.data[i].id+"')\">Znovu</a>" : "")+" \
+									<span class=\"data "+listPredpis[i].stav+"\" style=\"width:"+(listPredpis[i].stav == "PROCESSED" ? "60" : "100")+"px\">"+getStav(listPredpis[i].stav)+"</span> \
+									"+(listPredpis[i].stav == "PROCESSED" ? ("<span class=\"data-label\">"+(listPredpis[i].idPredpisu == null ? "" : ("(" + listPredpis[i].idPredpisu + ")"))+"</span>") : "") + " \
+									"+((listPredpis[i].stav == "ERROR" && isSuperUser(data)) ? "<a href=\"javascript:{}\" class=\"blue_button\" style=\"padding: 4px 10px 3px; margin-left: 10px; line-height: 1;\" onclick=\"resendPredpis('"+listPredpis[i].id+"')\">Znovu</a>" : "")+" \
 									<br/> \
 									<span class=\"data-label\">Dátum spotreby:</span> \
-									<span class=\"data\">" + getD(data.data[i].datumPredaja) + "</span> \
+									<span class=\"data\">" + getD(listPredpis[i].datumPredaja) + "</span> \
 									<span class=\"data-label\">Dátum a čas pridania:</span> \
-									<span class=\"data\">" + getDC(data.data[i].datumPridania) + "</span> \
+									<span class=\"data\">" + getDC(listPredpis[i].datumPridania) + "</span> \
 									<span class=\"data-label\">Dátum a čas synchronizácie:</span> \
-									<span class=\"data\">" + getDC(data.data[i].datumSync) + "</span> \
+									<span class=\"data\">" + getDC(listPredpis[i].datumSync) + "</span> \
 									<br/> \
 									<span class=\"data-label long-label\">Služba:</span> \
-									<span class=\"data long\">"+data.data[i].sluzbaName+"</span> \
+									<span class=\"data long\">"+listPredpis[i].sluzbaName+"</span> \
 									<br/> \
 									<span class=\"data-label long-label\">Úrad:</span> \
-									<span class=\"data long\">"+data.data[i].uradName+"</span> \
+									<span class=\"data long\">"+listPredpis[i].uradName+"</span> \
 									" + errBlock + " \
 									<br/> \
 									<span class=\"data-label\">ID nominálov:</span> \
@@ -328,6 +329,18 @@ function refreshPredpis(){
 					
 				}
 				$("ul#table-ul").append(htmlBlock);
+				  $("div#paginDiv").pagination({
+					    items:data.data.totalCount,
+					    itemsOnPage:10,
+					    cssStyle: 'compact-theme',
+					    currentPage:data.data.page,
+					    onPageClick: function(){
+					    	refreshPredpis();
+					    }
+					  });
+				  
+				// data.data.page - netreba
+				
 			}
 		},
 		'json'

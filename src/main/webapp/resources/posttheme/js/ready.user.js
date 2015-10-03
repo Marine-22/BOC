@@ -347,10 +347,20 @@ $(document).ready(
 	    	)
 	    };
 	    
-	    
+		  $("div#paginDiv").pagination({
+			    items:10,
+			    itemsOnPage:10,
+			    cssStyle: 'compact-theme',
+			    onPageClick: function(){
+			    	refreshPredpis();
+			    }
+			  });
+		  
 	    refreshPredpis();
 	    
-
+	    if(ismsie()){
+	    	$('input').placeholder();
+	    }
     }
 )
 

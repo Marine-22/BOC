@@ -30,11 +30,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link CheckStateResponse }
+     * Create an instance of {@link GetReportRequest.Order }
      * 
      */
-    public CheckStateResponse createCheckStateResponse() {
-        return new CheckStateResponse();
+    public GetReportRequest.Order createGetReportRequestOrder() {
+        return new GetReportRequest.Order();
     }
 
     /**
@@ -43,6 +43,126 @@ public class ObjectFactory {
      */
     public CheckStateRequest createCheckStateRequest() {
         return new CheckStateRequest();
+    }
+
+    /**
+     * Create an instance of {@link GetReportResponse.OfficeList }
+     * 
+     */
+    public GetReportResponse.OfficeList createGetReportResponseOfficeList() {
+        return new GetReportResponse.OfficeList();
+    }
+
+    /**
+     * Create an instance of {@link GetReportRequest.Conditions.DateCond.MonthCond }
+     * 
+     */
+    public GetReportRequest.Conditions.DateCond.MonthCond createGetReportRequestConditionsDateCondMonthCond() {
+        return new GetReportRequest.Conditions.DateCond.MonthCond();
+    }
+
+    /**
+     * Create an instance of {@link GetReportRequest }
+     * 
+     */
+    public GetReportRequest createGetReportRequest() {
+        return new GetReportRequest();
+    }
+
+    /**
+     * Create an instance of {@link GetReportResponse.Summary }
+     * 
+     */
+    public GetReportResponse.Summary createGetReportResponseSummary() {
+        return new GetReportResponse.Summary();
+    }
+
+    /**
+     * Create an instance of {@link GetReportResponse.ConsumeList.Consume }
+     * 
+     */
+    public GetReportResponse.ConsumeList.Consume createGetReportResponseConsumeListConsume() {
+        return new GetReportResponse.ConsumeList.Consume();
+    }
+
+    /**
+     * Create an instance of {@link GetReportResponse.UserList }
+     * 
+     */
+    public GetReportResponse.UserList createGetReportResponseUserList() {
+        return new GetReportResponse.UserList();
+    }
+
+    /**
+     * Create an instance of {@link CheckStateResponse }
+     * 
+     */
+    public CheckStateResponse createCheckStateResponse() {
+        return new CheckStateResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetReportRequest.Conditions.DateCond }
+     * 
+     */
+    public GetReportRequest.Conditions.DateCond createGetReportRequestConditionsDateCond() {
+        return new GetReportRequest.Conditions.DateCond();
+    }
+
+    /**
+     * Create an instance of {@link GetReportResponse.UserList.User }
+     * 
+     */
+    public GetReportResponse.UserList.User createGetReportResponseUserListUser() {
+        return new GetReportResponse.UserList.User();
+    }
+
+    /**
+     * Create an instance of {@link GetReportResponse.OfficeList.Office }
+     * 
+     */
+    public GetReportResponse.OfficeList.Office createGetReportResponseOfficeListOffice() {
+        return new GetReportResponse.OfficeList.Office();
+    }
+
+    /**
+     * Create an instance of {@link GetReportResponse }
+     * 
+     */
+    public GetReportResponse createGetReportResponse() {
+        return new GetReportResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetReportResponse.ConsumeList }
+     * 
+     */
+    public GetReportResponse.ConsumeList createGetReportResponseConsumeList() {
+        return new GetReportResponse.ConsumeList();
+    }
+
+    /**
+     * Create an instance of {@link GetReportRequest.Range }
+     * 
+     */
+    public GetReportRequest.Range createGetReportRequestRange() {
+        return new GetReportRequest.Range();
+    }
+
+    /**
+     * Create an instance of {@link GetReportRequest.Conditions.DateCond.WeekCond }
+     * 
+     */
+    public GetReportRequest.Conditions.DateCond.WeekCond createGetReportRequestConditionsDateCondWeekCond() {
+        return new GetReportRequest.Conditions.DateCond.WeekCond();
+    }
+
+    /**
+     * Create an instance of {@link GetReportRequest.Conditions }
+     * 
+     */
+    public GetReportRequest.Conditions createGetReportRequestConditions() {
+        return new GetReportRequest.Conditions();
     }
 
 }

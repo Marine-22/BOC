@@ -2,6 +2,7 @@
 package sk.gov.ekolky.estamp.xsd10;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -26,9 +27,14 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="order" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="agendaID" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="extraShortName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="amount" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+ *         &lt;element name="electronicAmount" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
  *         &lt;element name="min" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
  *         &lt;element name="max" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+ *         &lt;element name="multipleMin" type="{http://www.w3.org/2001/XMLSchema}integer" minOccurs="0"/>
+ *         &lt;element name="multipleMax" type="{http://www.w3.org/2001/XMLSchema}integer" minOccurs="0"/>
+ *         &lt;element name="discountEnabled" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
  *         &lt;element name="validFrom" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
  *         &lt;element name="validTo" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
  *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
@@ -48,9 +54,14 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "order",
     "agendaID",
     "name",
+    "extraShortName",
     "amount",
+    "electronicAmount",
     "min",
     "max",
+    "multipleMin",
+    "multipleMax",
+    "discountEnabled",
     "validFrom",
     "validTo",
     "type",
@@ -66,9 +77,15 @@ public class Service {
     protected String agendaID;
     @XmlElement(required = true)
     protected String name;
+    protected String extraShortName;
     protected BigDecimal amount;
+    protected BigDecimal electronicAmount;
     protected BigDecimal min;
     protected BigDecimal max;
+    protected BigInteger multipleMin;
+    protected BigInteger multipleMax;
+    @XmlElement(defaultValue = "false")
+    protected Boolean discountEnabled;
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar validFrom;
     @XmlSchemaType(name = "dateTime")
@@ -174,6 +191,30 @@ public class Service {
     }
 
     /**
+     * Gets the value of the extraShortName property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getExtraShortName() {
+        return extraShortName;
+    }
+
+    /**
+     * Sets the value of the extraShortName property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setExtraShortName(String value) {
+        this.extraShortName = value;
+    }
+
+    /**
      * Gets the value of the amount property.
      * 
      * @return
@@ -195,6 +236,30 @@ public class Service {
      */
     public void setAmount(BigDecimal value) {
         this.amount = value;
+    }
+
+    /**
+     * Gets the value of the electronicAmount property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public BigDecimal getElectronicAmount() {
+        return electronicAmount;
+    }
+
+    /**
+     * Sets the value of the electronicAmount property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public void setElectronicAmount(BigDecimal value) {
+        this.electronicAmount = value;
     }
 
     /**
@@ -243,6 +308,78 @@ public class Service {
      */
     public void setMax(BigDecimal value) {
         this.max = value;
+    }
+
+    /**
+     * Gets the value of the multipleMin property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link BigInteger }
+     *     
+     */
+    public BigInteger getMultipleMin() {
+        return multipleMin;
+    }
+
+    /**
+     * Sets the value of the multipleMin property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link BigInteger }
+     *     
+     */
+    public void setMultipleMin(BigInteger value) {
+        this.multipleMin = value;
+    }
+
+    /**
+     * Gets the value of the multipleMax property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link BigInteger }
+     *     
+     */
+    public BigInteger getMultipleMax() {
+        return multipleMax;
+    }
+
+    /**
+     * Sets the value of the multipleMax property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link BigInteger }
+     *     
+     */
+    public void setMultipleMax(BigInteger value) {
+        this.multipleMax = value;
+    }
+
+    /**
+     * Gets the value of the discountEnabled property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isDiscountEnabled() {
+        return discountEnabled;
+    }
+
+    /**
+     * Sets the value of the discountEnabled property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setDiscountEnabled(Boolean value) {
+        this.discountEnabled = value;
     }
 
     /**

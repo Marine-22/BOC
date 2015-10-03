@@ -43,5 +43,6 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter {
 			response.getWriter().append(JacksonUtil.object2Json(retVal));
 		}
 		return false;
+		
 	}
 }

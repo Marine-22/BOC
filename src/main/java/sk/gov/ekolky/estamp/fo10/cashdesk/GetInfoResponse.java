@@ -4,7 +4,6 @@ package sk.gov.ekolky.estamp.fo10.cashdesk;
 import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
@@ -28,7 +27,17 @@ import sk.gov.ekolky.estamp.xsd10.User;
  *         &lt;element name="user" type="{http://www.ekolky.gov.sk/estamp/xsd10}user" minOccurs="0"/>
  *         &lt;element name="amountCash" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
  *         &lt;element name="amountCard" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
- *         &lt;element name="lastSendDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
+ *         &lt;element name="openAmountCash" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+ *         &lt;element name="openAmountCard" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+ *         &lt;element name="lastOpenDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
+ *         &lt;element name="lastCloseDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
+ *         &lt;element name="lastSendDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
+ *         &lt;element name="paymentCashCountOpen" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
+ *         &lt;element name="paymentCashCount" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
+ *         &lt;element name="paymentCardCount" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
+ *         &lt;element name="moneySendSPAmount" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+ *         &lt;element name="moneySendSPCount" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+ *         &lt;element name="terminalID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -43,7 +52,17 @@ import sk.gov.ekolky.estamp.xsd10.User;
     "user",
     "amountCash",
     "amountCard",
-    "lastSendDate"
+    "openAmountCash",
+    "openAmountCard",
+    "lastOpenDate",
+    "lastCloseDate",
+    "lastSendDate",
+    "paymentCashCountOpen",
+    "paymentCashCount",
+    "paymentCardCount",
+    "moneySendSPAmount",
+    "moneySendSPCount",
+    "terminalID"
 })
 @XmlRootElement(name = "getInfoResponse")
 public class GetInfoResponse
@@ -54,9 +73,20 @@ public class GetInfoResponse
     protected User user;
     protected BigDecimal amountCash;
     protected BigDecimal amountCard;
-    @XmlElement(required = true)
+    protected BigDecimal openAmountCash;
+    protected BigDecimal openAmountCard;
+    @XmlSchemaType(name = "dateTime")
+    protected XMLGregorianCalendar lastOpenDate;
+    @XmlSchemaType(name = "dateTime")
+    protected XMLGregorianCalendar lastCloseDate;
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar lastSendDate;
+    protected Long paymentCashCountOpen;
+    protected Long paymentCashCount;
+    protected Long paymentCardCount;
+    protected BigDecimal moneySendSPAmount;
+    protected BigDecimal moneySendSPCount;
+    protected String terminalID;
 
     /**
      * Gets the value of the state property.
@@ -155,6 +185,102 @@ public class GetInfoResponse
     }
 
     /**
+     * Gets the value of the openAmountCash property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public BigDecimal getOpenAmountCash() {
+        return openAmountCash;
+    }
+
+    /**
+     * Sets the value of the openAmountCash property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public void setOpenAmountCash(BigDecimal value) {
+        this.openAmountCash = value;
+    }
+
+    /**
+     * Gets the value of the openAmountCard property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public BigDecimal getOpenAmountCard() {
+        return openAmountCard;
+    }
+
+    /**
+     * Sets the value of the openAmountCard property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public void setOpenAmountCard(BigDecimal value) {
+        this.openAmountCard = value;
+    }
+
+    /**
+     * Gets the value of the lastOpenDate property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getLastOpenDate() {
+        return lastOpenDate;
+    }
+
+    /**
+     * Sets the value of the lastOpenDate property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public void setLastOpenDate(XMLGregorianCalendar value) {
+        this.lastOpenDate = value;
+    }
+
+    /**
+     * Gets the value of the lastCloseDate property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getLastCloseDate() {
+        return lastCloseDate;
+    }
+
+    /**
+     * Sets the value of the lastCloseDate property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public void setLastCloseDate(XMLGregorianCalendar value) {
+        this.lastCloseDate = value;
+    }
+
+    /**
      * Gets the value of the lastSendDate property.
      * 
      * @return
@@ -176,6 +302,150 @@ public class GetInfoResponse
      */
     public void setLastSendDate(XMLGregorianCalendar value) {
         this.lastSendDate = value;
+    }
+
+    /**
+     * Gets the value of the paymentCashCountOpen property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Long }
+     *     
+     */
+    public Long getPaymentCashCountOpen() {
+        return paymentCashCountOpen;
+    }
+
+    /**
+     * Sets the value of the paymentCashCountOpen property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Long }
+     *     
+     */
+    public void setPaymentCashCountOpen(Long value) {
+        this.paymentCashCountOpen = value;
+    }
+
+    /**
+     * Gets the value of the paymentCashCount property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Long }
+     *     
+     */
+    public Long getPaymentCashCount() {
+        return paymentCashCount;
+    }
+
+    /**
+     * Sets the value of the paymentCashCount property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Long }
+     *     
+     */
+    public void setPaymentCashCount(Long value) {
+        this.paymentCashCount = value;
+    }
+
+    /**
+     * Gets the value of the paymentCardCount property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Long }
+     *     
+     */
+    public Long getPaymentCardCount() {
+        return paymentCardCount;
+    }
+
+    /**
+     * Sets the value of the paymentCardCount property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Long }
+     *     
+     */
+    public void setPaymentCardCount(Long value) {
+        this.paymentCardCount = value;
+    }
+
+    /**
+     * Gets the value of the moneySendSPAmount property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public BigDecimal getMoneySendSPAmount() {
+        return moneySendSPAmount;
+    }
+
+    /**
+     * Sets the value of the moneySendSPAmount property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public void setMoneySendSPAmount(BigDecimal value) {
+        this.moneySendSPAmount = value;
+    }
+
+    /**
+     * Gets the value of the moneySendSPCount property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public BigDecimal getMoneySendSPCount() {
+        return moneySendSPCount;
+    }
+
+    /**
+     * Sets the value of the moneySendSPCount property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link BigDecimal }
+     *     
+     */
+    public void setMoneySendSPCount(BigDecimal value) {
+        this.moneySendSPCount = value;
+    }
+
+    /**
+     * Gets the value of the terminalID property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getTerminalID() {
+        return terminalID;
+    }
+
+    /**
+     * Sets the value of the terminalID property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setTerminalID(String value) {
+        this.terminalID = value;
     }
 
 }

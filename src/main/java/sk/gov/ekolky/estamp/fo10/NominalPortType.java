@@ -10,6 +10,8 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 
 import sk.gov.ekolky.estamp.fo10.nominal.CheckStateRequest;
 import sk.gov.ekolky.estamp.fo10.nominal.CheckStateResponse;
+import sk.gov.ekolky.estamp.fo10.nominal.GetReportRequest;
+import sk.gov.ekolky.estamp.fo10.nominal.GetReportResponse;
 import sk.posta.boc.ispep.PepConfig;
 
 
@@ -22,12 +24,14 @@ import sk.posta.boc.ispep.PepConfig;
 @WebService(name = "nominal_PortType", targetNamespace = PepConfig.TARGET_NAMESPACE)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @XmlSeeAlso({
-    sk.gov.ekolky.estamp.fo10.infra.ObjectFactory.class,
-    sk.gov.ekolky.estamp.fo10.ObjectFactory.class,
-    sk.gov.ekolky.estamp.fo10.assessment.ObjectFactory.class,
     sk.gov.ekolky.estamp.fo10.nominal.ObjectFactory.class,
-    sk.gov.ekolky.estamp.xsd10.ObjectFactory.class,
+    sk.gov.ekolky.estamp.fo10.aponet.ObjectFactory.class,
+    sk.gov.ekolky.estamp.fo10.assessment.ObjectFactory.class,
+    sk.gov.ekolky.estamp.fo10.ObjectFactory.class,
     sk.gov.ekolky.estamp.fo10.cashdesk.ObjectFactory.class,
+    sk.gov.ekolky.estamp.fo10.infra.ObjectFactory.class,
+    sk.gov.ekolky.estamp.xsd10.ObjectFactory.class,
+    com.jump_soft.estamp.fo10.common.ObjectFactory.class,
     sk.gov.ekolky.estamp.fo10.estamp.ObjectFactory.class
 })
 public interface NominalPortType {
@@ -41,10 +45,25 @@ public interface NominalPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "checkStateResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/nominal", partName = "parameters")
+    @WebResult(name = "checkStateResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public CheckStateResponse checkState(
-        @WebParam(name = "checkStateRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/nominal", partName = "parameters")
+        @WebParam(name = "checkStateRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         CheckStateRequest parameters)
+        throws BloxFaultMessage
+    ;
+
+    /**
+     * 
+     * @param parameters
+     * @return
+     *     returns sk.gov.ekolky.estamp.fo10.nominal.GetReportResponse
+     * @throws BloxFaultMessage
+     */
+    @WebMethod
+    @WebResult(name = "getReportResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
+    public GetReportResponse getReport(
+        @WebParam(name = "getReportRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
+        GetReportRequest parameters)
         throws BloxFaultMessage
     ;
 

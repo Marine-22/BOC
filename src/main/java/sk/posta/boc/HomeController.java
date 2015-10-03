@@ -33,6 +33,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import sk.posta.boc.ispep.ExportPredpis;
 import sk.posta.boc.ispep.PepConfig;
+import sk.posta.boc.ispep.PredpisList;
 import sk.posta.boc.util.JacksonUtil;
 import sk.posta.data.ConfigVersion;
 import sk.posta.data.LoginData;
@@ -262,8 +263,9 @@ public class HomeController {
 			@RequestParam(value="datumSyncOd", required=false) String datumSyncOd,
 			@RequestParam(value="datumSyncDo", required=false) String datumSyncDo,
 			@RequestParam(value="states[]", required=false) Boolean[] states,
-			@RequestParam(value="sq", required=false) String sq) {
-		logger.info("Zavolana metoda searchPredpis. sq = " + sq + "; urad = " + urad + "; datumPredajaOd = " + datumPredajaOd + "; datumPredajaDo = " + datumPredajaDo + "States count: " + states.length);
+			@RequestParam(value="sq", required=false) String sq,
+			@RequestParam(value="page", required=true) Integer page) {
+		logger.info("Zavolana metoda searchPredpis. sq = " + sq + "; urad = " + urad + "; datumPredajaOd = " + datumPredajaOd + "; datumPredajaDo = " + datumPredajaDo + "States count: " + states.length + "; Page: " + page);
 		ReturnData retVal = null;
 		
 		class StatesFilter{
@@ -337,8 +339,13 @@ public class HomeController {
 			logger.info("Query: " + sbq);
 			bq = new BasicQuery(sbq);
 		}
+		long totalCount = customOps.count(bq, Predpis.class);
+		
 		bq.with(new Sort("datum"));
+		logger.info("Skipping: " + ((1-page)*10));
+		bq.skip(((page-1)*10));
 		bq.limit(10);
+		
 		List<Predpis> l = customOps.find(bq, Predpis.class);
 		for(Predpis p : l){
 			// pouzivatelov, uradov a sluzieb nebude velmi vela, toto vyhladanie by malo byt rychle
@@ -356,7 +363,7 @@ public class HomeController {
 			}
 			p.setGUIStaff(u, ur, s);
 		}
-		retVal = setRetVal(l);
+		retVal = setRetVal(new PredpisList(l, totalCount, page));
 		retVal.setUserType(uType);
 		return JacksonUtil.object2Json(retVal);
 	}

@@ -10,8 +10,12 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 
 import sk.gov.ekolky.estamp.fo10.cashdesk.CloseRequest;
 import sk.gov.ekolky.estamp.fo10.cashdesk.CloseResponse;
+import sk.gov.ekolky.estamp.fo10.cashdesk.GetClosureRequest;
+import sk.gov.ekolky.estamp.fo10.cashdesk.GetClosureResponse;
 import sk.gov.ekolky.estamp.fo10.cashdesk.GetInfoRequest;
 import sk.gov.ekolky.estamp.fo10.cashdesk.GetInfoResponse;
+import sk.gov.ekolky.estamp.fo10.cashdesk.GetMoneySendSPRequest;
+import sk.gov.ekolky.estamp.fo10.cashdesk.GetMoneySendSPResponse;
 import sk.gov.ekolky.estamp.fo10.cashdesk.ListRequest;
 import sk.gov.ekolky.estamp.fo10.cashdesk.ListResponse;
 import sk.gov.ekolky.estamp.fo10.cashdesk.MoneySendSPRequest;
@@ -34,12 +38,14 @@ import sk.posta.boc.ispep.PepConfig;
 @WebService(name = "cashdesk_PortType", targetNamespace = PepConfig.TARGET_NAMESPACE)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @XmlSeeAlso({
-    sk.gov.ekolky.estamp.fo10.infra.ObjectFactory.class,
-    sk.gov.ekolky.estamp.fo10.ObjectFactory.class,
-    sk.gov.ekolky.estamp.fo10.assessment.ObjectFactory.class,
     sk.gov.ekolky.estamp.fo10.nominal.ObjectFactory.class,
-    sk.gov.ekolky.estamp.xsd10.ObjectFactory.class,
+    sk.gov.ekolky.estamp.fo10.aponet.ObjectFactory.class,
+    sk.gov.ekolky.estamp.fo10.assessment.ObjectFactory.class,
+    sk.gov.ekolky.estamp.fo10.ObjectFactory.class,
     sk.gov.ekolky.estamp.fo10.cashdesk.ObjectFactory.class,
+    sk.gov.ekolky.estamp.fo10.infra.ObjectFactory.class,
+    sk.gov.ekolky.estamp.xsd10.ObjectFactory.class,
+    com.jump_soft.estamp.fo10.common.ObjectFactory.class,
     sk.gov.ekolky.estamp.fo10.estamp.ObjectFactory.class
 })
 public interface CashdeskPortType {
@@ -53,9 +59,9 @@ public interface CashdeskPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "getInfoResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/cashdesk", partName = "parameters")
+    @WebResult(name = "getInfoResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public GetInfoResponse getInfo(
-        @WebParam(name = "getInfoRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/cashdesk", partName = "parameters")
+        @WebParam(name = "getInfoRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         GetInfoRequest parameters)
         throws BloxFaultMessage
     ;
@@ -68,9 +74,9 @@ public interface CashdeskPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/cashdesk", partName = "parameters")
+    @WebResult(name = "listResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public ListResponse list(
-        @WebParam(name = "listRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/cashdesk", partName = "parameters")
+        @WebParam(name = "listRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         ListRequest parameters)
         throws BloxFaultMessage
     ;
@@ -83,9 +89,9 @@ public interface CashdeskPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "openResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/cashdesk", partName = "parameters")
+    @WebResult(name = "openResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public OpenResponse open(
-        @WebParam(name = "openRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/cashdesk", partName = "parameters")
+        @WebParam(name = "openRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         OpenRequest parameters)
         throws BloxFaultMessage
     ;
@@ -98,9 +104,9 @@ public interface CashdeskPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "takeoverResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/cashdesk", partName = "parameters")
+    @WebResult(name = "takeoverResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public TakeoverResponse takeover(
-        @WebParam(name = "takeoverRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/cashdesk", partName = "parameters")
+        @WebParam(name = "takeoverRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         TakeoverRequest parameters)
         throws BloxFaultMessage
     ;
@@ -113,9 +119,9 @@ public interface CashdeskPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "closeResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/cashdesk", partName = "parameters")
+    @WebResult(name = "closeResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public CloseResponse close(
-        @WebParam(name = "closeRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/cashdesk", partName = "parameters")
+        @WebParam(name = "closeRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         CloseRequest parameters)
         throws BloxFaultMessage
     ;
@@ -128,9 +134,9 @@ public interface CashdeskPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "moneySendSPResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/cashdesk", partName = "parameters")
+    @WebResult(name = "moneySendSPResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public MoneySendSPResponse moneySendSP(
-        @WebParam(name = "moneySendSPRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/cashdesk", partName = "parameters")
+        @WebParam(name = "moneySendSPRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         MoneySendSPRequest parameters)
         throws BloxFaultMessage
     ;
@@ -143,10 +149,40 @@ public interface CashdeskPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "moneyTransferResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/cashdesk", partName = "parameters")
+    @WebResult(name = "moneyTransferResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public MoneyTransferResponse moneyTransfer(
-        @WebParam(name = "moneyTransferRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/cashdesk", partName = "parameters")
+        @WebParam(name = "moneyTransferRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         MoneyTransferRequest parameters)
+        throws BloxFaultMessage
+    ;
+
+    /**
+     * 
+     * @param parameters
+     * @return
+     *     returns sk.gov.ekolky.estamp.fo10.cashdesk.GetClosureResponse
+     * @throws BloxFaultMessage
+     */
+    @WebMethod
+    @WebResult(name = "getClosureResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
+    public GetClosureResponse getClosure(
+        @WebParam(name = "getClosureRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
+        GetClosureRequest parameters)
+        throws BloxFaultMessage
+    ;
+
+    /**
+     * 
+     * @param parameters
+     * @return
+     *     returns sk.gov.ekolky.estamp.fo10.cashdesk.GetMoneySendSPResponse
+     * @throws BloxFaultMessage
+     */
+    @WebMethod
+    @WebResult(name = "getMoneySendSPResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
+    public GetMoneySendSPResponse getMoneySendSP(
+        @WebParam(name = "getMoneySendSPRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
+        GetMoneySendSPRequest parameters)
         throws BloxFaultMessage
     ;
 

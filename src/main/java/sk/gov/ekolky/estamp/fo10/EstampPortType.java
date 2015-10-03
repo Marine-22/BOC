@@ -12,6 +12,8 @@ import sk.gov.ekolky.estamp.fo10.estamp.CreateRequest;
 import sk.gov.ekolky.estamp.fo10.estamp.CreateResponse;
 import sk.gov.ekolky.estamp.fo10.estamp.ExchangeRequest;
 import sk.gov.ekolky.estamp.fo10.estamp.ExchangeResponse;
+import sk.gov.ekolky.estamp.fo10.estamp.GetReportRequest;
+import sk.gov.ekolky.estamp.fo10.estamp.GetReportResponse;
 import sk.gov.ekolky.estamp.fo10.estamp.GetRequest;
 import sk.gov.ekolky.estamp.fo10.estamp.GetResponse;
 import sk.gov.ekolky.estamp.fo10.estamp.ListOperationsRequest;
@@ -22,6 +24,8 @@ import sk.gov.ekolky.estamp.fo10.estamp.LockRequest;
 import sk.gov.ekolky.estamp.fo10.estamp.LockResponse;
 import sk.gov.ekolky.estamp.fo10.estamp.OperationConsumeRequest;
 import sk.gov.ekolky.estamp.fo10.estamp.OperationConsumeResponse;
+import sk.gov.ekolky.estamp.fo10.estamp.OperationPaymentRequest;
+import sk.gov.ekolky.estamp.fo10.estamp.OperationPaymentResponse;
 import sk.gov.ekolky.estamp.fo10.estamp.UnlockRequest;
 import sk.gov.ekolky.estamp.fo10.estamp.UnlockResponse;
 import sk.posta.boc.ispep.PepConfig;
@@ -36,12 +40,14 @@ import sk.posta.boc.ispep.PepConfig;
 @WebService(name = "estamp_PortType", targetNamespace = PepConfig.TARGET_NAMESPACE)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @XmlSeeAlso({
-    sk.gov.ekolky.estamp.fo10.infra.ObjectFactory.class,
-    sk.gov.ekolky.estamp.fo10.ObjectFactory.class,
-    sk.gov.ekolky.estamp.fo10.assessment.ObjectFactory.class,
     sk.gov.ekolky.estamp.fo10.nominal.ObjectFactory.class,
-    sk.gov.ekolky.estamp.xsd10.ObjectFactory.class,
+    sk.gov.ekolky.estamp.fo10.aponet.ObjectFactory.class,
+    sk.gov.ekolky.estamp.fo10.assessment.ObjectFactory.class,
+    sk.gov.ekolky.estamp.fo10.ObjectFactory.class,
     sk.gov.ekolky.estamp.fo10.cashdesk.ObjectFactory.class,
+    sk.gov.ekolky.estamp.fo10.infra.ObjectFactory.class,
+    sk.gov.ekolky.estamp.xsd10.ObjectFactory.class,
+    com.jump_soft.estamp.fo10.common.ObjectFactory.class,
     sk.gov.ekolky.estamp.fo10.estamp.ObjectFactory.class
 })
 public interface EstampPortType {
@@ -55,9 +61,9 @@ public interface EstampPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "getResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
+    @WebResult(name = "getResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public GetResponse get(
-        @WebParam(name = "getRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
+        @WebParam(name = "getRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         GetRequest parameters)
         throws BloxFaultMessage
     ;
@@ -70,9 +76,9 @@ public interface EstampPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
+    @WebResult(name = "listResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public ListResponse list(
-        @WebParam(name = "listRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
+        @WebParam(name = "listRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         ListRequest parameters)
         throws BloxFaultMessage
     ;
@@ -85,9 +91,9 @@ public interface EstampPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "listOperationsResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
+    @WebResult(name = "listOperationsResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public ListOperationsResponse listOperations(
-        @WebParam(name = "listOperationsRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
+        @WebParam(name = "listOperationsRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         ListOperationsRequest parameters)
         throws BloxFaultMessage
     ;
@@ -100,9 +106,9 @@ public interface EstampPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "createResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
+    @WebResult(name = "createResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public CreateResponse create(
-        @WebParam(name = "createRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
+        @WebParam(name = "createRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         CreateRequest parameters)
         throws BloxFaultMessage
     ;
@@ -115,9 +121,9 @@ public interface EstampPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "exchangeResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
+    @WebResult(name = "exchangeResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public ExchangeResponse exchange(
-        @WebParam(name = "exchangeRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
+        @WebParam(name = "exchangeRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         ExchangeRequest parameters)
         throws BloxFaultMessage
     ;
@@ -130,9 +136,9 @@ public interface EstampPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "lockResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
+    @WebResult(name = "lockResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public LockResponse lock(
-        @WebParam(name = "lockRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
+        @WebParam(name = "lockRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         LockRequest parameters)
         throws BloxFaultMessage
     ;
@@ -145,9 +151,9 @@ public interface EstampPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "unlockResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
+    @WebResult(name = "unlockResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public UnlockResponse unlock(
-        @WebParam(name = "unlockRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
+        @WebParam(name = "unlockRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         UnlockRequest parameters)
         throws BloxFaultMessage
     ;
@@ -160,10 +166,40 @@ public interface EstampPortType {
      * @throws BloxFaultMessage
      */
     @WebMethod
-    @WebResult(name = "operationConsumeResponse", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
+    @WebResult(name = "operationConsumeResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
     public OperationConsumeResponse operationConsume(
-        @WebParam(name = "operationConsumeRequest", targetNamespace = PepConfig.TARGET_NAMESPACE + "/estamp", partName = "parameters")
+        @WebParam(name = "operationConsumeRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
         OperationConsumeRequest parameters)
+        throws BloxFaultMessage
+    ;
+
+    /**
+     * 
+     * @param parameters
+     * @return
+     *     returns sk.gov.ekolky.estamp.fo10.estamp.OperationPaymentResponse
+     * @throws BloxFaultMessage
+     */
+    @WebMethod
+    @WebResult(name = "operationPaymentResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
+    public OperationPaymentResponse operationPayment(
+        @WebParam(name = "operationPaymentRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
+        OperationPaymentRequest parameters)
+        throws BloxFaultMessage
+    ;
+
+    /**
+     * 
+     * @param parameters
+     * @return
+     *     returns sk.gov.ekolky.estamp.fo10.estamp.GetReportResponse
+     * @throws BloxFaultMessage
+     */
+    @WebMethod
+    @WebResult(name = "getReportResponse", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
+    public GetReportResponse getReport(
+        @WebParam(name = "getReportRequest", targetNamespace = PepConfig.TARGET_NAMESPACE, partName = "parameters")
+        GetReportRequest parameters)
         throws BloxFaultMessage
     ;
 

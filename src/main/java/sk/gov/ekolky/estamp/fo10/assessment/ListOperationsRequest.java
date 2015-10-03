@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
-import sk.gov.ekolky.estamp.xsd10.RequestOEK;
+import sk.gov.ekolky.estamp.xsd10.RequestMSP;
 
 
 /**
@@ -20,7 +20,7 @@ import sk.gov.ekolky.estamp.xsd10.RequestOEK;
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.ekolky.gov.sk/estamp/xsd10}requestOEK">
+ *     &lt;extension base="{http://www.ekolky.gov.sk/estamp/xsd10}requestMSP">
  *       &lt;sequence>
  *         &lt;element name="type">
  *           &lt;complexType>
@@ -38,9 +38,12 @@ import sk.gov.ekolky.estamp.xsd10.RequestOEK;
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                 &lt;sequence>
+ *                   &lt;element name="officeID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *                   &lt;element name="feDeviceID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *                   &lt;element name="dateFrom" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
+ *                   &lt;element name="createdDateFrom" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
  *                   &lt;element name="dateTo" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
+ *                   &lt;element name="createdDateTo" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -66,6 +69,7 @@ import sk.gov.ekolky.estamp.xsd10.RequestOEK;
  *                   &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *                   &lt;element name="confirmID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *                   &lt;element name="issueDate" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *                   &lt;element name="createdDate" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *                   &lt;element name="amount" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *                 &lt;/choice>
  *               &lt;/restriction>
@@ -89,7 +93,7 @@ import sk.gov.ekolky.estamp.xsd10.RequestOEK;
 })
 @XmlRootElement(name = "listOperationsRequest")
 public class ListOperationsRequest
-    extends RequestOEK
+    extends RequestMSP
 {
 
     @XmlElement(required = true)
@@ -205,9 +209,12 @@ public class ListOperationsRequest
      *   &lt;complexContent>
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;sequence>
+     *         &lt;element name="officeID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
      *         &lt;element name="feDeviceID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
      *         &lt;element name="dateFrom" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
+     *         &lt;element name="createdDateFrom" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
      *         &lt;element name="dateTo" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
+     *         &lt;element name="createdDateTo" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -218,17 +225,49 @@ public class ListOperationsRequest
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
+        "officeID",
         "feDeviceID",
         "dateFrom",
-        "dateTo"
+        "createdDateFrom",
+        "dateTo",
+        "createdDateTo"
     })
     public static class Conditions {
 
+        protected String officeID;
         protected String feDeviceID;
         @XmlSchemaType(name = "dateTime")
         protected XMLGregorianCalendar dateFrom;
         @XmlSchemaType(name = "dateTime")
+        protected XMLGregorianCalendar createdDateFrom;
+        @XmlSchemaType(name = "dateTime")
         protected XMLGregorianCalendar dateTo;
+        @XmlSchemaType(name = "dateTime")
+        protected XMLGregorianCalendar createdDateTo;
+
+        /**
+         * Gets the value of the officeID property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getOfficeID() {
+            return officeID;
+        }
+
+        /**
+         * Sets the value of the officeID property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setOfficeID(String value) {
+            this.officeID = value;
+        }
 
         /**
          * Gets the value of the feDeviceID property.
@@ -279,6 +318,30 @@ public class ListOperationsRequest
         }
 
         /**
+         * Gets the value of the createdDateFrom property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link XMLGregorianCalendar }
+         *     
+         */
+        public XMLGregorianCalendar getCreatedDateFrom() {
+            return createdDateFrom;
+        }
+
+        /**
+         * Sets the value of the createdDateFrom property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link XMLGregorianCalendar }
+         *     
+         */
+        public void setCreatedDateFrom(XMLGregorianCalendar value) {
+            this.createdDateFrom = value;
+        }
+
+        /**
          * Gets the value of the dateTo property.
          * 
          * @return
@@ -302,6 +365,30 @@ public class ListOperationsRequest
             this.dateTo = value;
         }
 
+        /**
+         * Gets the value of the createdDateTo property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link XMLGregorianCalendar }
+         *     
+         */
+        public XMLGregorianCalendar getCreatedDateTo() {
+            return createdDateTo;
+        }
+
+        /**
+         * Sets the value of the createdDateTo property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link XMLGregorianCalendar }
+         *     
+         */
+        public void setCreatedDateTo(XMLGregorianCalendar value) {
+            this.createdDateTo = value;
+        }
+
     }
 
 
@@ -318,6 +405,7 @@ public class ListOperationsRequest
      *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
      *         &lt;element name="confirmID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
      *         &lt;element name="issueDate" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+     *         &lt;element name="createdDate" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
      *         &lt;element name="amount" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
      *       &lt;/choice>
      *     &lt;/restriction>
@@ -332,6 +420,7 @@ public class ListOperationsRequest
         "id",
         "confirmID",
         "issueDate",
+        "createdDate",
         "amount"
     })
     public static class Order {
@@ -339,6 +428,7 @@ public class ListOperationsRequest
         protected String id;
         protected String confirmID;
         protected String issueDate;
+        protected String createdDate;
         protected String amount;
 
         /**
@@ -411,6 +501,30 @@ public class ListOperationsRequest
          */
         public void setIssueDate(String value) {
             this.issueDate = value;
+        }
+
+        /**
+         * Gets the value of the createdDate property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getCreatedDate() {
+            return createdDate;
+        }
+
+        /**
+         * Sets the value of the createdDate property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setCreatedDate(String value) {
+            this.createdDate = value;
         }
 
         /**

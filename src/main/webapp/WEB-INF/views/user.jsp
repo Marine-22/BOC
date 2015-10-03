@@ -12,11 +12,17 @@
     <link type="image/x-icon" rel="shortcut icon" href="<c:url value="/resources/img/favicon.ico" />" />
     <link href="<c:url value="/resources/css/common.css" />" media="screen,print" rel="stylesheet" type="text/css" />
     <link href="<c:url value="/resources/css/jquery-ui.css" />" media="screen,print" rel="stylesheet" type="text/css" />
+    <link href="<c:url value="/resources/css/simplePagination.css" />" media="screen,print" rel="stylesheet" type="text/css" />
+    
     <script src="<c:url value="/resources/js/jquery-1.11.1.js" />" type="text/javascript"></script>
     <script src="<c:url value="/resources/js/ready.user.js" />" type="text/javascript"></script>
     <script src="<c:url value="/resources/js/boc.js" />" type="text/javascript"></script>
     <script src="<c:url value="/resources/js/jquery-ui.js" />" type="text/javascript"></script>
-
+    <script src="<c:url value="/resources/js/jquery.simplePagination.js" />" type="text/javascript"></script>
+<!--[if lt IE 9]> 
+<script src="<c:url value="/resources/js/placeholder.min.js" />"
+	type="text/javascript"></script>
+<![endif]-->
 <title>Slovenská pošta</title>
   </head>
   <body id="home">
@@ -65,7 +71,7 @@
       
     </div>
 
-      <div class="site-nav-main">
+      <div class="site-nav-main" style="margin-bottom: 15px;">
         <ul>
           <li class="logout border-left border-right">
             <a href="${pageContext.request.contextPath}/login"><span class="ico"></span>Logout</a>
@@ -118,11 +124,10 @@
 				</form>
 			</div>
 </div>
-<div class="site-area-bottom chpass inithide"></div>
+<div class="site-area-bottom chpass inithide" style="margin-bottom: 15px;"></div>
 
 <div class="site-area-top newpred inithide"></div>
 <div class="site-area-main newpred inithide">
-    
   <div class="area-post">
       <form id="new_predpis" action="${pageContext.request.contextPath}/addPredpis" method="post">
         <div id="nominal_div">
@@ -190,8 +195,9 @@
       </form>
   </div>
 </div>
-<div class="site-area-bottom newpred inithide"></div>
+<div class="site-area-bottom newpred inithide" style="margin-bottom: 15px;"></div>
 
+<div id="paginDiv"></div>
 <div class="site-area-top listdata"></div>
 <div class="site-area-main listdata">
 			<div class="cleft">

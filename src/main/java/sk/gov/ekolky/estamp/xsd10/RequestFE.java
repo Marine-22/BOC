@@ -22,10 +22,10 @@ import com.jump_soft.estamp.fo10.common.ServiceInfoRequest;
 import com.jump_soft.estamp.fo10.common.ServiceTerminationRequest;
 import com.jump_soft.estamp.fo10.common.UserProfileCreateRequest;
 import com.jump_soft.estamp.fo10.common.UserProfileEditRequest;
-import sk.gov.ekolky.estamp.fo10.estamp.CreateRequest;
 import sk.gov.ekolky.estamp.fo10.estamp.ExchangeRequest;
 import sk.gov.ekolky.estamp.fo10.estamp.GetRequest;
 import sk.gov.ekolky.estamp.fo10.estamp.LockRequest;
+import sk.gov.ekolky.estamp.fo10.estamp.OperationPaymentRequest;
 import sk.gov.ekolky.estamp.fo10.estamp.UnlockRequest;
 import sk.gov.ekolky.estamp.fo10.infra.DeviceStateCheckRequest;
 import sk.gov.ekolky.estamp.fo10.infra.IncidentRegisterRequest;
@@ -65,6 +65,16 @@ import sk.gov.ekolky.estamp.fo10.infra.ListServiceRequest;
     "offline"
 })
 @XmlSeeAlso({
+    ListFeDevicesRequest.class,
+    ListServiceRequest.class,
+    ListOfficeRequest.class,
+    ListFeeRequest.class,
+    ListCountryRequest.class,
+    ListParameterRequest.class,
+    ListSWPRequest.class,
+    ListDeviceInfoRequest.class,
+    DeviceStateCheckRequest.class,
+    IncidentRegisterRequest.class,
     EStampCreateNegativeRequest.class,
     EnumListRequest.class,
     EStampConsumedStornoRequest.class,
@@ -81,22 +91,12 @@ import sk.gov.ekolky.estamp.fo10.infra.ListServiceRequest;
     ErrorListRequest.class,
     PaymentPairingRequest.class,
     EStampSearchRequest.class,
-    ListFeDevicesRequest.class,
-    ListServiceRequest.class,
-    ListOfficeRequest.class,
-    ListFeeRequest.class,
-    ListCountryRequest.class,
-    ListParameterRequest.class,
-    ListSWPRequest.class,
-    ListDeviceInfoRequest.class,
-    DeviceStateCheckRequest.class,
-    IncidentRegisterRequest.class,
     GetRequest.class,
-    CreateRequest.class,
     LockRequest.class,
+    RequestOEK.class,
     ExchangeRequest.class,
     UnlockRequest.class,
-    RequestOEK.class
+    OperationPaymentRequest.class
 })
 public class RequestFE
     extends Request

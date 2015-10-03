@@ -7,7 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="sk" lang="sk">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<meta name="Author" content="SlovenskÃ¡ poÅ¡ta, a.s." />
+<meta name="Author" content="Slovenská pošta, a.s." />
 <meta name="viewport" content="width=1024" />
 <meta
 	content='<acronym title="Internet Explorer">IE</acronym>=EmulateIE7'

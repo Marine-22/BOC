@@ -31,6 +31,15 @@ import javax.xml.bind.annotation.XmlType;
  *                   &lt;element name="nominal" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentNominal" minOccurs="0"/>
  *                   &lt;element name="bank" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentBank" minOccurs="0"/>
  *                   &lt;element name="pps" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentPPS" minOccurs="0"/>
+ *                   &lt;element name="swpCash" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentSwpCash" minOccurs="0"/>
+ *                   &lt;element name="swpCard" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentSwpCard" minOccurs="0"/>
+ *                   &lt;element name="maspCard" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentCard" minOccurs="0"/>
+ *                   &lt;element name="maspCardReturn" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentCard" minOccurs="0"/>
+ *                   &lt;element name="maspEpoCard" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentCard" minOccurs="0"/>
+ *                   &lt;element name="maspEpoCardReturn" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentCard" minOccurs="0"/>
+ *                   &lt;element name="apoCash" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentCash" minOccurs="0"/>
+ *                   &lt;element name="apoCard" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentCard" minOccurs="0"/>
+ *                   &lt;element name="apoEpoCard" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentCard" minOccurs="0"/>
  *                 &lt;/choice>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -167,6 +176,15 @@ public class OperPayment {
      *         &lt;element name="nominal" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentNominal" minOccurs="0"/>
      *         &lt;element name="bank" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentBank" minOccurs="0"/>
      *         &lt;element name="pps" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentPPS" minOccurs="0"/>
+     *         &lt;element name="swpCash" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentSwpCash" minOccurs="0"/>
+     *         &lt;element name="swpCard" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentSwpCard" minOccurs="0"/>
+     *         &lt;element name="maspCard" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentCard" minOccurs="0"/>
+     *         &lt;element name="maspCardReturn" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentCard" minOccurs="0"/>
+     *         &lt;element name="maspEpoCard" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentCard" minOccurs="0"/>
+     *         &lt;element name="maspEpoCardReturn" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentCard" minOccurs="0"/>
+     *         &lt;element name="apoCash" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentCash" minOccurs="0"/>
+     *         &lt;element name="apoCard" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentCard" minOccurs="0"/>
+     *         &lt;element name="apoEpoCard" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentCard" minOccurs="0"/>
      *       &lt;/choice>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -183,7 +201,16 @@ public class OperPayment {
         "eStamp",
         "nominal",
         "bank",
-        "pps"
+        "pps",
+        "swpCash",
+        "swpCard",
+        "maspCard",
+        "maspCardReturn",
+        "maspEpoCard",
+        "maspEpoCardReturn",
+        "apoCash",
+        "apoCard",
+        "apoEpoCard"
     })
     public static class PayType {
 
@@ -195,6 +222,15 @@ public class OperPayment {
         protected OperPaymentNominal nominal;
         protected OperPaymentBank bank;
         protected OperPaymentPPS pps;
+        protected OperPaymentSwpCash swpCash;
+        protected OperPaymentSwpCard swpCard;
+        protected OperPaymentCard maspCard;
+        protected OperPaymentCard maspCardReturn;
+        protected OperPaymentCard maspEpoCard;
+        protected OperPaymentCard maspEpoCardReturn;
+        protected OperPaymentCash apoCash;
+        protected OperPaymentCard apoCard;
+        protected OperPaymentCard apoEpoCard;
 
         /**
          * Gets the value of the cash property.
@@ -362,6 +398,222 @@ public class OperPayment {
          */
         public void setPps(OperPaymentPPS value) {
             this.pps = value;
+        }
+
+        /**
+         * Gets the value of the swpCash property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link OperPaymentSwpCash }
+         *     
+         */
+        public OperPaymentSwpCash getSwpCash() {
+            return swpCash;
+        }
+
+        /**
+         * Sets the value of the swpCash property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link OperPaymentSwpCash }
+         *     
+         */
+        public void setSwpCash(OperPaymentSwpCash value) {
+            this.swpCash = value;
+        }
+
+        /**
+         * Gets the value of the swpCard property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link OperPaymentSwpCard }
+         *     
+         */
+        public OperPaymentSwpCard getSwpCard() {
+            return swpCard;
+        }
+
+        /**
+         * Sets the value of the swpCard property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link OperPaymentSwpCard }
+         *     
+         */
+        public void setSwpCard(OperPaymentSwpCard value) {
+            this.swpCard = value;
+        }
+
+        /**
+         * Gets the value of the maspCard property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link OperPaymentCard }
+         *     
+         */
+        public OperPaymentCard getMaspCard() {
+            return maspCard;
+        }
+
+        /**
+         * Sets the value of the maspCard property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link OperPaymentCard }
+         *     
+         */
+        public void setMaspCard(OperPaymentCard value) {
+            this.maspCard = value;
+        }
+
+        /**
+         * Gets the value of the maspCardReturn property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link OperPaymentCard }
+         *     
+         */
+        public OperPaymentCard getMaspCardReturn() {
+            return maspCardReturn;
+        }
+
+        /**
+         * Sets the value of the maspCardReturn property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link OperPaymentCard }
+         *     
+         */
+        public void setMaspCardReturn(OperPaymentCard value) {
+            this.maspCardReturn = value;
+        }
+
+        /**
+         * Gets the value of the maspEpoCard property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link OperPaymentCard }
+         *     
+         */
+        public OperPaymentCard getMaspEpoCard() {
+            return maspEpoCard;
+        }
+
+        /**
+         * Sets the value of the maspEpoCard property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link OperPaymentCard }
+         *     
+         */
+        public void setMaspEpoCard(OperPaymentCard value) {
+            this.maspEpoCard = value;
+        }
+
+        /**
+         * Gets the value of the maspEpoCardReturn property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link OperPaymentCard }
+         *     
+         */
+        public OperPaymentCard getMaspEpoCardReturn() {
+            return maspEpoCardReturn;
+        }
+
+        /**
+         * Sets the value of the maspEpoCardReturn property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link OperPaymentCard }
+         *     
+         */
+        public void setMaspEpoCardReturn(OperPaymentCard value) {
+            this.maspEpoCardReturn = value;
+        }
+
+        /**
+         * Gets the value of the apoCash property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link OperPaymentCash }
+         *     
+         */
+        public OperPaymentCash getApoCash() {
+            return apoCash;
+        }
+
+        /**
+         * Sets the value of the apoCash property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link OperPaymentCash }
+         *     
+         */
+        public void setApoCash(OperPaymentCash value) {
+            this.apoCash = value;
+        }
+
+        /**
+         * Gets the value of the apoCard property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link OperPaymentCard }
+         *     
+         */
+        public OperPaymentCard getApoCard() {
+            return apoCard;
+        }
+
+        /**
+         * Sets the value of the apoCard property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link OperPaymentCard }
+         *     
+         */
+        public void setApoCard(OperPaymentCard value) {
+            this.apoCard = value;
+        }
+
+        /**
+         * Gets the value of the apoEpoCard property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link OperPaymentCard }
+         *     
+         */
+        public OperPaymentCard getApoEpoCard() {
+            return apoEpoCard;
+        }
+
+        /**
+         * Sets the value of the apoEpoCard property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link OperPaymentCard }
+         *     
+         */
+        public void setApoEpoCard(OperPaymentCard value) {
+            this.apoEpoCard = value;
         }
 
     }

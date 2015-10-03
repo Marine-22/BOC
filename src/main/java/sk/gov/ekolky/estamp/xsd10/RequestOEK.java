@@ -5,17 +5,15 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
-import sk.gov.ekolky.estamp.fo10.assessment.CancelRequest;
-import sk.gov.ekolky.estamp.fo10.assessment.CreateRequest;
-import sk.gov.ekolky.estamp.fo10.assessment.GetRequest;
-import sk.gov.ekolky.estamp.fo10.assessment.OperationDeclareRequest;
+import sk.gov.ekolky.estamp.fo10.aponet.RefundReserveRequest;
+import sk.gov.ekolky.estamp.fo10.aponet.RefundReserveUndoRequest;
+import sk.gov.ekolky.estamp.fo10.aponet.RegisterApplicationRequest;
 import sk.gov.ekolky.estamp.fo10.assessment.OperationExecutionDELTEDRequest;
-import sk.gov.ekolky.estamp.fo10.assessment.OperationPaymentRequest;
-import sk.gov.ekolky.estamp.fo10.assessment.OperationRefundRequest;
-import sk.gov.ekolky.estamp.fo10.assessment.OperationReserveRequest;
-import sk.gov.ekolky.estamp.fo10.assessment.OperationTransferRequest;
 import sk.gov.ekolky.estamp.fo10.assessment.PrintDELETEDRequest;
-import sk.gov.ekolky.estamp.fo10.assessment.UpdateRequest;
+import sk.gov.ekolky.estamp.fo10.estamp.CreateRequest;
+import sk.gov.ekolky.estamp.fo10.estamp.ListOperationsRequest;
+import sk.gov.ekolky.estamp.fo10.estamp.ListRequest;
+import sk.gov.ekolky.estamp.fo10.estamp.OperationConsumeRequest;
 import sk.gov.ekolky.estamp.fo10.nominal.CheckStateRequest;
 
 
@@ -47,25 +45,18 @@ import sk.gov.ekolky.estamp.fo10.nominal.CheckStateRequest;
     "identityID"
 })
 @XmlSeeAlso({
-    CheckStateRequest.class,
     RequestSWP.class,
-    sk.gov.ekolky.estamp.fo10.estamp.ListOperationsRequest.class,
-    sk.gov.ekolky.estamp.fo10.estamp.OperationConsumeRequest.class,
-    sk.gov.ekolky.estamp.fo10.estamp.ListRequest.class,
+    CheckStateRequest.class,
+    RefundReserveRequest.class,
+    RefundReserveUndoRequest.class,
+    RegisterApplicationRequest.class,
     OperationExecutionDELTEDRequest.class,
-    sk.gov.ekolky.estamp.fo10.assessment.ListRequest.class,
     PrintDELETEDRequest.class,
-    OperationRefundRequest.class,
-    OperationTransferRequest.class,
-    OperationPaymentRequest.class,
-    OperationDeclareRequest.class,
-    GetRequest.class,
     CreateRequest.class,
-    UpdateRequest.class,
-    sk.gov.ekolky.estamp.fo10.assessment.OperationConsumeRequest.class,
-    sk.gov.ekolky.estamp.fo10.assessment.ListOperationsRequest.class,
-    OperationReserveRequest.class,
-    CancelRequest.class
+    ListOperationsRequest.class,
+    OperationConsumeRequest.class,
+    ListRequest.class,
+    RequestMSP.class
 })
 public class RequestOEK
     extends RequestFE

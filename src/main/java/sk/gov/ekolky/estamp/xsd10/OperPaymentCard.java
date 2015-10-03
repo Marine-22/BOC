@@ -17,22 +17,21 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="cashDeskID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="posTransaction" minOccurs="0">
  *           &lt;complexType>
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                 &lt;sequence>
  *                   &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *                   &lt;element name="cardNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *                   &lt;element name="cardType" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="cardNumber" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *                   &lt;element name="cardType" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *                   &lt;element name="receiptNumber" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *                   &lt;element name="authorizationCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                   &lt;element name="sellerID" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="sellerID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *                   &lt;element name="terminalID" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *                   &lt;element name="applicationID" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *                   &lt;element name="applicationName" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *                   &lt;element name="response" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="applicationID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *                   &lt;element name="applicationName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *                   &lt;element name="response" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -48,37 +47,11 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "operPaymentCard", propOrder = {
-    "cashDeskID",
     "posTransaction"
 })
 public class OperPaymentCard {
 
-    protected String cashDeskID;
     protected OperPaymentCard.PosTransaction posTransaction;
-
-    /**
-     * Gets the value of the cashDeskID property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getCashDeskID() {
-        return cashDeskID;
-    }
-
-    /**
-     * Sets the value of the cashDeskID property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setCashDeskID(String value) {
-        this.cashDeskID = value;
-    }
 
     /**
      * Gets the value of the posTransaction property.
@@ -116,15 +89,15 @@ public class OperPaymentCard {
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;sequence>
      *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *         &lt;element name="cardNumber" type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *         &lt;element name="cardType" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="cardNumber" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+     *         &lt;element name="cardType" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
      *         &lt;element name="receiptNumber" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
      *         &lt;element name="authorizationCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *         &lt;element name="sellerID" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="sellerID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
      *         &lt;element name="terminalID" type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *         &lt;element name="applicationID" type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *         &lt;element name="applicationName" type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *         &lt;element name="response" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="applicationID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+     *         &lt;element name="applicationName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+     *         &lt;element name="response" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -150,21 +123,15 @@ public class OperPaymentCard {
 
         @XmlElement(required = true)
         protected String id;
-        @XmlElement(required = true)
         protected String cardNumber;
-        @XmlElement(required = true)
         protected String cardType;
         protected String receiptNumber;
         protected String authorizationCode;
-        @XmlElement(required = true)
         protected String sellerID;
         @XmlElement(required = true)
         protected String terminalID;
-        @XmlElement(required = true)
         protected String applicationID;
-        @XmlElement(required = true)
         protected String applicationName;
-        @XmlElement(required = true)
         protected String response;
 
         /**

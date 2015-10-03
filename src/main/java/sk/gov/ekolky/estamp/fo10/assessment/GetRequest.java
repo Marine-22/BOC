@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import sk.gov.ekolky.estamp.xsd10.Key;
-import sk.gov.ekolky.estamp.xsd10.RequestOEK;
+import sk.gov.ekolky.estamp.xsd10.RequestMSP;
 
 
 /**
@@ -18,7 +18,7 @@ import sk.gov.ekolky.estamp.xsd10.RequestOEK;
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.ekolky.gov.sk/estamp/xsd10}requestOEK">
+ *     &lt;extension base="{http://www.ekolky.gov.sk/estamp/xsd10}requestMSP">
  *       &lt;sequence>
  *         &lt;element name="key" type="{http://www.ekolky.gov.sk/estamp/xsd10}key"/>
  *         &lt;element name="includeOperation" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
@@ -37,7 +37,7 @@ import sk.gov.ekolky.estamp.xsd10.RequestOEK;
 })
 @XmlRootElement(name = "getRequest")
 public class GetRequest
-    extends RequestOEK
+    extends RequestMSP
 {
 
     @XmlElement(required = true)

@@ -7,7 +7,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import sk.gov.ekolky.estamp.fo10.cashdesk.CloseRequest;
+import sk.gov.ekolky.estamp.fo10.cashdesk.GetClosureRequest;
 import sk.gov.ekolky.estamp.fo10.cashdesk.GetInfoRequest;
+import sk.gov.ekolky.estamp.fo10.cashdesk.GetMoneySendSPRequest;
 import sk.gov.ekolky.estamp.fo10.cashdesk.ListRequest;
 import sk.gov.ekolky.estamp.fo10.cashdesk.MoneySendSPRequest;
 import sk.gov.ekolky.estamp.fo10.cashdesk.MoneyTransferRequest;
@@ -48,7 +50,9 @@ import sk.gov.ekolky.estamp.fo10.cashdesk.TakeoverRequest;
     ListRequest.class,
     TakeoverRequest.class,
     MoneyTransferRequest.class,
+    GetClosureRequest.class,
     GetInfoRequest.class,
+    GetMoneySendSPRequest.class,
     OpenRequest.class
 })
 public class RequestSWP

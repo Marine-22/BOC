@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import sk.gov.ekolky.estamp.xsd10.Key;
 import sk.gov.ekolky.estamp.xsd10.Operation;
 import sk.gov.ekolky.estamp.xsd10.Response;
 
@@ -21,7 +22,18 @@ import sk.gov.ekolky.estamp.xsd10.Response;
  *   &lt;complexContent>
  *     &lt;extension base="{http://www.ekolky.gov.sk/estamp/xsd10}response">
  *       &lt;sequence>
- *         &lt;element name="payments" type="{http://www.ekolky.gov.sk/estamp/xsd10}operation" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="payments" maxOccurs="unbounded" minOccurs="0">
+ *           &lt;complexType>
+ *             &lt;complexContent>
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                 &lt;sequence>
+ *                   &lt;element name="key" type="{http://www.ekolky.gov.sk/estamp/xsd10}key" minOccurs="0"/>
+ *                   &lt;element name="payment" type="{http://www.ekolky.gov.sk/estamp/xsd10}operation" minOccurs="0"/>
+ *                 &lt;/sequence>
+ *               &lt;/restriction>
+ *             &lt;/complexContent>
+ *           &lt;/complexType>
+ *         &lt;/element>
  *         &lt;element name="rowCount" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
@@ -41,7 +53,7 @@ public class ListResponse
     extends Response
 {
 
-    protected List<Operation> payments;
+    protected List<ListResponse.Payments> payments;
     protected Long rowCount;
 
     /**
@@ -62,13 +74,13 @@ public class ListResponse
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link Operation }
+     * {@link ListResponse.Payments }
      * 
      * 
      */
-    public List<Operation> getPayments() {
+    public List<ListResponse.Payments> getPayments() {
         if (payments == null) {
-            payments = new ArrayList<Operation>();
+            payments = new ArrayList<ListResponse.Payments>();
         }
         return this.payments;
     }
@@ -95,6 +107,87 @@ public class ListResponse
      */
     public void setRowCount(Long value) {
         this.rowCount = value;
+    }
+
+
+    /**
+     * <p>Java class for anonymous complex type.
+     * 
+     * <p>The following schema fragment specifies the expected content contained within this class.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;sequence>
+     *         &lt;element name="key" type="{http://www.ekolky.gov.sk/estamp/xsd10}key" minOccurs="0"/>
+     *         &lt;element name="payment" type="{http://www.ekolky.gov.sk/estamp/xsd10}operation" minOccurs="0"/>
+     *       &lt;/sequence>
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
+     */
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "", propOrder = {
+        "key",
+        "payment"
+    })
+    public static class Payments {
+
+        protected Key key;
+        protected Operation payment;
+
+        /**
+         * Gets the value of the key property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link Key }
+         *     
+         */
+        public Key getKey() {
+            return key;
+        }
+
+        /**
+         * Sets the value of the key property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link Key }
+         *     
+         */
+        public void setKey(Key value) {
+            this.key = value;
+        }
+
+        /**
+         * Gets the value of the payment property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link Operation }
+         *     
+         */
+        public Operation getPayment() {
+            return payment;
+        }
+
+        /**
+         * Sets the value of the payment property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link Operation }
+         *     
+         */
+        public void setPayment(Operation value) {
+            this.payment = value;
+        }
+
     }
 
 }

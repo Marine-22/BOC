@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
  *     &lt;enumeration value="spravny"/>
  *     &lt;enumeration value="sudny"/>
+ *     &lt;enumeration value="vseobecny"/>
  *   &lt;/restriction>
  * &lt;/simpleType>
  * </pre>
@@ -28,7 +29,9 @@ public enum AssesmentType {
     @XmlEnumValue("spravny")
     SPRAVNY("spravny"),
     @XmlEnumValue("sudny")
-    SUDNY("sudny");
+    SUDNY("sudny"),
+    @XmlEnumValue("vseobecny")
+    VSEOBECNY("vseobecny");
     private final String value;
 
     AssesmentType(String v) {

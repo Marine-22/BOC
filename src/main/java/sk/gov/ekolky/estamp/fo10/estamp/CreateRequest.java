@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 import sk.gov.ekolky.estamp.xsd10.CreditNote;
 import sk.gov.ekolky.estamp.xsd10.Estamp;
 import sk.gov.ekolky.estamp.xsd10.Key;
-import sk.gov.ekolky.estamp.xsd10.RequestFE;
+import sk.gov.ekolky.estamp.xsd10.RequestOEK;
 
 
 /**
@@ -21,7 +21,7 @@ import sk.gov.ekolky.estamp.xsd10.RequestFE;
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.ekolky.gov.sk/estamp/xsd10}requestFE">
+ *     &lt;extension base="{http://www.ekolky.gov.sk/estamp/xsd10}requestOEK">
  *       &lt;sequence>
  *         &lt;element name="estamp" type="{http://www.ekolky.gov.sk/estamp/xsd10}estamp"/>
  *         &lt;element name="creditNote" type="{http://www.ekolky.gov.sk/estamp/xsd10}creditNote" minOccurs="0"/>
@@ -53,7 +53,7 @@ import sk.gov.ekolky.estamp.xsd10.RequestFE;
 })
 @XmlRootElement(name = "createRequest")
 public class CreateRequest
-    extends RequestFE
+    extends RequestOEK
 {
 
     @XmlElement(required = true)

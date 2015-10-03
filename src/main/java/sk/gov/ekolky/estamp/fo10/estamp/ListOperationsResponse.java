@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import sk.gov.ekolky.estamp.xsd10.Key;
@@ -28,13 +27,14 @@ import sk.gov.ekolky.estamp.xsd10.Response;
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                 &lt;sequence>
- *                   &lt;element name="key" type="{http://www.ekolky.gov.sk/estamp/xsd10}key"/>
- *                   &lt;element name="operation" type="{http://www.ekolky.gov.sk/estamp/xsd10}operation" maxOccurs="unbounded"/>
+ *                   &lt;element name="key" type="{http://www.ekolky.gov.sk/estamp/xsd10}key" minOccurs="0"/>
+ *                   &lt;element name="operation" type="{http://www.ekolky.gov.sk/estamp/xsd10}operation" minOccurs="0"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
  *           &lt;/complexType>
  *         &lt;/element>
+ *         &lt;element name="rowCount" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -45,7 +45,8 @@ import sk.gov.ekolky.estamp.xsd10.Response;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "operations"
+    "operations",
+    "rowCount"
 })
 @XmlRootElement(name = "listOperationsResponse")
 public class ListOperationsResponse
@@ -53,6 +54,7 @@ public class ListOperationsResponse
 {
 
     protected List<ListOperationsResponse.Operations> operations;
+    protected Long rowCount;
 
     /**
      * Gets the value of the operations property.
@@ -83,6 +85,30 @@ public class ListOperationsResponse
         return this.operations;
     }
 
+    /**
+     * Gets the value of the rowCount property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Long }
+     *     
+     */
+    public Long getRowCount() {
+        return rowCount;
+    }
+
+    /**
+     * Sets the value of the rowCount property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Long }
+     *     
+     */
+    public void setRowCount(Long value) {
+        this.rowCount = value;
+    }
+
 
     /**
      * <p>Java class for anonymous complex type.
@@ -94,8 +120,8 @@ public class ListOperationsResponse
      *   &lt;complexContent>
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;sequence>
-     *         &lt;element name="key" type="{http://www.ekolky.gov.sk/estamp/xsd10}key"/>
-     *         &lt;element name="operation" type="{http://www.ekolky.gov.sk/estamp/xsd10}operation" maxOccurs="unbounded"/>
+     *         &lt;element name="key" type="{http://www.ekolky.gov.sk/estamp/xsd10}key" minOccurs="0"/>
+     *         &lt;element name="operation" type="{http://www.ekolky.gov.sk/estamp/xsd10}operation" minOccurs="0"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -111,10 +137,8 @@ public class ListOperationsResponse
     })
     public static class Operations {
 
-        @XmlElement(required = true)
         protected Key key;
-        @XmlElement(required = true)
-        protected List<Operation> operation;
+        protected Operation operation;
 
         /**
          * Gets the value of the key property.
@@ -143,30 +167,25 @@ public class ListOperationsResponse
         /**
          * Gets the value of the operation property.
          * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the operation property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getOperation().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link Operation }
-         * 
-         * 
+         * @return
+         *     possible object is
+         *     {@link Operation }
+         *     
          */
-        public List<Operation> getOperation() {
-            if (operation == null) {
-                operation = new ArrayList<Operation>();
-            }
-            return this.operation;
+        public Operation getOperation() {
+            return operation;
+        }
+
+        /**
+         * Sets the value of the operation property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link Operation }
+         *     
+         */
+        public void setOperation(Operation value) {
+            this.operation = value;
         }
 
     }

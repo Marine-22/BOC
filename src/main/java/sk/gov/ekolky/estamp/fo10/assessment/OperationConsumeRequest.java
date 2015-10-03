@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import sk.gov.ekolky.estamp.xsd10.Key;
 import sk.gov.ekolky.estamp.xsd10.OperConsume;
-import sk.gov.ekolky.estamp.xsd10.RequestOEK;
+import sk.gov.ekolky.estamp.xsd10.RequestMSP;
 
 
 /**
@@ -21,7 +21,7 @@ import sk.gov.ekolky.estamp.xsd10.RequestOEK;
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.ekolky.gov.sk/estamp/xsd10}requestOEK">
+ *     &lt;extension base="{http://www.ekolky.gov.sk/estamp/xsd10}requestMSP">
  *       &lt;sequence>
  *         &lt;element name="key" type="{http://www.ekolky.gov.sk/estamp/xsd10}key"/>
  *         &lt;element name="operConsume" type="{http://www.ekolky.gov.sk/estamp/xsd10}operConsume" maxOccurs="unbounded"/>
@@ -40,7 +40,7 @@ import sk.gov.ekolky.estamp.xsd10.RequestOEK;
 })
 @XmlRootElement(name = "operationConsumeRequest")
 public class OperationConsumeRequest
-    extends RequestOEK
+    extends RequestMSP
 {
 
     @XmlElement(required = true)

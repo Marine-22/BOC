@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
-import sk.gov.ekolky.estamp.xsd10.RequestOEK;
+import sk.gov.ekolky.estamp.xsd10.RequestMSP;
 
 
 /**
@@ -19,7 +19,7 @@ import sk.gov.ekolky.estamp.xsd10.RequestOEK;
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
- *     &lt;extension base="{http://www.ekolky.gov.sk/estamp/xsd10}requestOEK">
+ *     &lt;extension base="{http://www.ekolky.gov.sk/estamp/xsd10}requestMSP">
  *       &lt;sequence>
  *         &lt;element name="conditions" minOccurs="0">
  *           &lt;complexType>
@@ -82,7 +82,7 @@ import sk.gov.ekolky.estamp.xsd10.RequestOEK;
 })
 @XmlRootElement(name = "listRequest")
 public class ListRequest
-    extends RequestOEK
+    extends RequestMSP
 {
 
     protected ListRequest.Conditions conditions;

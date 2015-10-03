@@ -27,7 +27,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                 &lt;choice>
  *                   &lt;element name="payment" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPayment" minOccurs="0"/>
+ *                   &lt;element name="paymentUndo" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentUndo" minOccurs="0"/>
  *                   &lt;element name="paymentTo" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentTo" minOccurs="0"/>
+ *                   &lt;element name="paymentToUndo" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentTo" minOccurs="0"/>
  *                   &lt;element name="transferTo" type="{http://www.ekolky.gov.sk/estamp/xsd10}operTransferTo" minOccurs="0"/>
  *                   &lt;element name="transferFrom" type="{http://www.ekolky.gov.sk/estamp/xsd10}operTransferFrom" minOccurs="0"/>
  *                   &lt;element name="consume" type="{http://www.ekolky.gov.sk/estamp/xsd10}operConsume" minOccurs="0"/>
@@ -47,8 +49,11 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *                   &lt;element name="reserveUndo" type="{http://www.ekolky.gov.sk/estamp/xsd10}operReserveUndo" minOccurs="0"/>
  *                   &lt;element name="execution" type="{http://www.ekolky.gov.sk/estamp/xsd10}operExecution" minOccurs="0"/>
  *                   &lt;element name="cancel" type="{http://www.ekolky.gov.sk/estamp/xsd10}operCancel" minOccurs="0"/>
+ *                   &lt;element name="cancelUndo" type="{http://www.ekolky.gov.sk/estamp/xsd10}operCancel" minOccurs="0"/>
  *                   &lt;element name="refundReserve" type="{http://www.ekolky.gov.sk/estamp/xsd10}operRefundSend" minOccurs="0"/>
  *                   &lt;element name="refundReserveUndo" type="{http://www.ekolky.gov.sk/estamp/xsd10}operRefundSend" minOccurs="0"/>
+ *                   &lt;element name="refundSendUndo" type="{http://www.ekolky.gov.sk/estamp/xsd10}operRefundSend" minOccurs="0"/>
+ *                   &lt;element name="outOfDate" type="{http://www.ekolky.gov.sk/estamp/xsd10}operOutOfDate" minOccurs="0"/>
  *                 &lt;/choice>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -161,7 +166,9 @@ public class Operation {
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;choice>
      *         &lt;element name="payment" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPayment" minOccurs="0"/>
+     *         &lt;element name="paymentUndo" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentUndo" minOccurs="0"/>
      *         &lt;element name="paymentTo" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentTo" minOccurs="0"/>
+     *         &lt;element name="paymentToUndo" type="{http://www.ekolky.gov.sk/estamp/xsd10}operPaymentTo" minOccurs="0"/>
      *         &lt;element name="transferTo" type="{http://www.ekolky.gov.sk/estamp/xsd10}operTransferTo" minOccurs="0"/>
      *         &lt;element name="transferFrom" type="{http://www.ekolky.gov.sk/estamp/xsd10}operTransferFrom" minOccurs="0"/>
      *         &lt;element name="consume" type="{http://www.ekolky.gov.sk/estamp/xsd10}operConsume" minOccurs="0"/>
@@ -181,8 +188,11 @@ public class Operation {
      *         &lt;element name="reserveUndo" type="{http://www.ekolky.gov.sk/estamp/xsd10}operReserveUndo" minOccurs="0"/>
      *         &lt;element name="execution" type="{http://www.ekolky.gov.sk/estamp/xsd10}operExecution" minOccurs="0"/>
      *         &lt;element name="cancel" type="{http://www.ekolky.gov.sk/estamp/xsd10}operCancel" minOccurs="0"/>
+     *         &lt;element name="cancelUndo" type="{http://www.ekolky.gov.sk/estamp/xsd10}operCancel" minOccurs="0"/>
      *         &lt;element name="refundReserve" type="{http://www.ekolky.gov.sk/estamp/xsd10}operRefundSend" minOccurs="0"/>
      *         &lt;element name="refundReserveUndo" type="{http://www.ekolky.gov.sk/estamp/xsd10}operRefundSend" minOccurs="0"/>
+     *         &lt;element name="refundSendUndo" type="{http://www.ekolky.gov.sk/estamp/xsd10}operRefundSend" minOccurs="0"/>
+     *         &lt;element name="outOfDate" type="{http://www.ekolky.gov.sk/estamp/xsd10}operOutOfDate" minOccurs="0"/>
      *       &lt;/choice>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -194,7 +204,9 @@ public class Operation {
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
         "payment",
+        "paymentUndo",
         "paymentTo",
+        "paymentToUndo",
         "transferTo",
         "transferFrom",
         "consume",
@@ -214,13 +226,18 @@ public class Operation {
         "reserveUndo",
         "execution",
         "cancel",
+        "cancelUndo",
         "refundReserve",
-        "refundReserveUndo"
+        "refundReserveUndo",
+        "refundSendUndo",
+        "outOfDate"
     })
     public static class Type {
 
         protected OperPayment payment;
+        protected OperPaymentUndo paymentUndo;
         protected OperPaymentTo paymentTo;
+        protected OperPaymentTo paymentToUndo;
         protected OperTransferTo transferTo;
         protected OperTransferFrom transferFrom;
         protected OperConsume consume;
@@ -240,8 +257,11 @@ public class Operation {
         protected OperReserveUndo reserveUndo;
         protected OperExecution execution;
         protected OperCancel cancel;
+        protected OperCancel cancelUndo;
         protected OperRefundSend refundReserve;
         protected OperRefundSend refundReserveUndo;
+        protected OperRefundSend refundSendUndo;
+        protected OperOutOfDate outOfDate;
 
         /**
          * Gets the value of the payment property.
@@ -268,6 +288,30 @@ public class Operation {
         }
 
         /**
+         * Gets the value of the paymentUndo property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link OperPaymentUndo }
+         *     
+         */
+        public OperPaymentUndo getPaymentUndo() {
+            return paymentUndo;
+        }
+
+        /**
+         * Sets the value of the paymentUndo property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link OperPaymentUndo }
+         *     
+         */
+        public void setPaymentUndo(OperPaymentUndo value) {
+            this.paymentUndo = value;
+        }
+
+        /**
          * Gets the value of the paymentTo property.
          * 
          * @return
@@ -289,6 +333,30 @@ public class Operation {
          */
         public void setPaymentTo(OperPaymentTo value) {
             this.paymentTo = value;
+        }
+
+        /**
+         * Gets the value of the paymentToUndo property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link OperPaymentTo }
+         *     
+         */
+        public OperPaymentTo getPaymentToUndo() {
+            return paymentToUndo;
+        }
+
+        /**
+         * Sets the value of the paymentToUndo property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link OperPaymentTo }
+         *     
+         */
+        public void setPaymentToUndo(OperPaymentTo value) {
+            this.paymentToUndo = value;
         }
 
         /**
@@ -748,6 +816,30 @@ public class Operation {
         }
 
         /**
+         * Gets the value of the cancelUndo property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link OperCancel }
+         *     
+         */
+        public OperCancel getCancelUndo() {
+            return cancelUndo;
+        }
+
+        /**
+         * Sets the value of the cancelUndo property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link OperCancel }
+         *     
+         */
+        public void setCancelUndo(OperCancel value) {
+            this.cancelUndo = value;
+        }
+
+        /**
          * Gets the value of the refundReserve property.
          * 
          * @return
@@ -793,6 +885,54 @@ public class Operation {
          */
         public void setRefundReserveUndo(OperRefundSend value) {
             this.refundReserveUndo = value;
+        }
+
+        /**
+         * Gets the value of the refundSendUndo property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link OperRefundSend }
+         *     
+         */
+        public OperRefundSend getRefundSendUndo() {
+            return refundSendUndo;
+        }
+
+        /**
+         * Sets the value of the refundSendUndo property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link OperRefundSend }
+         *     
+         */
+        public void setRefundSendUndo(OperRefundSend value) {
+            this.refundSendUndo = value;
+        }
+
+        /**
+         * Gets the value of the outOfDate property.
+         * 
+         * @return
+         *     possible object is
+         *     {@link OperOutOfDate }
+         *     
+         */
+        public OperOutOfDate getOutOfDate() {
+            return outOfDate;
+        }
+
+        /**
+         * Sets the value of the outOfDate property.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link OperOutOfDate }
+         *     
+         */
+        public void setOutOfDate(OperOutOfDate value) {
+            this.outOfDate = value;
         }
 
     }
