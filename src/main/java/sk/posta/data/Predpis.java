@@ -21,24 +21,69 @@ public class Predpis {
 	public Predpis(){}
 	
 	
-	public Predpis(MultiValueMap<String, String> data){
+	public Predpis(MultiValueMap<String, String> data, String zamMeno, String zamId){
 		SimpleDateFormat sdf = new SimpleDateFormat(Predpis.SIMPLE_DATE);
+		internaChyba = false;
+		String err = "";
 		this.doklad = data.get("doklad").get(0);
 		//this.konanie = data.get("konanie").get(0);
 		this.sluzba = data.get("sluzba").get(0);
 		try{
 			this.datumPredaja = sdf.parse(data.get("datum").get(0)).getTime();
+			if(this.datumPredaja > new Date().getTime()){
+				err += "Dátum spotreby je v budúcnosti ["+data.get("datum").get(0)+"];";
+			}
 		}catch(ParseException e){
 			this.datumPredaja = null;// zle zadany datum, co uz
+			err += "Zle zadaný dátum spotreby ["+data.get("datum").get(0)+"];";
+			internaChyba = true;
 		}
 		this.urad = data.get("urad").get(0);
 		this.poradove = data.get("poradove").get(0);
 		this.datumPridania = new Date().getTime();
+		this.feeTypeService = data.get("feeType").get(0);
 		idnom = new ArrayList<String>();
 		for(String idNom : data.get("idnom[]")){
 			this.idnom.add(idNom);
 		}
-		this.stav = PredpisStav.LOADED;
+		try{
+			this.multiple = Integer.parseInt(data.get("multiple").get(0));
+		}
+		catch(NumberFormatException e){
+			this.multiple = null;
+			err += "Zle zadaná násobnosť ["+data.get("multiple").get(0)+"];";
+			internaChyba = true;
+		}
+		
+		try{
+			String sAmount = data.get("amount").get(0);
+			sAmount = sAmount.split("€")[0];
+			this.amount = Float.parseFloat(sAmount);
+		}
+		catch(NumberFormatException e){
+			this.multiple = null;
+			err += "Zle zadaná suma predpisu ["+data.get("amount").get(0)+"];";
+			internaChyba = true;
+		}
+
+		try{
+			this.discount = Integer.parseInt(data.get("discount").get(0));
+		}
+		catch(NumberFormatException e){
+			this.multiple = null;
+			err += "Zle zadaný typ zľavy ["+data.get("discount").get(0)+"];";
+			internaChyba = true;
+		}
+		this.zamId = zamId;
+		this.zamMeno = zamMeno;
+		
+		if("".equals(err)){
+			this.stav = PredpisStav.LOADED;
+		}
+		else{
+			this.stav = PredpisStav.ERROR;
+			this.errorMsg = err;
+		}
 	}
 	
 	@Id
@@ -55,7 +100,13 @@ public class Predpis {
 	private PredpisStav stav;
 	private String errorMsg;
 	private String idZamLogin;
+	private String zamMeno;
+	private String zamId;
 	private String idPredpisu; //XXX-YYMMDD-NNNN 
+	private Integer multiple;
+	private Integer discount;
+	private Float amount;
+	private Boolean internaChyba;
 	
 	@Transient
 	private String fullName;
@@ -163,6 +214,10 @@ public class Predpis {
 	public String getFeeTypeService() {
 		return feeTypeService;
 	}
+	/**
+	 * 
+	 * @param feeTypeService String "spravny", "sudny"
+	 */
 	public void setFeeTypeService(String feeTypeService) {
 		this.feeTypeService = feeTypeService;
 	}
@@ -203,4 +258,65 @@ public class Predpis {
 	public void setDatumSync(Long datumSync) {
 		this.datumSync = datumSync;
 	}
+
+
+	public Integer getMultiple() {
+		return multiple;
+	}
+
+
+	public void setMultiple(Integer multiple) {
+		this.multiple = multiple;
+	}
+
+
+	public Integer getDiscount() {
+		return discount;
+	}
+
+
+	public void setDiscount(Integer discount) {
+		this.discount = discount;
+	}
+
+
+	public Float getAmount() {
+		return amount;
+	}
+
+
+	public void setAmount(Float amount) {
+		this.amount = amount;
+	}
+
+
+	public Boolean getInternaChyba() {
+		return internaChyba;
+	}
+
+
+	public void setInternaChyba(Boolean internaChyba) {
+		this.internaChyba = internaChyba;
+	}
+
+
+	public String getZamMeno() {
+		return zamMeno;
+	}
+
+
+	public void setZamMeno(String zamMeno) {
+		this.zamMeno = zamMeno;
+	}
+
+
+	public String getZamId() {
+		return zamId;
+	}
+
+
+	public void setZamId(String zamId) {
+		this.zamId = zamId;
+	}
+	
 }

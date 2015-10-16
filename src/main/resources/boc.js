@@ -15,6 +15,99 @@ function addNewPredpisElement(){
 	}
 }
 
+function countAndSetAmount(){
+	if($('#sluzba').val() != defSudnaSluzba && $('#sluzba').val() != defSpravnaSluzba){
+		return;
+	}
+	var sum = 0;
+	$(".nominal input.text").each(function(){
+		sum += getCashAmount($(this).val());
+	});
+	$("#sluzbaSuma").val(sum + "€");
+	
+}
+
+function getCashAmount(idNom){
+		switch(parseInt(idNom.charAt(0))){
+		case 1:
+			return 0.5;
+		case 2:
+			return 1.0;
+		case 3:
+			return 3.0;
+		case 4:
+			return 5.0;
+		case 5:
+			return 10.0;
+		case 6:
+			return 20.0;
+		case 7:
+			return 50.0;
+		case 8:
+			return 100.0;
+		}
+		return 0.0;
+	}
+
+function checkMultiple(){
+	var min = $("#nasobnostSluzby").attr("data-multiple-min");
+	var max = $("#nasobnostSluzby").attr("data-multiple-max");
+	var set = parseInt($("#nasobnostSluzby").val());
+	if(isNaN(set)){
+		$("#sluzbaNasob_err").text("Zadaný násobok nie je platné číslo");
+		$("#sluzbaNasob_err").show();
+		return 1;
+	}
+	if(min > set || max < set){
+		$("#sluzbaNasob_err").text("Zadaný násobok nie je v povolenom rozsahu ["+min+"-"+max+"]");
+		$("#sluzbaNasob_err").show();
+		return 1;
+	}
+	return 0;
+}
+
+function checkAmount(){
+	// ak je vybrany typ ceny = zlava, zadana zlava (cislo) musi byt max. amount.
+	if($("select#cenaZlava option:selected").val() == 3){
+		var max = parseFloat($("select#cenaZlava").attr("data-amount"));
+		var set = parseFloat($("input#sluzbaSuma").val());
+		if(isNaN(set)){
+			$("#sluzba_err").show();
+			$("#sluzba_err").text("Neplatná suma");
+			return 1;
+		}
+		if(set > max){
+			$("#sluzba_err").show();
+			$("#sluzba_err").text("Zadaná suma nesmie byť vyššia ako " + max);
+			return 1;
+		}
+	}
+	return 0;
+}
+
+function formatDate(d){
+	return (d.getDate() < 10 ? "0"+d.getDate() : ""+d.getDate()) + (d.getMonth() < 9 ? ".0"+(d.getMonth()+1) : "."+(d.getMonth()+1)) + "."+d.getFullYear();
+}
+
+// datum spotreby nesmie byt v buducnosti
+function checkDatumSpotreby(){
+	var sDate = $("input#datum").val();
+	if(sDate.length > 0){
+		var splitted = sDate.split(".");
+		// splitted[0] = den, splitted[1] = mesiac, splitted[2] = rok
+		var date = new Date();
+		date.setDate(parseInt(splitted[0]));
+		date.setMonth(parseInt(splitted[1]) - 1); // mesiace sa v JS cisluju od 0
+		date.setFullYear(parseInt(splitted[2]));
+		if(date > new Date()){
+			$("#datum_err").show();
+			$("#datum_err").text("Zadaný dátum nesmie byť v budúcnosti");
+			return 1;
+		}
+		return 0;
+	}
+}
+
 function submitPredpisForm(){
 	clearPredpisFormErrors();
 	var errs = 0;
@@ -24,6 +117,9 @@ function submitPredpisForm(){
 	errs += checkRequired("#doklad");
 //	errs += checkRequired("#konanie");
 	errs += checkRequired("#sluzba");
+	errs += checkMultiple();
+	errs += checkAmount();
+	errs += checkDatumSpotreby();
 	var jsonData = new Object();	
 	jsonData.idnom = [];
 	var finalCount = 0;
@@ -46,6 +142,10 @@ function submitPredpisForm(){
 		jsonData.doklad = $("#doklad").val();
 //		jsonData.konanie = $("#konanie").val();
 		jsonData.sluzba = $("#sluzba").val();
+		jsonData.multiple = $("#nasobnostSluzby").val();
+		jsonData.amount = $("input#sluzbaSuma").val();
+		jsonData.discount = $("select#cenaZlava option:selected").val();
+		jsonData.feeType = $("input#feeType").val();
 		jsonData.JSR = "";
 		$.post(GLOBAL_APP_NAME + "/addPredpis", jsonData, 
 				function(data){
@@ -173,6 +273,8 @@ function clearPredpisFormErrors(){
 //	$("#konanie_err"	).text("");
 	$("#sluzba_err"		).text("");
 	$("#idnom_err"		).text("");
+	$("#sluzbaNasob_err").text("");
+	$("#sluzbaNasob_err").hide();
 	$("#poradove_err"	).hide();
 	$("#datum_err"		).hide();
 	$("#urad_err"		).hide();

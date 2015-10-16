@@ -76,6 +76,9 @@ public class User{
 	public String toString(){
 		return "User[id:'"+id+"'; idZamLogin:'"+idZamLogin+"'; meno:'"+meno+"'; priezvisko:'"+priezvisko+"'; heslo:'"+heslo+"'; repHeslo:'"+repHeslo+"'; type:"+ userType +"; active:"+active+"]";
 	}
+	public String getFullName() {
+		return (meno == null ? "" : meno) + (priezvisko == null ? "" : (meno == null ? priezvisko : (" " + priezvisko)));
+	}
 	
 	
 }

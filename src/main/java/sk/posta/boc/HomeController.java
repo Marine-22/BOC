@@ -87,6 +87,8 @@ public class HomeController {
 	public static final String AUTHENTICATED = "authenticated";
 	public static final String LOGIN = "userLogin";
 	public static final String USER_TYPE = "userType";
+	public static final String USER_NAME = "userName";
+	public static final String USER_ID = "userId";
 	
 
 	private static final String DATE_FORMAT = "dd.MM.yyyy";
@@ -125,12 +127,13 @@ public class HomeController {
 		return "redirect:/login";
 	}
 	
+	
 	@SuppressWarnings("unused")
 	@RequestMapping(value="/addPredpis", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public @ResponseBody String addPredpis(HttpSession session, Model model, @RequestParam MultiValueMap<String, String> params){
 		logger.info("Zavolana metoda addPredpis. Data: " + params);
 		ReturnData retVal = null;
-		Predpis predpis = new Predpis(params);
+		Predpis predpis = new Predpis(params, (String)session.getAttribute(USER_NAME), (String)session.getAttribute(USER_ID));
 		predpis.setIdZamLogin(session.getAttribute(HomeController.LOGIN).toString());
 		logger.info("Zavolana metoda addPredpis. Data: " + predpis);
 		predpis = predpisRepo.save(predpis);
@@ -353,10 +356,10 @@ public class HomeController {
 			Urad ur = uradRepo.findByBusId(p.getUrad());
 			Sluzba s = null;
 			if(defaultSluzbaSpravna.equals(p.getSluzba())){
-				s = new Sluzba(defaultSluzbaSpravna, defaultSluzbaSpravnaText, defaultSluzbaSpravnaFeeType, 0d);
+				s = new Sluzba(defaultSluzbaSpravna, defaultSluzbaSpravnaText, defaultSluzbaSpravnaFeeType);
 			}
 			else if(defaultSluzbaSudna.equals(p.getSluzba())){
-				s = new Sluzba(defaultSluzbaSudna, defaultSluzbaSudnaText, defaultSluzbaSudnaFeeType, 0d);
+				s = new Sluzba(defaultSluzbaSudna, defaultSluzbaSudnaText, defaultSluzbaSudnaFeeType);
 			}
 			else{
 				s = sluzbaRepo.findByBusId(p.getSluzba());
@@ -430,6 +433,8 @@ public class HomeController {
 		}
 		session.setAttribute(HomeController.LOGIN, u.getIdZamLogin());
 		session.setAttribute(USER_TYPE, u.getUserType());
+		session.setAttribute(USER_NAME, u.getFullName());
+		session.setAttribute(USER_ID, ("" + u.getId()));
 		//session.setMaxInactiveInterval(5);
 		if(UserType.checkPermission(u.getUserType(), Permissions.USER_VIEW)){
 			return "redirect:/user";
@@ -524,6 +529,8 @@ public class HomeController {
 		logger.info("Zavolana metoda resendPredpis: " + id);
 		ReturnData retVal = null;
 		Predpis p = predpisRepo.findOne(id);
+		if(p.getInternaChyba() != null && p.getInternaChyba())
+			return JacksonUtil.object2Json(setRetVal()); // nic nerobim, predpis je zly
 		p.setErrorMsg(null);
 		p.setStav(PredpisStav.WAITING);
 		predpisRepo.save(p);

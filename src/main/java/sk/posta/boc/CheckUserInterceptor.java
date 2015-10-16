@@ -28,6 +28,7 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
 		String methodName = ((HandlerMethod)handler).getMethod().getName();
+		logger.info("Zavolana metoda: " + methodName);
 		Object uType = request.getSession().getAttribute(HomeController.USER_TYPE);
 		if(UserType.checkPermission(uType, methodName)){
 			return true;

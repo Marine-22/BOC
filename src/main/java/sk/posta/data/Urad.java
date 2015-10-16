@@ -25,6 +25,9 @@ public class Urad {
 	private String busId;
 	private String name;
 	private boolean active;
+	/*
+	 * Podla tohoto parametra nastavujem v ready.js defaultnu sluzbu spravnu alebo sudnu
+	 */
 	private int spSu;
 	
 	public int getSpSu() {

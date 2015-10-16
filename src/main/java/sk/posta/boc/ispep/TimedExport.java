@@ -14,6 +14,8 @@ BLOX ERROR:
 
  */
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -59,10 +61,12 @@ import sk.gov.ekolky.estamp.xsd10.Key;
 import sk.gov.ekolky.estamp.xsd10.OperDeclare;
 import sk.gov.ekolky.estamp.xsd10.OperPayment;
 import sk.gov.ekolky.estamp.xsd10.OperPaymentNominal;
+import sk.gov.ekolky.estamp.xsd10.OperReserve;
 import sk.gov.ekolky.estamp.xsd10.Operation;
 import sk.gov.ekolky.estamp.xsd10.RequestFE;
 import sk.gov.ekolky.estamp.xsd10.Service;
 import sk.gov.ekolky.estamp.xsd10.ServiceUse;
+import sk.gov.ekolky.estamp.xsd10.User;
 import sk.posta.data.ConfigVersion;
 import sk.posta.data.Predpis;
 import sk.posta.data.Sequencer;
@@ -140,15 +144,14 @@ public class TimedExport implements ExportPredpis{
 		try{
 			Sluzba s = null;
 			if(defaultSluzbaSpravna.equals(p.getSluzba())){
-				s = new Sluzba(defaultSluzbaSpravna, defaultSluzbaSpravnaText, defaultSluzbaSpravnaFeeType, 0d);
+				s = new Sluzba(defaultSluzbaSpravna, defaultSluzbaSpravnaText, defaultSluzbaSpravnaFeeType);
 			}
 			else if(defaultSluzbaSudna.equals(p.getSluzba())){
-				s = new Sluzba(defaultSluzbaSudna, defaultSluzbaSudnaText, defaultSluzbaSudnaFeeType, 0d);
+				s = new Sluzba(defaultSluzbaSudna, defaultSluzbaSudnaText, defaultSluzbaSudnaFeeType);
 			}
 			else{
 				s = sluzbaRepo.findByBusId(p.getSluzba());
 			}
-			p.setFeeTypeService(s.getFeeType());
 			p.setDatumSync(new Date().getTime());
 			checkPredpis(p);
 			String retVal = uploadPredpis(p, cisloPotvrdenia, s);
@@ -198,7 +201,6 @@ public class TimedExport implements ExportPredpis{
 						saveIdPotvrdenia(cisloPotvrdenia, p.getDatumPredaja());
 					}
 			}
-
 		}
     }
 	
@@ -325,7 +327,16 @@ public class TimedExport implements ExportPredpis{
 						Sluzba sBoc = sluzbaRepo.findByBusId(sPep.getId());
 						if(sBoc == null){
 							stats.incSI();
-							sBoc = new Sluzba(sPep.getId(), sPep.getName(), sPep.getFeeType(), (sPep.getAmount() == null ? null : sPep.getAmount().doubleValue()));
+							sBoc = new Sluzba(
+									sPep.getId(), 
+									sPep.getName(), 
+									sPep.getFeeType(), 
+									(sPep.getAmount() == null ? null : sPep.getAmount().doubleValue()),
+									sPep.getElectronicAmount() == null ? null : sPep.getAmount().doubleValue(),
+									sPep.getMultipleMin() == null ? null : sPep.getMultipleMin().intValue(),
+									sPep.getMultipleMax() == null ? null : sPep.getMultipleMax().intValue(),
+									sPep.isDiscountEnabled() == null ? false : sPep.isDiscountEnabled().booleanValue()
+							);
 							sluzbaRepo.save(sBoc);
 						}
 						else if(!equalsSluzba(sPep, sBoc)){// zmenil sa nazov alebo typ poplatku
@@ -333,6 +344,11 @@ public class TimedExport implements ExportPredpis{
 							stats.incSU();
 							sBoc.setFeeType(sPep.getFeeType());
 							sBoc.setName(sPep.getName());
+							sBoc.setSuma(sPep.getAmount() == null ? null : sPep.getAmount().doubleValue());
+							sBoc.setDiscountEnable(sPep.isDiscountEnabled());
+							sBoc.setElectronicAmount(sPep.getElectronicAmount() == null ? null : sPep.getElectronicAmount().doubleValue());
+							sBoc.setMultipleMax(sPep.getMultipleMax() == null ? null : sPep.getMultipleMax().intValue());
+							sBoc.setMultipleMin(sPep.getMultipleMin() == null ? null : sPep.getMultipleMin().intValue());
 							sluzbaRepo.save(sBoc);
 						}
 					}
@@ -467,18 +483,53 @@ public class TimedExport implements ExportPredpis{
 	
 	private boolean equalsSluzba(Service sPep, Sluzba sBoc){
 		if(!sBoc.getName().equals(sPep.getName())){
-			logger.info("ZMENA:\n" + sBoc.getName() + "\t" + sPep.getName() + "\n");
+			logger.info("ZMENA getName:\n" + sBoc.getName() + "\t" + sPep.getName() + "\n");
 			return false;
 		}
 		if(!sBoc.getFeeType().equals(sPep.getFeeType())){
-			logger.info("ZMENA:\n" + sBoc.getFeeType() + "\t" + sPep.getFeeType() + "\n");
+			logger.info("ZMENA getFeeType:\n" + sBoc.getFeeType() + "\t" + sPep.getFeeType() + "\n");
 			return false;
 		}
 		if(!equals(sPep, sBoc)){
-			logger.info("ZMENA:\n" + sBoc.getSuma() + "\t" + sPep.getAmount() + "\n");
+			logger.info("ZMENA Amount:\n" + sBoc.getSuma() + "\t" + sPep.getAmount() + "\n");
+			return false;
+		}
+		if(!equals(sPep.isDiscountEnabled(), sBoc.getDiscountEnable())){
+			logger.info("ZMENA isDiscountEnabled:\n" + sBoc.getDiscountEnable() + "\t" + sPep.isDiscountEnabled() + "\n");
+			return false;
+		}
+		if(!equals(sPep.getMultipleMin(), sBoc.getMultipleMin())){
+			logger.info("ZMENA getMultipleMin:\n" + sBoc.getDiscountEnable() + "\t" + sPep.isDiscountEnabled() + "\n");
+			return false;
+		}
+		if(!equals(sPep.getMultipleMax(), sBoc.getMultipleMax())){
+			logger.info("ZMENA getMultipleMax:\n" + sBoc.getDiscountEnable() + "\t" + sPep.isDiscountEnabled() + "\n");
+			return false;
+		}
+		if(!equals(sPep.getElectronicAmount(), sBoc.getElectronicAmount())){
+			logger.info("ZMENA getElectronicAmount:\n" + sBoc.getDiscountEnable() + "\t" + sPep.isDiscountEnabled() + "\n");
 			return false;
 		}
 		return true;
+	}
+	
+	private boolean equals(Boolean o1, Boolean o2){
+		if(o1 == null && o2 != null) return false;
+		if(o2 == null && o1 != null) return false;
+		if(o2 == null && o1 == null) return true;
+		return o1.equals(o2);
+	}
+	private boolean equals(BigInteger o1, Integer o2){
+		if(o1 == null && o2 != null) return false;
+		if(o2 == null && o1 != null) return false;
+		if(o2 == null && o1 == null) return true;
+		return o1.longValue() == o2.longValue();
+	}
+	private boolean equals(BigDecimal o1, Double o2){
+		if(o1 == null && o2 != null) return false;
+		if(o2 == null && o1 != null) return false;
+		if(o2 == null && o1 == null) return true;
+		return o1.doubleValue() == o2.doubleValue();
 	}
 	
 	private boolean equals(Service sPep, Sluzba sBoc){
@@ -584,6 +635,9 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 		
 		CreateRequest requestCreate = getRequest(CreateRequest.class);
 		requestCreate.setOfficeID(p.getUrad());
+		requestCreate.setInternalUserID(p.getZamId());
+		requestCreate.setInternalUserName(p.getZamMeno());
+		
 		sk.gov.ekolky.estamp.xsd10.Assessment predpis = new sk.gov.ekolky.estamp.xsd10.Assessment();
 		String idPotvrdenia = getConfirmId(cisloPotvrdenia, p.getDatumPredaja());
 		predpis.setOfficeID(p.getUrad());
@@ -593,10 +647,26 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 		predpis.getKey().setConfirmID(idPotvrdenia);
 		predpis.getKey().setIssueDate(getDate(p.getDatumPredaja()));
 		
+		predpis.setCreator(new User());
+		predpis.getCreator().setFeDeviceID(feDeviceId);
+		predpis.getCreator().setInternalUserID(p.getZamId());
+		predpis.getCreator().setInternalUserName(p.getZamMeno());
+		
+		Calendar c = Calendar.getInstance();
+		c.setTimeInMillis(p.getDatumPredaja());
+		c.add(Calendar.DAY_OF_YEAR, 30);
+		predpis.setExpirationDate(getDate(c.getTimeInMillis())); // datum predaja + 30 dni
+		predpis.setState("vydany");
+		
 		// pocitam vyslednu sumu = sucet vsetkych kolkov na predpise
 		//float cashAmount = getCashAmount(p);
+		if(predpis.getFeeType() == AssesmentType.SPRAVNY){
+			predpis.getOperations().add(getOperationReserve(p));
+		}
+		else if (predpis.getFeeType() == AssesmentType.SUDNY){
+			predpis.getOperations().add(getOperationDeclare(p));
+		}
 		
-		predpis.getOperations().add(getOperationDeclare(p, s));
 		for(String idNom : p.getIdnom()){
 			predpis.getOperations().add(getOperationPayment(idNom, p.getDatumPredaja()));
 		}
@@ -609,16 +679,37 @@ spotrebovat sa daju nominalne kredity len v stave vydany alebo nepredany.
 		return idPotvrdenia;
 	}
 	
-	private Operation getOperationDeclare(Predpis p, Sluzba s) throws DatatypeConfigurationException{
+	private Operation getOperationDeclare(Predpis p) throws DatatypeConfigurationException{
 		Operation operation = new Operation();
 		operation.setOperationDate(getDate(p.getDatumPredaja()));
 		operation.setType(new Operation.Type());
 		operation.getType().setDeclare(new OperDeclare());
-		operation.getType().getDeclare().setAmount(getCashAmount(p));
+		operation.getType().getDeclare().setAmount(p.getAmount());
+		operation.getType().getDeclare().setMultiple(BigInteger.valueOf(p.getMultiple()));
+		operation.getType().getDeclare().setDiscount(BigInteger.valueOf(p.getDiscount()));
+		
 		//operation.getType().getDeclare().setAmount(s.getSuma().floatValue());
 		operation.getType().getDeclare().setUse(new ServiceUse());
 		operation.getType().getDeclare().getUse().setOfficeID(p.getUrad());
 		operation.getType().getDeclare().getUse().setServiceID(p.getSluzba());
+		operation.getType().getDeclare().getUse().setUserID(p.getZamId());
+		return operation;
+	}
+	
+	private Operation getOperationReserve(Predpis p) throws DatatypeConfigurationException{
+		Operation operation = new Operation();
+		operation.setOperationDate(getDate(p.getDatumPredaja()));
+		operation.setType(new Operation.Type());
+		operation.getType().setReserve(new OperReserve());
+		operation.getType().getReserve().setAmount(p.getAmount());
+		operation.getType().getReserve().setMultiple(BigInteger.valueOf(p.getMultiple()));
+		operation.getType().getReserve().setDiscount(BigInteger.valueOf(p.getDiscount()));
+		
+		//operation.getType().getReserve().setAmount(s.getSuma().floatValue());
+		operation.getType().getReserve().setUse(new ServiceUse());
+		operation.getType().getReserve().getUse().setOfficeID(p.getUrad());
+		operation.getType().getReserve().getUse().setServiceID(p.getSluzba());
+		operation.getType().getReserve().getUse().setUserID(p.getZamId());
 		return operation;
 	}
 	

@@ -450,6 +450,14 @@ div.box-940.tabs div.ui-tabs-panel div.main br {margin-bottom: 5px; }
 .ispep p a:active {box-shadow: 0px 0px 0px rgba(0,0,0,.5); -webkit-box-shadow: 0px 0px 0px rgba(0,0,0,.5); -moz-box-shadow: 0px 0px 0px rgba(0,0,0,.5); position: relative; top: 1px; left: 1px; }
 
 
+select#cenaZlava {    
+	width: 131px;
+    float: left;
+    margin: 0.5em 0px;
+    border: 1px solid #BBB;
+    height: 28px;
+}
+
 /*
  .box-460 .bottom {background: url(../img/box-460-bcg.png) no-repeat 0 bottom; display: block; float: left; width: 460px}
 

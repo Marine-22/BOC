@@ -171,6 +171,18 @@
                 <span style="display: none;" id="sluzba_name" class="sub-data"></span>
             </p>
             
+            <p id="nasobkyAZlavy" class="form-text" style="overflow:auto;">
+              <label class="nasobnostClass">Násobnosť</label>
+              <input style="width: 120px; float: left;" value="1" class="text ui-autocomplete-input nasobnostClass" id="nasobnostSluzby"  inline="true" name="sluzba" type="number" />
+              
+              <label class="cenaClass" id="cenaLabelId" style="width:38px;">Cena</label>
+              <select id="cenaZlava" class="text ui-autocomplete-input cenaClass">
+              <option value="1">Štandardná</option>
+              </select>
+                <span style="display: none;" id="sluzbaNasob_name" class="sub-data">Pri službe so zľavou môžete upravovať pole "Suma"</span>
+                <span style="display: none;" id="sluzbaNasob_err" class="inithide errmsg"></span>
+            </p>
+            
             <!-- 
             <p class="form-text">
               <label>ID služby</label>
@@ -179,7 +191,7 @@
                 <span id="sluzba_name" class="sub-data"></span>
             </p>
             -->
-            
+            <input class="text inithide" id="feeType" inline="true" name=""feeType"" type="text" />
             <p class="form-text nominal">
               <label>ID nominálnych kolkov</label>
               <input class="text" id="idnom" inline="true" name="idnom" type="text" maxlength="10" />
