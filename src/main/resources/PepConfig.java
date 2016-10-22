@@ -30,5 +30,8 @@ PROD    - 10.171.10.50
 	
 	
 	public static final int initialDelaySluzbyUrady = 1000;
-	public static final int fixedRateSluzbyUrady = (1000 * 60 * 60 * 24); // 1 den
+	public static final int fixedRateSluzbyUrady = (1000 * 60 * 60 * 24); // 1 den	
+	
+	public static final int initialDelayCheckConn = 1000;
+	public static final int fixedRateCheckConn = (1000 * 60 * 60); // 1 hod
 }

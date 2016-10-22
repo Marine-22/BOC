@@ -19,10 +19,8 @@
     <script src="<c:url value="/resources/js/boc.js" />" type="text/javascript"></script>
     <script src="<c:url value="/resources/js/jquery-ui.js" />" type="text/javascript"></script>
     <script src="<c:url value="/resources/js/jquery.simplePagination.js" />" type="text/javascript"></script>
-<!--[if lt IE 9]> 
-<script src="<c:url value="/resources/js/placeholder.min.js" />"
-	type="text/javascript"></script>
-<![endif]-->
+    <script src="<c:url value="/resources/js/pl.enhanced.js" />" type="text/javascript"></script>
+
 <title>Slovenská pošta</title>
   </head>
   <body id="home">
@@ -181,6 +179,10 @@
               </select>
                 <span style="display: none;" id="sluzbaNasob_name" class="sub-data">Pri službe so zľavou môžete upravovať pole "Suma"</span>
                 <span style="display: none;" id="sluzbaNasob_err" class="inithide errmsg"></span>
+            </p>
+            <p id="nasobkyAZlavy" class="form-text" style="overflow:auto;">
+              <label></label>
+              <label style="width: 300px; text-align: left;" id="sluzbaInfoLabel"></label>
             </p>
             
             <!-- 

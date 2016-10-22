@@ -3,6 +3,7 @@ package sk.posta.data;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +33,17 @@ public class Predpis {
 			this.datumPredaja = sdf.parse(data.get("datum").get(0)).getTime();
 			if(this.datumPredaja > new Date().getTime()){
 				err += "Dátum spotreby je v budúcnosti ["+data.get("datum").get(0)+"];";
+				internaChyba = false;
 			}
+			// datum nesmie byt pred 1.11.2014. Mesiace sa cisluju od 0, preto 10
+			Calendar c = Calendar.getInstance();
+			c.set(2014, 10, 1); 
+			
+			if(this.datumPredaja < c.getTimeInMillis()){
+				err += "Dátum spotreby je pred 1.11.2014 ["+data.get("datum").get(0)+"];";
+				internaChyba = false;
+			}
+			
 		}catch(ParseException e){
 			this.datumPredaja = null;// zle zadany datum, co uz
 			err += "Zle zadaný dátum spotreby ["+data.get("datum").get(0)+"];";
@@ -97,6 +108,8 @@ public class Predpis {
 	private String urad;
 	private String poradove;
 	private List<String> idnom;
+	private List<String> idnomOK;
+	private List<String> idnomFAIL;
 	private PredpisStav stav;
 	private String errorMsg;
 	private String idZamLogin;
@@ -107,6 +120,7 @@ public class Predpis {
 	private Integer discount;
 	private Float amount;
 	private Boolean internaChyba;
+	private Integer dnsfail;
 	
 	@Transient
 	private String fullName;
@@ -118,7 +132,6 @@ public class Predpis {
 	/**
 	 * Typ poplatky za sluzbu. Moze byt spravny alebo sudny
 	 */
-	@Transient
 	@JsonIgnore
 	private String feeTypeService;
 	
@@ -187,6 +200,27 @@ public class Predpis {
 	public void setIdnom(List<String> idnom) {
 		this.idnom = idnom;
 	}
+	
+	public List<String> getIdnomOK() {
+		return idnomOK;
+	}
+
+
+	public void setIdnomOK(List<String> idnomOK) {
+		this.idnomOK = idnomOK;
+	}
+
+
+	public List<String> getIdnomFAIL() {
+		return idnomFAIL;
+	}
+
+
+	public void setIdnomFAIL(List<String> idnomFAIL) {
+		this.idnomFAIL = idnomFAIL;
+	}
+
+
 	public String getIdZamLogin() {
 		return idZamLogin;
 	}
@@ -317,6 +351,16 @@ public class Predpis {
 
 	public void setZamId(String zamId) {
 		this.zamId = zamId;
+	}
+
+
+	public Integer getDnsfail() {
+		return dnsfail;
+	}
+
+
+	public void setDnsfail(Integer dnsfail) {
+		this.dnsfail = dnsfail;
 	}
 	
 }

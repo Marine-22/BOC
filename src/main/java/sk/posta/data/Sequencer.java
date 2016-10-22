@@ -19,6 +19,11 @@ public class Sequencer {
 		this.sequence = 0;
 	}
 	
+	public Sequencer(Long datum, int sequence) {
+		this.datum = datum;
+		this.sequence = sequence;
+	}
+
 	public String toString(){
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 		Date d = new Date(datum);

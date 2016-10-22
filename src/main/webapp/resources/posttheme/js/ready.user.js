@@ -119,9 +119,20 @@ $(document).ready(
         		}
     		}, 100);
     	});
+	    
     	
-    	
-    	
+    	$("#sluzbaSuma").focusout(function(){
+    		if($("#sluzbaSuma[readonly]").length == 0){
+		    	var num = parseFloat($(this).val().replace(",", "."));
+		    	if(isNaN(num)){
+		    		$(this).val("0€");
+		    	}
+		    	else{
+		    		$(this).val("" + num + "€");
+		    	}
+		    	setSumaInfoLabel();
+    		}
+	    });
     	
     	
     	$("#change-password input#reppass").keypress(function (e) {
@@ -168,7 +179,11 @@ $(document).ready(
     			$('#sluzbaSuma').val(ui.item.suma == null ? "Neurčitá" : (ui.item.suma + "€"));
     			$("select#cenaZlava").empty();
     			$("select#cenaZlava").append("<option value=\"1\">Štandardná</option>");
-    			$("input.nasobnostClass").attr("readonly", "");
+    			$("#nasobnostSluzby").attr("readonly", "");
+    			$(".ui-menu-item").click(function(){
+    				$('#sluzba').val($(this).text());
+    				$("select#cenaZlava").focus();
+    			});
     		}
     	});
     	
@@ -186,7 +201,7 @@ $(document).ready(
 			    					$("#urad").val(data.data.busId);
 			    					$("#urad_name").show();
 			    					$("#urad_name").text(data.data.name);
-			    					if($("#sluzba").val().length == 0){
+			    					if($("#sluzba").val().length == 0 || $("#sluzba").val() == defSpravnaSluzba || $("#sluzba").val() == defSudnaSluzba){
 				    					if(data.data.spSu == 0){ //SPRAVNY
 				    						$("#sluzba").val(defSpravnaSluzba);
 				    						$("#feeType").val("spravny");
@@ -210,13 +225,15 @@ $(document).ready(
 		    			'json'
 		    	)
 	    	}
+	    	else{
+				$("#urad_err").hide();
+				$("#urad_err").text("");
+				$("#urad").val("");
+				$("#urad_name").val("");
+				$("#urad_name").hide();
+	    	}
 	    });
-	    
-	    
-	    
-	    $('#sluzba').focusin(function(){
-	    	sluzbaId = $(this).val();
-	    });
+
 	    
 	    $('#sluzba').focusout(function(){
 	    	if(sluzbaId === $(this).val()) return;
@@ -225,6 +242,15 @@ $(document).ready(
 			$(".cenaClass").attr("readonly", "");
 			$("select#cenaZlava").empty();
 			$("select#cenaZlava").append("<option value=\"1\">Štandardná</option>");
+			$("#sluzbaNasob_err").text("");
+			$("#sluzbaNasob_err").hide();
+			$("#sluzbaNasob_name").text("");
+			$("#sluzbaNasob_name").hide();
+			$("input#sluzbaSuma").unbind("keyup");
+			$("input#nasobnostSluzby").unbind();
+			if($(this).val().length == 0){
+				$('#uradpicker input').focusout();
+			}
 			
 	    	if(thiz.val() == defSudnaSluzba){
 				thiz.css("border","");
@@ -232,7 +258,16 @@ $(document).ready(
 				$("#sluzba_err").hide();
 				$("#sluzba_name").text(defSudnaSluzbaText);
 				$("#sluzba_name").show();
+				$("input#nasobnostSluzby").attr("data-is-electronic", "0");
+				$("select#cenaZlava").attr("data-is-discount", "0");
+				$("input#nasobnostSluzby").attr("data-is-multiple", "0");
+				$("input#sluzbaSuma").attr("data-is-interval", "0");
+    			$("input#nasobnostSluzby").removeAttr("data-multiple-min");
+				$("input#nasobnostSluzby").removeAttr("data-multiple-max");
+				$("input#sluzbaSuma").removeAttr("data-amount-min");
+				$("input#sluzbaSuma").removeAttr("data-amount-max");
 				countAndSetAmount();
+				setSumaInfoLabel();
 				//$("#sluzbaSuma").val("0€");
 	    	}
 	    	else if(thiz.val() == defSpravnaSluzba){
@@ -241,7 +276,16 @@ $(document).ready(
 				$("#sluzba_err").hide();
 				$("#sluzba_name").text(defSpravnaSluzbaText);
 				$("#sluzba_name").show();
+				$("input#nasobnostSluzby").attr("data-is-electronic", "0");
+				$("select#cenaZlava").attr("data-is-discount", "0");
+				$("input#nasobnostSluzby").attr("data-is-multiple", "0");
+				$("input#sluzbaSuma").attr("data-is-interval", "0");
+    			$("input#nasobnostSluzby").removeAttr("data-multiple-min");
+				$("input#nasobnostSluzby").removeAttr("data-multiple-max");
+				$("input#sluzbaSuma").removeAttr("data-amount-min");
+				$("input#sluzbaSuma").removeAttr("data-amount-max");
 				countAndSetAmount();
+				setSumaInfoLabel();
 				//$("#sluzbaSuma").val("0€");
 	    	}
 	    	else if(thiz.val().length > 0){
@@ -262,16 +306,25 @@ $(document).ready(
 			    					// multipleMax - max kolko moze zadat
 			    					// multipleMin - ak je zadany, moze zvolit nasobok
 			    					// electronicAmount - ak je zadany, potom moze dat elektricku cenu
+			    					// sluzbaInfoLabel - lable kam dam sumarne info o sluzbe
 
 		    	    				$("select#cenaZlava").attr("data-amount", (data.data.suma == null ? "Neurčitá" : (data.data.suma)));
 			    	    			if(data.data.electronicAmount){
 			    	    				$("select#cenaZlava").removeAttr("readonly");
 			    	    				$("select#cenaZlava").append("<option value=\"2\">Elektronická</option>");
-			    	    				$("select#cenaZlava").attr("data-electronic-amount", data.data.electronicAmount);
+			    	    				$("input#sluzbaSuma").attr("data-electronic-amount", data.data.electronicAmount);
+			    	    				$("input#nasobnostSluzby").attr("data-is-electronic", "1");
+			    	    			}
+			    	    			else{
+			    	    				$("input#nasobnostSluzby").attr("data-is-electronic", "0");
 			    	    			}
 			    	    			if(data.data.discountEnable){
 			    	    				$("select#cenaZlava").removeAttr("readonly");
 			    	    				$("select#cenaZlava").append("<option value=\"3\">So zľavou</option>");
+			    	    				$("select#cenaZlava").attr("data-is-discount", "1");
+			    	    			}
+			    	    			else{
+			    	    				$("select#cenaZlava").attr("data-is-discount", "0");
 			    	    			}
 			    	    			
 			    	    			// ak su aj nasobnost aj zadavanie ceny, potom zobrazim cenu s width=38
@@ -279,11 +332,26 @@ $(document).ready(
 		    	    				if(data.data.multipleMin){
 		    	    					$("input#nasobnostSluzby").removeAttr("readonly");
 				    	    			$("input#nasobnostSluzby").attr("data-multiple-min", data.data.multipleMin);
-			    	    				$("input#nasobnostSluzby").attr("data-multiple-max", data.data.multipleMax);
+			    	    				$("input#nasobnostSluzby").attr("data-multiple-max", (data.data.multipleMax ? data.data.multipleMax : "neobmedzene"));
+			    	    				$("input#nasobnostSluzby").attr("data-is-multiple", "1");
+			    	    				$("input#nasobnostSluzby").bind('keyup mouseup', setSumaInfoLabel);
 		    	    				}
 		    	    				else{
 				    	    			$("input#nasobnostSluzby").attr("data-multiple-min", 1);
 			    	    				$("input#nasobnostSluzby").attr("data-multiple-max", 1);
+			    	    				$("input#nasobnostSluzby").attr("data-is-multiple", "0");
+		    	    				}
+		    	    				if(data.data.sumaMin){
+		    	    					$("input#sluzbaSuma").removeAttr("readonly");
+		    	    					$("input#sluzbaSuma").bind('keyup', setSumaInfoLabel);
+		    	    					$("input#sluzbaSuma").attr("data-amount-min", data.data.sumaMin);
+		    	    					$("input#sluzbaSuma").attr("data-amount-max", data.data.sumaMax);
+		    	    					$("#sluzbaNasob_name").text("Pri intervalovej službe môžete upravovať pole \"Suma\"");
+		    	    					$("#sluzbaNasob_name").show();
+		    	    					$("input#sluzbaSuma").attr("data-is-interval", "1");
+		    	    				}
+		    	    				else{
+		    	    					$("input#sluzbaSuma").attr("data-is-interval", "0");
 		    	    				}
 		    					}
 		    					else{
@@ -293,6 +361,7 @@ $(document).ready(
 			    					$("#sluzba_name").hide();
 			    					$("#sluzbaSuma").val("€");
 		    					}
+		    					setSumaInfoLabel();
 		    				}
 		    			}
 		    	)
@@ -302,25 +371,37 @@ $(document).ready(
 				$("#sluzba_name").hide();
 				$("#sluzbaSuma").val("€");
 				$("input#nasobnostSluzby").val(1);
+				setSumaInfoLabel();
 	    	}
 	    });
-	    
+
     	$("select#cenaZlava").change(function(){
+    		$("input#sluzbaSuma").unbind("keyup");
     		if($("select#cenaZlava option:selected").val() == 1){
-    			$("#sluzbaNasob_name").hide();
-				$("input#sluzbaSuma").attr("readonly", "");
+    			if($("input#sluzbaSuma").attr("data-is-interval") != 1){
+	    			$("#sluzbaNasob_name").hide();
+					$("input#sluzbaSuma").attr("readonly", "");
+    			}else{
+    				$("input#sluzbaSuma").removeAttr("readonly");
+    				$("input#sluzbaSuma").bind('keyup', setSumaInfoLabel);
+    			}
     			$("input#sluzbaSuma").val($("select#cenaZlava").attr("data-amount") + "€");
     		}
     		else if($("select#cenaZlava option:selected").val() == 2){
-    			$("#sluzbaNasob_name").hide();
-				$("input#sluzbaSuma").attr("readonly", "");
-    			$("input#sluzbaSuma").val($("select#cenaZlava").attr("data-electronic-amount") + "€");
+    			if($("input#sluzbaSuma").attr("data-is-interval") != 1){
+    				$("#sluzbaNasob_name").hide();
+    			}
+   				$("input#sluzbaSuma").attr("readonly", "");
+    			$("input#sluzbaSuma").val($("input#sluzbaSuma").attr("data-electronic-amount") + "€");
     		}
     		else if($("select#cenaZlava option:selected").val() == 3){
     			$("input#sluzbaSuma").removeAttr("readonly");
     			$("input#sluzbaSuma").val($("select#cenaZlava").attr("data-amount") + "€");
     			$("#sluzbaNasob_name").show();
+    			$("#sluzbaNasob_name").text("Pri službe so zľavou môžete upravovať pole \"Suma\"");
+    			$("input#sluzbaSuma").bind('keyup', setSumaInfoLabel);
     		}
+    		setSumaInfoLabel();
     	});
     	
     	$("input#sluzbaSuma").focusout(function(){
@@ -446,8 +527,46 @@ $(document).ready(
 	    refreshPredpis();
 	    
 	    if(ismsie()){
-	    	$('input').placeholder();
+	    	// $('input').placeholder();
 	    }
     }
 )
+
+function setSumaInfoLabel(){
+	// sluzbaInfoLabel - lable kam dam sumarne info o sluzbe
+	//$("input#nasobnostSluzby").attr("data-is-electronic", "0");
+	//$("select#cenaZlava").attr("data-is-discount", "0");
+	//$("input#nasobnostSluzby").attr("data-is-multiple", "0");
+	var info = "";
+	var prvy = true;
+	if($('#sluzba').val().length == 0){
+		info="Služba nezadaná";
+	}
+	else{
+		if($("input#nasobnostSluzby").attr("data-is-electronic") == 1){
+			info = "Zadaná služba má elektronickú zľavu.";
+			prvy = false;
+		}
+		if($("select#cenaZlava").attr("data-is-discount") == 1){
+			if(!prvy) info+="<br />";
+			info += "Na zadanú službu je možné poskytnúť zľavu";
+			prvy = false;
+		}
+		if($("input#nasobnostSluzby").attr("data-is-multiple") == 1){
+			if(!prvy) info+="<br />";
+			info += "Zadaná služba je násobková. ["+$("input#nasobnostSluzby").attr("data-multiple-min")+"-"+$("input#nasobnostSluzby").attr("data-multiple-max")+"]";
+			prvy = false;
+		}
+		if($("input#sluzbaSuma").attr("data-is-interval") == 1){
+			if(!prvy) info+="<br />";
+			info += "Zadaná služba je intervalová. ["+$("input#sluzbaSuma").attr("data-amount-min")+"€-"+$("input#sluzbaSuma").attr("data-amount-max")+"€]";
+			prvy = false;
+		}
+		// cena sluzby
+		if(!prvy) info+="<br />";
+		info += "Celková cena služby: <b>"+(parseFloat($("input#sluzbaSuma").val()) * parseInt($("input#nasobnostSluzby").val()))+"€</b>"
+	}
+	$("label#sluzbaInfoLabel").html(info);
+	
+}
 

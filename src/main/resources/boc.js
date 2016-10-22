@@ -24,7 +24,7 @@ function countAndSetAmount(){
 		sum += getCashAmount($(this).val());
 	});
 	$("#sluzbaSuma").val(sum + "€");
-	
+	$("label#sluzbaInfoLabel").html("Celková cena služby: <b>"+sum+"€</b>");
 }
 
 function getCashAmount(idNom){
@@ -85,11 +85,35 @@ function checkAmount(){
 	return 0;
 }
 
+function checkAmountInterval(){
+	// ak je intervalova, zadana cena musi byt medzi min a max
+	// $("select#cenaZlava").attr("data-amount-min")+"€-"+$("select#cenaZlava").attr("data-amount-max")
+	if($("input#sluzbaSuma").attr("data-is-interval") == 1){
+		var set = parseFloat($("input#sluzbaSuma").val());
+		if(isNaN(set)){
+			return 0;// toto uz riesi kontrola Check Amount
+		}
+		var min = parseFloat($("input#sluzbaSuma").attr("data-amount-min"));
+		var max = parseFloat($("input#sluzbaSuma").attr("data-amount-max"));
+		if($("select#cenaZlava option:selected").val() != 3 && (min > set || max < set)){
+			$("#sluzba_err").show();
+			$("#sluzba_err").text("Zadaná suma musí byť v rozsahu ["+min+"-"+max+"]");
+			return 1;
+		}
+		if($("select#cenaZlava option:selected").val() == 3 && max < set){
+			$("#sluzba_err").show();
+			$("#sluzba_err").text("Zadaná suma nesmie byť vyššia ako " + max);
+			return 1;
+		}
+	}
+	return 0;
+}
+
 function formatDate(d){
 	return (d.getDate() < 10 ? "0"+d.getDate() : ""+d.getDate()) + (d.getMonth() < 9 ? ".0"+(d.getMonth()+1) : "."+(d.getMonth()+1)) + "."+d.getFullYear();
 }
 
-// datum spotreby nesmie byt v buducnosti
+// datum spotreby nesmie byt v buducnosti ani pred 1.11.2014
 function checkDatumSpotreby(){
 	var sDate = $("input#datum").val();
 	if(sDate.length > 0){
@@ -102,6 +126,16 @@ function checkDatumSpotreby(){
 		if(date > new Date()){
 			$("#datum_err").show();
 			$("#datum_err").text("Zadaný dátum nesmie byť v budúcnosti");
+			return 1;
+		}
+		// test - datum nesmie byt pred 1.11.2014
+		var dateFirst = new Date();
+		dateFirst.setDate(1);
+		dateFirst.setMonth(10); // mesiace sa v JS cisluju od 0
+		dateFirst.setFullYear(2014);
+		if(date < dateFirst){
+			$("#datum_err").show();
+			$("#datum_err").text("Zadaný dátum nesmie byť pred 1.11.2014");
 			return 1;
 		}
 		return 0;
@@ -119,6 +153,7 @@ function submitPredpisForm(){
 	errs += checkRequired("#sluzba");
 	errs += checkMultiple();
 	errs += checkAmount();
+	errs += checkAmountInterval();
 	errs += checkDatumSpotreby();
 	var jsonData = new Object();	
 	jsonData.idnom = [];
@@ -168,16 +203,33 @@ function submitPredpisForm(){
 }
 
 function clearPredpisForm(){
-	$('#poradove')	.val("");
-	$('#datum')		.val("");
-	$('#urad')		.val("");
-	$('#urad_name')	.text("");
+//	$('#poradove')	.val("");
+//	$('#datum')		.val("");
+//	$('#urad')		.val("");
+//	$('#urad_name')	.text("");
 	$('#doklad')	.val("");
 //	$('#konanie')	.val("");
 	$('#sluzba')	.val("");
 	$('#sluzba_name').text("");
+	$('#sluzba_err').text("");
+	$('#sluzbaSuma').val("");
+	setSumaInfoLabel();
+	$('#nasobnostSluzby').val(1);
+	$("#nasobnostSluzby").attr("readonly", "");
+	$("select#cenaZlava").empty();
+	$("select#cenaZlava").append("<option value=\"1\">Štandardná</option>");
 	$('.nominal:first input').val("");
 	$('.nominal:not(:first)').remove();
+	if($('#uradpicker input').val().length > 0){
+		$('#uradpicker input').focusout();
+	}
+	else{
+		$("#urad_err").hide();
+		$("#urad_err").text("");
+		$("#urad").val("");
+		$("#urad_name").val("");
+		$("#urad_name").hide();
+	}
 }
 
 function clearUserForm(){

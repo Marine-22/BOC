@@ -1,5 +1,7 @@
 package sk.posta.data;
 
+import java.math.BigDecimal;
+
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.data.annotation.Id;
 
@@ -9,13 +11,13 @@ public class Sluzba {
 	
 	// default spravny a sudny poplatok 9997, 9998
 	public Sluzba(String busId, String name, String feeType){
-		this(busId, name, feeType, 0d, 0d, null, null, false);
+		this(busId, name, feeType, 0d, 0d, null, null, false, null, null);
 	}
 	
 
 
 	public Sluzba(String busId, String name, String feeType, Double suma,
-			Double electronicAmount, Integer multipleMin, Integer multipleMax, boolean discEnabled) {
+			Double electronicAmount, Integer multipleMin, Integer multipleMax, boolean discEnabled, BigDecimal sumaMin, BigDecimal sumaMax) {
 		this.busId = busId;
 		this.name = name;
 		this.feeType = feeType;
@@ -25,6 +27,8 @@ public class Sluzba {
 		this.multipleMax = multipleMax;
 		this.multipleMin = multipleMin;
 		this.electronicAmount = electronicAmount;
+		this.sumaMin = sumaMin == null ? null : sumaMin.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		this.sumaMax = sumaMax == null ? null : sumaMax.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 	}
 
 	@Id
@@ -34,6 +38,8 @@ public class Sluzba {
 	private String name;
 	private String feeType;
 	private Double suma;
+	private Double sumaMin;
+	private Double sumaMax;
 	private Boolean discountEnable;
 	private Integer multipleMin;
 	private Integer multipleMax;
@@ -114,6 +120,24 @@ public class Sluzba {
 	public void setElectronicAmount(Double electronicAmount) {
 		this.electronicAmount = electronicAmount;
 	}
+
+	public Double getSumaMin() {
+		return sumaMin;
+	}
+
+	public void setSumaMin(Double sumaMin) {
+		this.sumaMin = sumaMin;
+	}
+
+	public Double getSumaMax() {
+		return sumaMax;
+	}
+
+	public void setSumaMax(Double sumaMax) {
+		this.sumaMax = sumaMax;
+	}
+
+
 	
 	
 }
